@@ -1,0 +1,10 @@
+cache/
+auto-save-list/
+undohist/
+*~
+session.*
+elpa/
+history
+ido.last
+recentf
+transient/
