@@ -1,3 +1,4 @@
+
 ;; package configuration
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
@@ -8,6 +9,9 @@
 
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
+
+(require 'saveplace)
+(save-place-mode 1)
 
 
 (package-initialize)
