@@ -1,4 +1,3 @@
-
 ;; package configuration
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
@@ -10,11 +9,45 @@
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
+(setq mac-command-modifier 'control)
+
+(package-initialize)
+
+(package-refresh-contents)
+
+(defvar favorite-packages
+  '(
+    ;; package
+    use-package
+    ;; ido-mode
+    ido-vertical-mode
+    ;; smex
+    smex 
+    ;; cursor position
+    saveplace
+    ;; git
+    magit git-gutter
+    ;; powerline
+    powerline
+    ;; company
+    company
+    ))
+
+(dolist (package favorite-packages)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+(require 'company)
+(global-company-mode) ; 全バッファで有効にする 
+(setq company-idle-delay 0) ; デフォルトは0.5
+(setq company-minimum-prefix-length 2) ; デフォルトは4
+(setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+
 (require 'saveplace)
 (save-place-mode 1)
 
-
-(package-initialize)
+;; git
+(git-gutter-mode 1)
 
 (require 'init-loader)
 (setq init-loader-show-log-after-init nil)
@@ -98,7 +131,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
