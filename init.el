@@ -42,6 +42,9 @@
 
     ;; ido-ubiquitous
     ido-ubiquitous
+
+    ;; avy / ace-jump
+    avy
     ))
 
 (dolist (package favorite-packages)
@@ -89,8 +92,6 @@
 ;; delete the selection with a keypress
 (delete-selection-mode t)
 
-
-v
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -117,10 +118,14 @@ v
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(require 'avy)
+(global-set-key (kbd "C-]" 'avy-goto-char)
+(global-set-key (kbd "M-g f") 'avy-goto-line)
