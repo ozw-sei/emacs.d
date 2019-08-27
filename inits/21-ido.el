@@ -38,6 +38,3 @@
   :config
   (smex-initialize)
   )
-
-
-

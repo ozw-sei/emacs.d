@@ -31,6 +31,17 @@
     powerline
     ;; company
     company
+
+    ;; yasnippet
+    yasnippet
+    ;; projectile
+    projectile
+
+    ;; skk
+    ddskk
+
+    ;; ido-ubiquitous
+    ido-ubiquitous
     ))
 
 (dolist (package favorite-packages)
@@ -79,6 +90,7 @@
 (delete-selection-mode t)
 
 
+v
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -105,7 +117,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
