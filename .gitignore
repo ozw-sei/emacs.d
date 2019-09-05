@@ -12,6 +12,9 @@ places
 network-security.data
 smex-items
 transient/
+projectile.cache
+projectile-bookmarks.eld
+
 
 !.gitignore
 !.gitkeep

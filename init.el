@@ -118,7 +118,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -129,3 +129,10 @@
 (require 'avy)
 (global-set-key (kbd "C-]") 'avy-goto-char)
 (global-set-key (kbd "M-g f") 'avy-goto-line)
+
+
+(require 'elixir-mode)
+(require 'alchemist)
+(require 'flycheck-elixir)
+
+(setq alchemist-key-command-prefix (kbd "C-c ,"))
