@@ -45,6 +45,10 @@
 
     ;; avy / ace-jump
     avy
+
+    ;; elixir-mode
+    elixir-mode
+    alchemist
     ))
 
 (dolist (package favorite-packages)
