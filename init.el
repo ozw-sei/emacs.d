@@ -168,3 +168,8 @@
 ;; git-gutter
 (require 'git-gutter)
 (git-gutter-mode 1)
+
+;; point-undo
+(require 'point-undo)
+(global-set-key (kbd "C--") 'point-undo)
+(global-set-key (kbd "C-=") 'point-redo)
