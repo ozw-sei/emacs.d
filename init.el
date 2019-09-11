@@ -164,3 +164,7 @@
 (yas-global-mode 1)
 (yas-reload-all)
 (add-hook 'prog-mode-hook #'yas-minor-mode)
+
+;; git-gutter
+(require 'git-gutter)
+(git-gutter-mode 1)
