@@ -26,7 +26,7 @@
     ;; cursor position
     saveplace
     ;; git
-;    magit git-gutter
+    magit git-gutter
     ;; powerline
     powerline
     ;; company
@@ -46,10 +46,16 @@
     ;; avy / ace-jump
     avy
 
+    ;; migemo
+    migemo
+
     ;; elixir-mode
     elixir-mode
     alchemist
     flycheck-elixir
+
+    ;; ag
+    ag
     ))
 
 (dolist (package favorite-packages)
@@ -123,7 +129,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
