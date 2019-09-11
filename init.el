@@ -26,7 +26,7 @@
     ;; cursor position
     saveplace
     ;; git
-;    magit git-gutter
+    magit git-gutter
     ;; powerline
     powerline
     ;; company
@@ -60,10 +60,16 @@
     ;; theme
     solarized-theme
 
+    ;; migemo
+    migemo
+
     ;; elixir-mode
     elixir-mode
     alchemist
     flycheck-elixir
+
+    ;; ag
+    ag
     ))
 
 (require 'company-lsp)
@@ -141,7 +147,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -177,5 +183,17 @@
 (load-library "migemo")
 (migemo-init)
 
-;; 
->>>>>>> 5885144ae678eae850ef78e88197936489f0dbea
+;; yasnippet
+(require 'yasnippet)
+(yas-global-mode 1)
+(yas-reload-all)
+(add-hook 'prog-mode-hook #'yas-minor-mode)
+
+;; git-gutter
+(require 'git-gutter)
+(git-gutter-mode 1)
+
+;; point-undo
+(require 'point-undo)
+(global-set-key (kbd "C--") 'point-undo)
+(global-set-key (kbd "C-=") 'point-redo)
