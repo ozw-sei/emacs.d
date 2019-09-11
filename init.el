@@ -1,9 +1,8 @@
 ;; package configuration
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 ;; elisp read config
@@ -14,12 +13,13 @@
 (package-initialize)
 
 (package-refresh-contents)
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (defvar favorite-packages
   '(
     ;; package
     use-package
-    ;; ido-mode
+    ;; ido-mode\
     ido-vertical-mode
     ;; smex
     smex 
@@ -45,7 +45,24 @@
 
     ;; avy / ace-jump
     avy
+    ;; javascript / typescript
+    typescript-mode
+    ;; lsp
+    lsp-mode
+    company-lsp
+    lsp-ui
+    
+    ;; go
+    go-mode
+    company-go
+
+;; theme
+solarized-theme
     ))
+
+(require 'company-lsp)
+(push 'company-lsp company-backends)
+
 
 (dolist (package favorite-packages)
   (unless (package-installed-p package)
@@ -136,3 +153,8 @@
 (require 'flycheck-elixir)
 
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
+
+(add-hook 'javascript-mode-hook #'lsp)
+(require 'company-lsp)
+
+(load-theme 'solarized-light t)
