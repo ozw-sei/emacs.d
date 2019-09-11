@@ -26,7 +26,7 @@
     ;; cursor position
     saveplace
     ;; git
-    magit git-gutter
+;    magit git-gutter
     ;; powerline
     powerline
     ;; company
@@ -45,6 +45,7 @@
 
     ;; avy / ace-jump
     avy
+<<<<<<< HEAD
     ;; javascript / typescript
     typescript-mode
     ;; lsp
@@ -56,8 +57,13 @@
     go-mode
     company-go
 
-;; theme
-solarized-theme
+    ;; theme
+    solarized-theme
+
+    ;; elixir-mode
+    elixir-mode
+    alchemist
+    flycheck-elixir
     ))
 
 (require 'company-lsp)
@@ -154,7 +160,22 @@ solarized-theme
 
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
 
+;; typescript
 (add-hook 'javascript-mode-hook #'lsp)
 (require 'company-lsp)
 
 (load-theme 'solarized-light t)
+
+;; migemo
+(require 'migemo)
+(setq migemo-command "/usr/local/bin/cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+(setq migemo-user-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(setq migemo-regex-dictionary nil)
+(load-library "migemo")
+(migemo-init)
+
+;; 
+>>>>>>> 5885144ae678eae850ef78e88197936489f0dbea
