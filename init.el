@@ -70,6 +70,7 @@
     ))
 
 (require 'company-lsp)
+
 (push 'company-lsp company-backends)
 
 
@@ -211,6 +212,13 @@
 ;; filename<dir> 形式のバッファ名にする
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-ignore-buffers-re "[^*]+")
+
+;; mac-key-modifier
+(setq mac-command-modifier 'control)
+(setq mac-control-modifier 'command)
+
+;; font-size
+(set-face-attribute 'default nil :height 150)
 
 ;;; ファイルを開いた位置を保存する
 (require 'saveplace)
