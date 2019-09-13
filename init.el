@@ -194,3 +194,199 @@
 (require 'point-undo)
 (global-set-key (kbd "C--") 'point-undo)
 (global-set-key (kbd "C-=") 'point-redo)
+
+
+;; common-setting
+
+;;; 右から左に読む言語に対応させないことで描画高速化
+(setq-default bidi-display-reordering nil)
+
+;;; splash screenを無効にする
+(setq inhibit-splash-screen t)
+
+;;; 同じ内容を履歴に記録しないようにする
+(setq history-delete-duplicates t)
+
+;; C-u C-SPC C-SPC …でどんどん過去のマークを遡る
+(setq set-mark-command-repeat-pop t)
+
+;;; 複数のディレクトリで同じファイル名のファイルを開いたときのバッファ名を調整する
+(require 'uniquify)
+;; filename<dir> 形式のバッファ名にする
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(setq uniquify-ignore-buffers-re "[^*]+")
+
+;;; ファイルを開いた位置を保存する
+(require 'saveplace)
+(setq-default save-place t)
+(setq save-place-file (concat user-emacs-directory "places"))
+
+;;; 釣合う括弧をハイライトする
+(show-paren-mode 1)
+
+;;; インデントにTABを使わないようにする
+(setq-default indent-tabs-mode nil)
+
+;;; 現在行に色をつける
+(global-hl-line-mode 1)
+
+;;; ミニバッファ履歴を次回Emacs起動時にも保存する
+(savehist-mode 1)
+
+;;; シェルに合わせるため、C-hは後退に割り当てる
+(global-set-key (kbd "C-h") 'delete-backward-char)
+
+;;; モードラインに時刻を表示する
+(display-time)
+
+;;; 行番号・桁番号を表示する
+(line-number-mode 1)
+(column-number-mode 1)
+
+;;; GCを減らして軽くする
+(setq gc-cons-threshold (* 10 gc-cons-threshold))
+
+;;; ログの記録行数を増やす
+(setq message-log-max 10000)
+
+;;; 履歴をたくさん保存する
+(setq history-length 1000)
+
+;;; メニューバーとツールバーとスクロールバーを消す
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; C-x C-c で停止しない
+(global-set-key (kbd "C-x C-c") 'smex)
+
+;; I never use C-x C-c
+;; exit で抜けられます
+(defalias 'exit 'save-buffers-kill-emacs)
+
+;; スクリーンの最大化
+(set-frame-parameter nil 'fullscreen 'maximized)
+
+
+(global-set-key (kbd "C-t") 'other-window)
+
+(global-set-key (kbd "C-M-n") 'switch-to-next-buffer)
+(global-set-key (kbd "C-M-p") 'switch-to-prev-buffer)
+
+
+(global-set-key [f12] 'eval-buffer)
+
+
+;; 最近のファイル500個を保存する
+(setq recentf-max-saved-items 500)
+
+;; 最近使ったファイルに加えないファイルを
+;; 正規表現で指定する
+(setq recentf-exclude
+      '("/TAGS$" "/var/tmp/"))
+;; 
+(global-auto-revert-mode 1)
+
+
+;; 大文字小文字を区別しない
+(setq completion-ignore-case t)
+
+;; dired
+(require 'dired)
+(require 'dired-details)
+(dired-details-install)
+(setq dired-details-hidden-string "")
+(setq dired-details-hide-link-targets nil)
+
+(global-set-key (kbd "C-M-D") 'dired-toggle)
+
+(global-set-key (kbd "C-x C-b") 'bs-show)
+
+(ffap-bindings)
+
+
+;;; ido smex
+
+
+(use-package ido
+  :bind
+  (("C-x C-r" . recentf-ido-find-file)
+   ("C-x C-f" . ido-find-file)
+   ("C-x C-d" . ido-dired)
+   ("C-x b" . ido-switch-buffer)
+   ("C-x C-b" . ido-switch-buffer)
+ ;("M-x" . smex)
+   )
+  :init
+  (recentf-mode 1)
+  
+  (defun recentf-ido-find-file ()
+  "Find a recent file using ido."
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+
+  :config
+  (ido-mode 1)
+  (setq ido-enable-flex-matching t)
+  (setq ido-save-directory-list-file "~/.emacs.d/cache/ido.last")
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+  (setq ido-max-window-height 0.75)
+  (when (fboundp 'skk-mode)
+    (fset 'ido-select-text 'skk-mode))
+  )
+
+
+(use-package smex
+  :bind
+  (("M-x" . smex))
+  :init
+  (setq smex-save-file "~/.emacs.d/cache/.smex-items")
+  :config
+  (smex-initialize)
+  )
+
+
+;; ido-vertical
+;;; このときidoが使うwindowの高さは大きくした方がいい
+(setq ido-max-window-height 0.75)
+;;; あいまいマッチは入れておこう
+(setq ido-enable-flex-matching t)
+(ido-mode 1)
+(ido-vertical-mode 1)
+;;; [2015-07-07 Tue]new: C-n/C-pで選択
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+;;; 他の選択肢: ↑と↓でも選択できるようにする
+(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+;;; ←と→で履歴も辿れるようにする
+(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+
+;;----------------------
+;; undohistの設定
+(when (require 'undohist nil t)
+  (undohist-initialize))
+
+
+;; undo-tree
+;; undo-treeモードの設定
+(require 'undo-tree)
+(global-set-key (kbd "C-c u") 'undo-tree-visualize)
+
+(when (require 'undo-tree nil t)
+  (global-undo-tree-mode))
+
+(global-undo-tree-mode t)
+(global-set-key (kbd "M-/") 'undo-tree-redo)
+
+
+;; projectile
+(require 'projectile)
+(projectile-mode +1)
+
+(global-set-key (kbd "C-c C-f") 'projectile-find-file)
+(global-set-key (kbd "C-c C-g") 'projectile-ag)
+
+(setq projectile-project-search-path '("~/sources/repos/"))
+
