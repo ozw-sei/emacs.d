@@ -8,8 +8,6 @@
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
-(setq mac-command-modifier 'control)
-
 (package-initialize)
 
 (package-refresh-contents)
