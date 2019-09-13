@@ -36,16 +36,13 @@
     yasnippet
     ;; projectile
     projectile
-
-    ;; skk
-    ddskk
-
-    ;; ido-ubiquitous
+ 
+   ;; ido-ubiquitous
     ido-ubiquitous
 
     ;; avy / ace-jump
     avy
-<<<<<<< HEAD
+    
     ;; javascript / typescript
     typescript-mode
     ;; lsp
