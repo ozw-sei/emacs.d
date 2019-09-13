@@ -89,10 +89,6 @@
 ;; git
 (git-gutter-mode 1)
 
-(require 'init-loader)
-(setq init-loader-show-log-after-init nil)
-(init-loader-load "~/.emacs.d/inits")
-
 (defun turn-on-flycheck-mode ()
   (flycheck-mode 1))
 
@@ -253,9 +249,14 @@
 (setq history-length 1000)
 
 ;;; メニューバーとツールバーとスクロールバーを消す
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+
+(if window-system (progn
+                    ;; ←GUI用設定を、ここに記述
+                    (menu-bar-mode -1)
+                    (tool-bar-mode -1)
+                    (scroll-bar-mode -1)
+                    )
+  )
 
 ;; C-x C-c で停止しない
 (global-set-key (kbd "C-x C-c") 'smex)
@@ -291,23 +292,7 @@
 ;; 大文字小文字を区別しない
 (setq completion-ignore-case t)
 
-;; dired
-(require 'dired)
-(require 'dired-details)
-(dired-details-install)
-(setq dired-details-hidden-string "")
-(setq dired-details-hide-link-targets nil)
-
-(global-set-key (kbd "C-M-D") 'dired-toggle)
-
-(global-set-key (kbd "C-x C-b") 'bs-show)
-
-(ffap-bindings)
-
-
 ;;; ido smex
-
-
 (use-package ido
   :bind
   (("C-x C-r" . recentf-ido-find-file)
