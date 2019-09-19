@@ -229,10 +229,6 @@
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-ignore-buffers-re "[^*]+")
 
-;; mac-key-modifier
-(setq mac-command-modifier 'control)
-(setq mac-control-modifier 'command)
-
 ;; font-size
 (set-face-attribute 'default nil :height 150)
 
@@ -397,7 +393,6 @@
 (projectile-mode +1)
 
 (global-set-key (kbd "C-c C-f") 'projectile-find-file)
-(global-set-key (kbd "C-c C-g") 'projectile-ag)
 
 (setq projectile-project-search-path '("~/sources/repos/"))
 
@@ -437,3 +432,32 @@
 (when (version<= "26.0.50" emacs-version )
   (global-display-line-numbers-mode 0)
 
+(use-package hydra)
+
+(use-package git-gutter
+  :custom
+  ;; stage, revertで確認を出さないようにする
+  ;; (undoでもどせるからいいや、という気持ち)
+  (git-gutter:ask-p nil)
+
+  :bind
+  ;; hydra-git-gutter起動のキーバインド
+  ("C-c g" . hydra-git-gutter/body))
+
+;; git-gutter:popup-hunkをそのまま割り当てるとdiffウィンドウを閉じれないので
+;; トグルできる関数を定義
+(defun git-gutter:toggle-popup-hunk ()
+  "Toggle git-gutter hunk window."
+  (interactive)
+  (if (window-live-p (git-gutter:popup-buffer-window))
+      (delete-window (git-gutter:popup-buffer-window))
+      (git-gutter:popup-hunk)))
+
+;; git-gutterのhydra定義
+(defhydra hydra-git-gutter nil
+  "git hunk"
+  ("p" git-gutter:previous-hunk "previous")
+  ("n" git-gutter:next-hunk "next")
+  ("s" git-gutter:stage-hunk "stage")
+  ("r" git-gutter:revert-hunk "revert")
+  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
