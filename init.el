@@ -1,7 +1,7 @@
 ;; package configuration
 (require 'package)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
@@ -10,8 +10,9 @@
 
 (package-initialize)
 
+;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-refresh-contents)
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 
 (defvar favorite-packages
   '(
@@ -24,7 +25,8 @@
     ;; cursor position
     saveplace
     ;; git
-    magit git-gutter
+    magit
+    git-gutter
     ;; powerline
     powerline
     ;; company
@@ -43,10 +45,7 @@
     
     ;; javascript / typescript
     typescript-mode
-    ;; lsp
-    lsp-mode
-    company-lsp
-    lsp-ui
+    add-node-modules-path
     
     ;; go
     go-mode
@@ -61,26 +60,48 @@
     ;; elixir-mode
     elixir-mode
     alchemist
-    flycheck-elixir
 
     ;; ag
     ag
-    ))
+    ;; egot
+    eglot
 
-(require 'company-lsp)
+    ;; flyspell
+    flyspell
 
-(push 'company-lsp company-backends)
+    ;; jump
+    dumb-jump
 
+    )
+  )
 
 (dolist (package favorite-packages)
   (unless (package-installed-p package)
     (package-install package)))
 
 (require 'company)
-(global-company-mode) ; 全バッファで有効にする 
+(global-company-mode) ; 全バッファで有効にする
+(setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
 (setq company-idle-delay 0) ; デフォルトは0.5
 (setq company-minimum-prefix-length 2) ; デフォルトは4
 (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+(setq completion-ignore-case t)
+(setq company-dabbrev-downcase nil)
+
+(define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
+(define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
+(define-key company-active-map (kbd "C-s") 'company-filter-candidates) ;; C-sで絞り込む
+(define-key company-active-map (kbd "C-i") 'company-complete-selection) ;; TABで候補を設定
+(define-key company-active-map [tab] 'company-complete-selection) ;; TABで候補を設定
+(define-key company-active-map (kbd "C-f") 'company-complete-selection) ;; C-fで候補を設定
+(define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
+
+(require 'eglot)
+
+;; eglot を ON にする mode を指定
+(add-hook 'ruby-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)
+(add-hook 'typescript-mode-hook 'eglot-ensure)
 
 (require 'saveplace)
 (save-place-mode 1)
@@ -139,7 +160,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -159,9 +180,6 @@
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
 
 ;; typescript
-(add-hook 'javascript-mode-hook #'lsp)
-(require 'company-lsp)
-
 (load-theme 'solarized-light t)
 
 ;; migemo
@@ -378,4 +396,40 @@
 (global-set-key (kbd "C-c C-g") 'projectile-ag)
 
 (setq projectile-project-search-path '("~/sources/repos/"))
+
+;; eglot
+(add-hook 'javascript-mode-hook 'eglot-ensure)
+(define-key eglot-mode-map (kbd "M-r") 'xref-find-references)
+
+;; flycheck
+(require 'flycheck)
+(setq flycheck-check-syntax-automatically
+      '(save idle-change mode-enabled))
+
+(setq flycheck-idle-change-delay 1)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; javascript
+(eval-after-load 'js-mode
+  '(add-hook 'js-mode-check #'add-node-modules-path))
+
+(eval-after-load 'typescript-mode
+  '(add-hook 'typescript-mode-check #'add-node-modules-path))
+
+;; flyspell
+(add-hook 'prog-mode-hook 'flyspell-mode)
+
+;; ispell の後継である aspell を使う。
+;; CamelCase でもいい感じに spellcheck してくれる設定を追加
+;; See: https://stackoverflow.com/a/24878128/8888451
+(setq-default ispell-program-name "aspell")
+(eval-after-load "ispell"
+  '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
+(setq ispell-program-name "aspell"
+  ispell-extra-args
+  '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
+
+
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode 0)
 
