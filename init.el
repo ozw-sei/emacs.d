@@ -211,10 +211,6 @@
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-ignore-buffers-re "[^*]+")
 
-;; mac-key-modifier
-(setq mac-command-modifier 'control)
-(setq mac-control-modifier 'command)
-
 ;; font-size
 (set-face-attribute 'default nil :height 150)
 
