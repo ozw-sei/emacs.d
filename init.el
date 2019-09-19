@@ -68,6 +68,7 @@
 
     ;; flyspell
     flyspell
+
     )
   )
 
@@ -80,12 +81,17 @@
 (setq company-idle-delay 0) ; デフォルトは0.5
 (setq company-minimum-prefix-length 2) ; デフォルトは4
 (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+(define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
+(define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
+
      
 
 (require 'eglot)
 
 ;; eglot を ON にする mode を指定
 (add-hook 'ruby-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)
+(add-hook 'typescript-mode-hook 'eglot-ensure)
 
 (require 'saveplace)
 (save-place-mode 1)
@@ -144,7 +150,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -385,14 +391,17 @@
 
 (setq projectile-project-search-path '("~/sources/repos/"))
 
+;; eglot
 (add-hook 'javascript-mode-hook 'eglot-ensure)
+(define-key eglot-mode-map (kbd "M-r") 'xref-find-references)
 
 ;; flycheck
 (require 'flycheck)
 (setq flycheck-check-syntax-automatically
       '(save idle-change mode-enabled))
 
-(setq flucheck-idle-change-delay 1)
+(setq flycheck-idle-change-delay 1)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; javascript
 (eval-after-load 'js-mode
@@ -400,7 +409,6 @@
 
 (eval-after-load 'typescript-mode
   '(add-hook 'typescript-mode-check #'add-node-modules-path))
-
 
 ;; flyspell
 (add-hook 'prog-mode-hook 'flyspell-mode)
@@ -414,3 +422,4 @@
 (setq ispell-program-name "aspell"
   ispell-extra-args
   '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
+
