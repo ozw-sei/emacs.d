@@ -433,3 +433,7 @@
   ispell-extra-args
   '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
 
+
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode 0)
+
