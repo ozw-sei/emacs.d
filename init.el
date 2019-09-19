@@ -1,7 +1,7 @@
 ;; package configuration
 (require 'package)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
@@ -10,8 +10,9 @@
 
 (package-initialize)
 
+;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-refresh-contents)
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 
 (defvar favorite-packages
   '(
@@ -24,7 +25,8 @@
     ;; cursor position
     saveplace
     ;; git
-    magit git-gutter
+    magit
+    git-gutter
     ;; powerline
     powerline
     ;; company
@@ -43,10 +45,7 @@
     
     ;; javascript / typescript
     typescript-mode
-    ;; lsp
-    lsp-mode
-    company-lsp
-    lsp-ui
+    add-node-modules-path
     
     ;; go
     go-mode
@@ -61,16 +60,16 @@
     ;; elixir-mode
     elixir-mode
     alchemist
-    flycheck-elixir
 
     ;; ag
     ag
-    ))
+    ;; egot
+    eglot
 
-(require 'company-lsp)
-
-(push 'company-lsp company-backends)
-
+    ;; flyspell
+    flyspell
+    )
+  )
 
 (dolist (package favorite-packages)
   (unless (package-installed-p package)
@@ -81,6 +80,12 @@
 (setq company-idle-delay 0) ; デフォルトは0.5
 (setq company-minimum-prefix-length 2) ; デフォルトは4
 (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+     
+
+(require 'eglot)
+
+;; eglot を ON にする mode を指定
+(add-hook 'ruby-mode-hook 'eglot-ensure)
 
 (require 'saveplace)
 (save-place-mode 1)
@@ -159,9 +164,6 @@
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
 
 ;; typescript
-(add-hook 'javascript-mode-hook #'lsp)
-(require 'company-lsp)
-
 (load-theme 'solarized-light t)
 
 ;; migemo
@@ -383,3 +385,32 @@
 
 (setq projectile-project-search-path '("~/sources/repos/"))
 
+(add-hook 'javascript-mode-hook 'eglot-ensure)
+
+;; flycheck
+(require 'flycheck)
+(setq flycheck-check-syntax-automatically
+      '(save idle-change mode-enabled))
+
+(setq flucheck-idle-change-delay 1)
+
+;; javascript
+(eval-after-load 'js-mode
+  '(add-hook 'js-mode-check #'add-node-modules-path))
+
+(eval-after-load 'typescript-mode
+  '(add-hook 'typescript-mode-check #'add-node-modules-path))
+
+
+;; flyspell
+(add-hook 'prog-mode-hook 'flyspell-mode)
+
+;; ispell の後継である aspell を使う。
+;; CamelCase でもいい感じに spellcheck してくれる設定を追加
+;; See: https://stackoverflow.com/a/24878128/8888451
+(setq-default ispell-program-name "aspell")
+(eval-after-load "ispell"
+  '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
+(setq ispell-program-name "aspell"
+  ispell-extra-args
+  '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
