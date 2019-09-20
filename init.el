@@ -541,8 +541,6 @@
 (add-to-list 'recentf-exclude
              (expand-file-name "~/.emacs.d/cache/*"))
 
-(require 'js-doc)
-
 (bind-key "M-g" 'goto-line)
 
 ;; melpa からDLできなかった。苦肉の策
