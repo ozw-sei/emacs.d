@@ -38,6 +38,7 @@
     
     ;; yasnippet
     yasnippet
+    yasnippet-snippets
     ;; projectile
     projectile
  
