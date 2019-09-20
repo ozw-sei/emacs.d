@@ -481,16 +481,25 @@
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
   "hydra-buffer-split"
-  ("s" split-window-vertically "horizontally")
-  ("v" split-window-horizontally "vertically")
-  ("k" delete-window "delete")
-  ("w" enlarge-window-horizontally "wide")
-  ("n" shrink-window-horizontally "narrow")
-  ("t" enlarge-window "taller")
-  ("s" shrink-window "taller")
+  ("s" (lambda ()
+         (interactive)
+         (split-window-vertically)
+         (windmove-down)) "split-horizontally")
+  ("v" (lambda()
+         (interactive)
+         (split-window-horizontally)
+         (windmove-right)) "split-vertically")
+  ("C-k" delete-window "delete")
+  ("w" enlarge-window-horizontally "enrage-horizontally")
+  ("W" shrink-window-horizontally "shrink-horizontally")
+  ("t" enlarge-window "enrage-vertically")
+  ("T" shrink-window "shrink-vertically")
   ("b" balance-windows "balance")
   ("C-M-r" delete-other-windows "reset-window")
-  ("o" other-window "other-window"))
+  ("h" windmove-left "move-left")
+  ("j" windmove-down "move-down")
+  ("k" windmove-up "move-up")
+  ("l" windmove-right "move-right"))
 
 (bind-key "C-q" 'hydra-buffer-split/body)
 
