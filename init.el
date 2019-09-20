@@ -120,7 +120,7 @@
 (save-place-mode 1)
 
 ;; git
-(git-gutter-mode 1)
+(global-git-gutter-mode +1)
 
 (defun turn-on-flycheck-mode ()
   (flycheck-mode 1))
@@ -476,7 +476,9 @@
   ("m" magit-status "status")
   ("b" magit-blame "blame")
   ("d" magit-dispatch "dispatch")
-  ("SPC" git-gutter:popup-hunk "toggle diffinfo"))
+  ("SPC" git-gutter:popup-hunk "toggle diffinfo")
+  ("q" nil "exit")
+  )
 
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
@@ -499,9 +501,27 @@
   ("h" windmove-left "move-left")
   ("j" windmove-down "move-down")
   ("k" windmove-up "move-up")
-  ("l" windmove-right "move-right"))
+  ("l" windmove-right "move-right")
+  ("q" nil "exit" :color blue)
+  )
 
 (bind-key "C-q" 'hydra-buffer-split/body)
+
+;; hydra flycheck 操作
+(defhydra hydra-flycheck nil
+  "hydra-flycheck"
+  ("j" next-error     "next-error")
+  ("k" previous-error "prev-error")
+  ("h" first-error    "first-error")
+  ("l" (condition-case err
+           (while t
+             (next-error))
+         (user-error nil))
+   nil :bind nil)
+  ("q" nil            "exit" :color blue))
+
+(bind-key "C-0" 'hydra-flycheck/body)
+
 
 ;; editor-config
 (use-package editorconfig
@@ -519,3 +539,6 @@
 (add-to-list 'recentf-exclude
              (expand-file-name "~/.emacs.d/cache/*"))
 
+(require 'js-doc)
+
+(bind-key "M-g" 'goto-line)
