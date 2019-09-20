@@ -483,3 +483,16 @@
   :ensure t
   :config
   (editorconfig-mode 1))
+
+(add-to-list 'recentf-exclude "ido.last")
+(add-to-list 'recentf-exclude "COMMIT_EDITMSG")
+
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/elsp/*"))
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/elpa/*"))
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/cache/*"))
+
+
+
