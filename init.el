@@ -8,10 +8,11 @@
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
+
 (package-initialize)
 
 ;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(package-refresh-contents)
+;(package-refresh-contents)
 
 
 (defvar favorite-packages
@@ -530,6 +531,7 @@
   (editorconfig-mode 1))
 
 (add-to-list 'recentf-exclude "ido.last")
+(add-to-list 'recentf-exclude "smex-items")
 (add-to-list 'recentf-exclude "COMMIT_EDITMSG")
 
 (add-to-list 'recentf-exclude
@@ -542,3 +544,10 @@
 (require 'js-doc)
 
 (bind-key "M-g" 'goto-line)
+
+;; melpa からDLできなかった。苦肉の策
+(add-to-list 'load-path "~/.emacs.d/vendors/smart-jump/")
+(use-package smart-jump
+  :ensure t
+  :config
+  (smart-jump-setup-default-registers))

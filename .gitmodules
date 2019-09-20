@@ -1,0 +1,3 @@
+[submodule "vendors/smart-jump"]
+	path = vendors/smart-jump
+	url = git@github.com:jojojames/smart-jump.git
