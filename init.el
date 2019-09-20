@@ -1,9 +1,10 @@
-;; package configuration
+;;; package configuration
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
@@ -11,7 +12,7 @@
 (package-initialize)
 
 ;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(package-refresh-contents)
+;(package-refresh-contents)
 
 
 (defvar favorite-packages
@@ -35,8 +36,12 @@
     ;; company
     company
 
+    ;; editor-config
+    editorconfig
+    
     ;; yasnippet
     yasnippet
+    yasnippet-snippets
     ;; projectile
     projectile
  
@@ -75,8 +80,18 @@
     ;; jump
     dumb-jump
 
+    ;; dash-board
+    dashboard
     )
   )
+
+;; Or if you use use-package
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 (dolist (package favorite-packages)
   (unless (package-installed-p package)
@@ -110,7 +125,7 @@
 (save-place-mode 1)
 
 ;; git
-(git-gutter-mode 1)
+(global-git-gutter-mode +1)
 
 (defun turn-on-flycheck-mode ()
   (flycheck-mode 1))
@@ -143,9 +158,7 @@
 (set-keyboard-coding-system 'utf-8)
 
 
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status)))
+(use-package magit :ensure t)
 
 (set-face-attribute 'default nil :height 100)
 
@@ -161,9 +174,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(git-gutter:ask-p nil)
  '(package-selected-packages
    (quote
-    (smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -411,6 +425,10 @@
 (eval-after-load 'js-mode
   '(add-hook 'js-mode-check #'add-node-modules-path))
 
+(with-eval-after-load 'flycheck
+  (advice-add 'flycheck-eslint-config-exists-p :override (lambda() t)))
+
+
 (eval-after-load 'typescript-mode
   '(add-hook 'typescript-mode-check #'add-node-modules-path))
 
@@ -426,10 +444,6 @@
 (setq ispell-program-name "aspell"
   ispell-extra-args
   '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
-
-
-(when (version<= "26.0.50" emacs-version )
-  (global-display-line-numbers-mode 0)
 
 (use-package hydra)
 
@@ -455,8 +469,82 @@
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
   "git hunk"
+
   ("p" git-gutter:previous-hunk "previous")
   ("n" git-gutter:next-hunk "next")
   ("s" git-gutter:stage-hunk "stage")
   ("r" git-gutter:revert-hunk "revert")
-  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
+  ("m" magit-status "status")
+  ("b" magit-blame "blame")
+  ("d" magit-dispatch "dispatch")
+  ("SPC" git-gutter:popup-hunk "toggle diffinfo")
+  ("q" nil "exit")
+  )
+
+;; hydra window 操作
+(defhydra hydra-buffer-split nil
+  "hydra-buffer-split"
+  ("s" (lambda ()
+         (interactive)
+         (split-window-vertically)
+         (windmove-down)) "split-horizontally")
+  ("v" (lambda()
+         (interactive)
+         (split-window-horizontally)
+         (windmove-right)) "split-vertically")
+  ("C-k" delete-window "delete")
+  ("w" enlarge-window-horizontally "enrage-horizontally")
+  ("W" shrink-window-horizontally "shrink-horizontally")
+  ("t" enlarge-window "enrage-vertically")
+  ("T" shrink-window "shrink-vertically")
+  ("b" balance-windows "balance")
+  ("C-M-r" delete-other-windows "reset-window")
+  ("h" windmove-left "move-left")
+  ("j" windmove-down "move-down")
+  ("k" windmove-up "move-up")
+  ("l" windmove-right "move-right")
+  ("q" nil "exit" :color blue)
+  )
+
+(bind-key "C-q" 'hydra-buffer-split/body)
+
+;; hydra flycheck 操作
+(defhydra hydra-flycheck nil
+  "hydra-flycheck"
+  ("j" next-error     "next-error")
+  ("k" previous-error "prev-error")
+  ("h" first-error    "first-error")
+  ("l" (condition-case err
+           (while t
+             (next-error))
+         (user-error nil))
+   nil :bind nil)
+  ("q" nil            "exit" :color blue))
+
+(bind-key "C-0" 'hydra-flycheck/body)
+
+
+;; editor-config
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
+(add-to-list 'recentf-exclude "ido.last")
+(add-to-list 'recentf-exclude "smex-items")
+(add-to-list 'recentf-exclude "COMMIT_EDITMSG")
+
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/elsp/*"))
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/elpa/*"))
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/cache/*"))
+
+(bind-key "M-g" 'goto-line)
+
+;; melpa からDLできなかった。苦肉の策
+(use-package smart-jump
+  :ensure t
+  :config
+  (smart-jump-setup-default-registers))
