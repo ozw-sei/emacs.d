@@ -553,3 +553,4 @@
   (smart-jump-setup-default-registers))
 
 (require 'dockerfile-mode)
+(bind-key "C-j" 'company-yasnippet)
