@@ -4,10 +4,10 @@
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
-
 
 (package-initialize)
 
@@ -546,7 +546,6 @@
 (bind-key "M-g" 'goto-line)
 
 ;; melpa からDLできなかった。苦肉の策
-(add-to-list 'load-path "~/.emacs.d/vendors/smart-jump/")
 (use-package smart-jump
   :ensure t
   :config
