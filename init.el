@@ -1,4 +1,4 @@
-;; package configuration
+;;; package configuration
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
@@ -21,7 +21,7 @@
     ;; ido-mode\
     ido-vertical-mode
     ;; smex
-    smex 
+    smex
     ;; cursor position
     saveplace
     ;; git
@@ -32,6 +32,9 @@
     ;; company
     company
 
+    ;; editor-config
+    editorconfig
+    
     ;; yasnippet
     yasnippet
     ;; projectile
@@ -140,9 +143,7 @@
 (set-keyboard-coding-system 'utf-8)
 
 
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status)))
+(use-package magit:ensure t)
 
 (set-face-attribute 'default nil :height 100)
 
@@ -160,7 +161,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -428,10 +429,6 @@
   ispell-extra-args
   '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
 
-
-(when (version<= "26.0.50" emacs-version )
-  (global-display-line-numbers-mode 0)
-
 (use-package hydra)
 
 (use-package git-gutter
@@ -456,8 +453,18 @@
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
   "git hunk"
+
   ("p" git-gutter:previous-hunk "previous")
   ("n" git-gutter:next-hunk "next")
   ("s" git-gutter:stage-hunk "stage")
   ("r" git-gutter:revert-hunk "revert")
-  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
+  ("m" magit-status "status")
+  ("b" magit-blame "blame")
+  ("d" magit-dispatch "dispatch")
+  ("SPC" git-gutter:popup-hunk "toggle diffinfo"))
+
+;; editor-config
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
