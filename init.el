@@ -75,8 +75,18 @@
     ;; jump
     dumb-jump
 
+    ;; dash-board
+    dashboard
     )
   )
+
+;; Or if you use use-package
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 (dolist (package favorite-packages)
   (unless (package-installed-p package)
@@ -143,7 +153,7 @@
 (set-keyboard-coding-system 'utf-8)
 
 
-(use-package magit:ensure t)
+(use-package magit :ensure t)
 
 (set-face-attribute 'default nil :height 100)
 
@@ -159,9 +169,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(git-gutter:ask-p nil)
  '(package-selected-packages
    (quote
-    (editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -412,6 +423,10 @@
 ;; javascript
 (eval-after-load 'js-mode
   '(add-hook 'js-mode-check #'add-node-modules-path))
+
+(with-eval-after-load 'flycheck
+  (advice-add 'flycheck-eslint-config-exists-p :override (lambda() t)))
+
 
 (eval-after-load 'typescript-mode
   '(add-hook 'typescript-mode-check #'add-node-modules-path))
