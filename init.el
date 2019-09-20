@@ -478,6 +478,22 @@
   ("d" magit-dispatch "dispatch")
   ("SPC" git-gutter:popup-hunk "toggle diffinfo"))
 
+;; hydra window 操作
+(defhydra hydra-buffer-split nil
+  "hydra-buffer-split"
+  ("s" split-window-vertically "horizontally")
+  ("v" split-window-horizontally "vertically")
+  ("k" delete-window "delete")
+  ("w" enlarge-window-horizontally "wide")
+  ("n" shrink-window-horizontally "narrow")
+  ("t" enlarge-window "taller")
+  ("s" shrink-window "taller")
+  ("b" balance-windows "balance")
+  ("C-M-r" delete-other-windows "reset-window")
+  ("o" other-window "other-window"))
+
+(bind-key "C-q" 'hydra-buffer-split/body)
+
 ;; editor-config
 (use-package editorconfig
   :ensure t
@@ -493,6 +509,4 @@
              (expand-file-name "~/.emacs.d/elpa/*"))
 (add-to-list 'recentf-exclude
              (expand-file-name "~/.emacs.d/cache/*"))
-
-
 
