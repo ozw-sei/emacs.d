@@ -1,4 +1,4 @@
-;;; package configuration
+;; package configuration
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
@@ -88,6 +88,9 @@
 
     ;; dash-board
     dashboard
+
+    ;; omnisharp
+    omnisharp-mode
     )
   )
 
@@ -144,7 +147,8 @@
 
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 50000000)
+(setq gc-cons-threshold (* gc-cons-threshold 10))
+(setq garbage-collection-messages t) 
 
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
@@ -183,7 +187,7 @@
  '(git-gutter:ask-p nil)
  '(package-selected-packages
    (quote
-    (mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -193,8 +197,7 @@
 
 (require 'avy)
 (global-set-key (kbd "C-]") 'avy-goto-char)
-(global-set-key (kbd "M-g f") 'avy-goto-line)
-
+(global-set-key (kbd "C-l") 'avy-goto-line)
 
 (require 'elixir-mode)
 (require 'alchemist)
@@ -302,7 +305,9 @@
   )
 
 ;; C-x C-c で停止しない
-(global-set-key (kbd "C-x C-c") 'smex)
+(if window-system
+  (progn (bind-key "C-x C-c" 'smex))
+)
 
 ;; I never use C-x C-c
 ;; exit で抜けられます
@@ -512,7 +517,11 @@
   ("q" nil "exit" :color blue)
   )
 
-(bind-key "C-q" 'hydra-buffer-split/body)
+; terminal にはtmuxがあるので使わない
+(if window-system
+  (progn (bind-key "C-q" 'hydra-buffer-split/body))
+  (bind-key "C-q" nil)
+)
 
 ;; hydra flycheck 操作
 (defhydra hydra-flycheck nil
@@ -643,3 +652,37 @@ _h_   _l_   _o_k        _y_ank
   ("q" nil "exit")
   )
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
+
+; csharp
+(require 'omnisharp-mode)
+(add-hook 'csharp-mode-hook 'omnisharp-mode)
+(add-hook 'csharp-mode-hook #'flycheck-mode)
+(add-hook 'csharp-mode-hook #'company-mode)
+(eval-after-load
+  'company
+  '(add-to-list 'company-backends #'company-omnisharp))
+
+
+(defun my-csharp-mode-setup ()
+  (omnisharp-mode)
+  (company-mode)
+  (flycheck-mode)
+
+  (setq indent-tabs-mode nil)
+  (setq c-syntactic-indentation t)
+  (c-set-style "ellemtel")
+  (setq c-basic-offset 4)
+  (setq truncate-lines t)
+  (setq tab-width 4)
+  (setq evil-shift-width 4)
+
+  ;csharp-mode README.md recommends this too
+  ;(electric-pair-mode 1)       ;; Emacs 24
+  ;(electric-pair-local-mode 1) ;; Emacs 25
+
+  (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+  (local-set-key (kbd "C-c C-c") 'recompile))
+
+(add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
+
+(setq omnisharp-server-executable-path "/usr/local/bin/omnisharp")
