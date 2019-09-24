@@ -90,7 +90,7 @@
     dashboard
 
     ;; omnisharp
-    omnisharp-mode
+    omnisharp
     )
   )
 
