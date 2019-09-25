@@ -654,7 +654,7 @@ _h_   _l_   _o_k        _y_ank
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 
 ; csharp
-(require 'omnisharp-mode)
+(require 'omnisharp)
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 (add-hook 'csharp-mode-hook #'flycheck-mode)
 (add-hook 'csharp-mode-hook #'company-mode)
