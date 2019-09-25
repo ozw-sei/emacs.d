@@ -1,4 +1,4 @@
-;;; package configuration
+;; package configuration
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
@@ -23,6 +23,15 @@
     ido-vertical-mode
     ;; smex
     smex
+
+    ;; mwim
+    mwim
+
+    ;; zop-to-char
+    zop-to-char
+
+    ;; hydra
+    hydra
     ;; cursor position
     saveplace
     ;; git
@@ -82,6 +91,10 @@
 
     ;; docker-mode
     dockerfile-mode
+
+    ;; omnisharp
+    omnisharp
+
     )
   )
 
@@ -138,7 +151,8 @@
 
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 50000000)
+(setq gc-cons-threshold (* gc-cons-threshold 10))
+(setq garbage-collection-messages t) 
 
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
@@ -177,7 +191,7 @@
  '(git-gutter:ask-p nil)
  '(package-selected-packages
    (quote
-    (dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -187,8 +201,7 @@
 
 (require 'avy)
 (global-set-key (kbd "C-]") 'avy-goto-char)
-(global-set-key (kbd "M-g f") 'avy-goto-line)
-
+(global-set-key (kbd "C-l") 'avy-goto-line)
 
 (require 'elixir-mode)
 (require 'alchemist)
@@ -296,7 +309,9 @@
   )
 
 ;; C-x C-c で停止しない
-(global-set-key (kbd "C-x C-c") 'smex)
+(if window-system
+  (progn (bind-key "C-x C-c" 'smex))
+)
 
 ;; I never use C-x C-c
 ;; exit で抜けられます
@@ -307,10 +322,6 @@
 
 
 (global-set-key (kbd "C-t") 'other-window)
-
-(global-set-key (kbd "C-M-n") 'switch-to-next-buffer)
-(global-set-key (kbd "C-M-p") 'switch-to-prev-buffer)
-
 
 (global-set-key [f12] 'eval-buffer)
 
@@ -510,7 +521,11 @@
   ("q" nil "exit" :color blue)
   )
 
-(bind-key "C-q" 'hydra-buffer-split/body)
+; terminal にはtmuxがあるので使わない
+(if window-system
+  (progn (bind-key "C-q" 'hydra-buffer-split/body))
+  (bind-key "C-q" nil)
+)
 
 ;; hydra flycheck 操作
 (defhydra hydra-flycheck nil
@@ -523,9 +538,11 @@
              (next-error))
          (user-error nil))
    nil :bind nil)
-  ("q" nil            "exit" :color blue))
+  ("gg" flycheck-first-error "First")
+  ("G" (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+  ("q" nil "exit" :color blue))
 
-(bind-key "C-0" 'hydra-flycheck/body)
+(bind-key "C-'" 'hydra-flycheck/body)
 
 
 ;; editor-config
@@ -552,5 +569,127 @@
   :config
   (smart-jump-setup-default-registers))
 
+
 (require 'dockerfile-mode)
 (bind-key "C-j" 'company-yasnippet)
+
+(bind-key "M-z" 'zop-up-to-char)
+
+(global-set-key (kbd "C-a") 'mwim-beginning-of-code-or-line)
+(global-set-key (kbd "C-e") 'mwim-end-of-code-or-line)
+
+(defhydra hydra-dired (:hint nil :color pink)
+  "
+_+_ mkdir          _v_iew           _m_ark             _(_ details        _i_nsert-subdir    wdired
+_C_opy             _O_ view other   _U_nmark all       _)_ omit-mode      _$_ hide-subdir    C-x C-q : edit
+_D_elete           _o_pen other     _u_nmark           _l_ redisplay      _w_ kill-subdir    C-c C-c : commit
+_R_ename           _M_ chmod        _t_oggle           _g_ revert buf     _e_ ediff          C-c ESC : abort
+_Y_ rel symlink    _G_ chgrp        _E_xtension mark   _s_ort             _=_ pdiff
+_S_ymlink          ^ ^              _F_ind marked      _._ toggle hydra   \\ flyspell
+_r_sync            ^ ^              ^ ^                ^ ^                _?_ summary
+_z_ compress-file  _A_ find regexp
+_Z_ compress       _Q_ repl regexp
+
+T - tag prefix
+"
+  ("\\" dired-do-ispell)
+  ("(" dired-hide-details-mode)
+  (")" dired-omit-mode)
+  ("+" dired-create-directory)
+  ("=" diredp-ediff)         ;; smart diff
+  ("?" dired-summary)
+  ("$" diredp-hide-subdir-nomove)
+  ("A" dired-do-find-regexp)
+  ("C" dired-do-copy)        ;; Copy all marked files
+  ("D" dired-do-delete)
+  ("E" dired-mark-extension)
+  ("e" dired-ediff-files)
+  ("F" dired-do-find-marked-files)
+  ("G" dired-do-chgrp)
+  ("g" revert-buffer)        ;; read all directories again (refresh)
+  ("i" dired-maybe-insert-subdir)
+  ("l" dired-do-redisplay)   ;; relist the marked or singel directory
+  ("M" dired-do-chmod)
+  ("m" dired-mark)
+  ("O" dired-display-file)
+  ("o" dired-find-file-other-window)
+  ("Q" dired-do-find-regexp-and-replace)
+  ("R" dired-do-rename)
+  ("r" dired-do-rsynch)
+  ("S" dired-do-symlink)
+  ("s" dired-sort-toggle-or-edit)
+  ("t" dired-toggle-marks)
+  ("U" dired-unmark-all-marks)
+  ("u" dired-unmark)
+  ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
+  ("w" dired-kill-subdir)
+  ("Y" dired-do-relsymlink)
+  ("z" diredp-compress-this-file)
+  ("Z" dired-do-compress)
+  ("q" nil)
+  ("." nil :color blue))
+
+(define-key dired-mode-map "." 'hydra-dired/body)
+
+
+(defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
+                           :color pink
+                           :post (deactivate-mark))
+  "
+  ^_k_^     _d_elete    _s_tring  
+_h_   _l_   _o_k        _y_ank    
+  ^_j_^     _n_ew-copy  _r_eset   
+^^^^        _e_xchange  _u_ndo    
+^^^^        ^ ^         _p_aste
+"
+  ("h" backward-char nil)
+  ("l" forward-char nil)
+  ("k" previous-line nil)
+  ("j" next-line nil)
+  ("e" exchange-point-and-mark nil)
+  ("n" copy-rectangle-as-kill nil)
+  ("d" delete-rectangle nil)
+  ("r" (if (region-active-p)
+           (deactivate-mark)
+         (rectangle-mark-mode 1)) nil)
+  ("y" yank-rectangle nil)
+  ("u" undo nil)
+  ("s" string-rectangle nil)
+  ("p" kill-rectangle nil)
+  ("q" nil "exit")
+  )
+(global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
+
+; csharp
+(require 'omnisharp-mode)
+(add-hook 'csharp-mode-hook 'omnisharp-mode)
+(add-hook 'csharp-mode-hook #'flycheck-mode)
+(add-hook 'csharp-mode-hook #'company-mode)
+(eval-after-load
+  'company
+  '(add-to-list 'company-backends #'company-omnisharp))
+
+
+(defun my-csharp-mode-setup ()
+  (omnisharp-mode)
+  (company-mode)
+  (flycheck-mode)
+
+  (setq indent-tabs-mode nil)
+  (setq c-syntactic-indentation t)
+  (c-set-style "ellemtel")
+  (setq c-basic-offset 4)
+  (setq truncate-lines t)
+  (setq tab-width 4)
+  (setq evil-shift-width 4)
+
+  ;csharp-mode README.md recommends this too
+  ;(electric-pair-mode 1)       ;; Emacs 24
+  ;(electric-pair-local-mode 1) ;; Emacs 25
+
+  (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+  (local-set-key (kbd "C-c C-c") 'recompile))
+
+(add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
+
+(setq omnisharp-server-executable-path "/usr/local/bin/omnisharp")
