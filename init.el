@@ -50,8 +50,8 @@
     yasnippet-snippets
     ;; projectile
     projectile
- 
-   ;; ido-ubiquitous
+    
+    ;; ido-ubiquitous
     ido-ubiquitous
 
     ;; avy / ace-jump
@@ -127,18 +127,16 @@
 (define-key company-active-map (kbd "C-f") 'company-complete-selection) ;; C-fで候補を設定
 (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
 
-(require 'eglot)
-
-;; eglot を ON にする mode を指定
-(add-hook 'ruby-mode-hook 'eglot-ensure)
-(add-hook 'js-mode-hook 'eglot-ensure)
-(add-hook 'typescript-mode-hook 'eglot-ensure)
+(use-package eglot
+  :ensure t
+  :bind ("M-r" . 'xref-find-references)
+  :hook ((c-mode c++-mode ruby-mode js-mode typescript-mode) . eglot-ensure)
+  )
 
 (require 'saveplace)
 (save-place-mode 1)
 
-;; git
-(global-git-gutter-mode +1)
+
 
 (defun turn-on-flycheck-mode ()
   (flycheck-mode 1))
@@ -199,9 +197,11 @@
  ;; If there is more than one, they won't work right.
  )
 
-(require 'avy)
-(global-set-key (kbd "C-]") 'avy-goto-char)
-(global-set-key (kbd "C-l") 'avy-goto-line)
+(use-package avy
+  :bind
+  ("C-]" . avy-goto-char)
+  ("C-l" . avy-goto-line)
+)
 
 (require 'elixir-mode)
 (require 'alchemist)
@@ -213,34 +213,42 @@
 (load-theme 'solarized-light t)
 
 ;; migemo
-(require 'migemo)
-(setq migemo-command "/usr/local/bin/cmigemo")
-(setq migemo-options '("-q" "--emacs"))
-(setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
-(setq migemo-user-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-(setq migemo-regex-dictionary nil)
-(load-library "migemo")
-(migemo-init)
+(use-package migemo
+  :if (executable-find "cmigemo")
+  :ensure t
+  :init
+  (load-library "migemo")
+    
+  :config
+  (setq migemo-command "/usr/local/bin/cmigemo")
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+  (setq migemo-user-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (setq migemo-regex-dictionary nil)
+  (migemo-init)
+)
 
 ;; yasnippet
-(require 'yasnippet)
-(yas-global-mode 1)
-(yas-reload-all)
-(add-hook 'prog-mode-hook #'yas-minor-mode)
+(use-package yasnippet
+  :ensure t
+  :commands yas-reload-all
+  :delight yas-minor-mode
+  :hook ((prog-mode). yas-minor-mode)
+  :config (yas-reload-all)
+  :ensure t
+  :bind  
+  ("C-j" . company-yasnippet)
+)
 
-;; git-gutter
-(require 'git-gutter)
-(git-gutter-mode 1)
 
 ;; point-undo
 (require 'point-undo)
-(global-set-key (kbd "C--") 'point-undo)
-(global-set-key (kbd "C-=") 'point-redo)
+(bind-key "C--" 'point-undo)
+(bind-key "C-=" 'point-redo)
 
 
 ;; common-setting
-
 ;;; 右から左に読む言語に対応させないことで描画高速化
 (setq-default bidi-display-reordering nil)
 
@@ -329,10 +337,7 @@
 ;; 最近のファイル500個を保存する
 (setq recentf-max-saved-items 500)
 
-;; 最近使ったファイルに加えないファイルを
-;; 正規表現で指定する
-(setq recentf-exclude
-      '("/TAGS$" "/var/tmp/"))
+
 ;; 
 (global-auto-revert-mode 1)
 
@@ -350,7 +355,6 @@
    ("C-x C-d" . ido-dired)
    ("C-x b" . ido-switch-buffer)
    ("C-x C-b" . ido-switch-buffer)
- ;("M-x" . smex)
    )
   :init
   (recentf-mode 1)
@@ -367,11 +371,9 @@
   (setq ido-enable-flex-matching t)
   (setq ido-save-directory-list-file "~/.emacs.d/cache/ido.last")
   (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
   (setq ido-max-window-height 0.75)
-  (when (fboundp 'skk-mode)
-    (fset 'ido-select-text 'skk-mode))
-  )
+)
 
 
 (use-package smex
@@ -384,37 +386,25 @@
   )
 
 
-;; ido-vertical
-;;; このときidoが使うwindowの高さは大きくした方がいい
-(setq ido-max-window-height 0.75)
-;;; あいまいマッチは入れておこう
-(setq ido-enable-flex-matching t)
-(ido-mode 1)
-(ido-vertical-mode 1)
-;;; [2015-07-07 Tue]new: C-n/C-pで選択
-(setq ido-vertical-define-keys 'C-n-and-C-p-only)
-;;; 他の選択肢: ↑と↓でも選択できるようにする
-(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
-;;; ←と→で履歴も辿れるようにする
-(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
 
 ;;----------------------
 ;; undohistの設定
-(when (require 'undohist nil t)
+(use-package undohist
+  :config
   (undohist-initialize))
-
 
 ;; undo-tree
 ;; undo-treeモードの設定
-(require 'undo-tree)
-(global-set-key (kbd "C-c u") 'undo-tree-visualize)
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode t)
+  :bind
+  ("C-c u" . 'undo-tree-visualize)
+  ("M-/" . 'undo-tree-redo)
+)
 
 (when (require 'undo-tree nil t)
   (global-undo-tree-mode))
-
-(global-undo-tree-mode t)
-(global-set-key (kbd "M-/") 'undo-tree-redo)
-
 
 ;; projectile
 (require 'projectile)
@@ -424,9 +414,7 @@
 
 (setq projectile-project-search-path '("~/sources/repos/"))
 
-;; eglot
-(add-hook 'javascript-mode-hook 'eglot-ensure)
-(define-key eglot-mode-map (kbd "M-r") 'xref-find-references)
+
 
 ;; flycheck
 (require 'flycheck)
@@ -463,6 +451,8 @@
 (use-package hydra)
 
 (use-package git-gutter
+  :ensure t
+  :config (global-git-gutter-mode +1)  
   :custom
   ;; stage, revertで確認を出さないようにする
   ;; (undoでもどせるからいいや、という気持ち)
@@ -544,23 +534,25 @@
 
 (bind-key "C-'" 'hydra-flycheck/body)
 
-
 ;; editor-config
 (use-package editorconfig
   :ensure t
   :config
   (editorconfig-mode 1))
 
-(add-to-list 'recentf-exclude "ido.last")
-(add-to-list 'recentf-exclude "smex-items")
-(add-to-list 'recentf-exclude "COMMIT_EDITMSG")
-
-(add-to-list 'recentf-exclude
-             (expand-file-name "~/.emacs.d/elsp/*"))
-(add-to-list 'recentf-exclude
-             (expand-file-name "~/.emacs.d/elpa/*"))
-(add-to-list 'recentf-exclude
-             (expand-file-name "~/.emacs.d/cache/*"))
+;; 最近使ったファイルに加えないファイルを
+;; 正規表現で指定する
+(setq recentf-exclude
+      '("/TAGS$"
+        "/var/tmp/"
+        "ido.last"
+        "smex-items"
+        "COMMIT_EDITMSG"
+        (expand-file-name "~/.emacs.d/elsp/*")
+        (expand-file-name "~/.emacs.d/elpa/*")
+        (expand-file-name "~/.emacs.d/cache/*")
+        )
+      )
 
 (bind-key "M-g" 'goto-line)
 
@@ -569,14 +561,15 @@
   :config
   (smart-jump-setup-default-registers))
 
-
-(require 'dockerfile-mode)
-(bind-key "C-j" 'company-yasnippet)
+(use-package dockerfile-mode
+  :ensure t
+  :mode ("Dockerfile\\'" . dockerfile-mode)
+)
 
 (bind-key "M-z" 'zop-up-to-char)
 
-(global-set-key (kbd "C-a") 'mwim-beginning-of-code-or-line)
-(global-set-key (kbd "C-e") 'mwim-end-of-code-or-line)
+(bind-key "C-a" 'mwim-beginning-of-code-or-line)
+(bind-key "C-e" 'mwim-end-of-code-or-line)
 
 (defhydra hydra-dired (:hint nil :color pink)
   "
