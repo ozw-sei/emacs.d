@@ -581,6 +581,19 @@
 ;; 正規表現で指定する
 (add-to-list 'recentf-exclude "COMMIT_EDITMSG")
 
+
+
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/elsp/*"))
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/elpa/*"))
+
+(add-to-list 'recentf-exclude
+             (expand-file-name "~/.emacs.d/cache/*"))
+
+(add-to-list 'recentf-exclude
+             (expand-file-name "/usr/local/Cellar/*"))
+
 (setq recentf-max-saved-items 2000)
 
 (bind-key "M-g" 'goto-line)
@@ -710,7 +723,7 @@ _h_   _l_   _o_k        _y_ank
   ;(electric-pair-mode 1)       ;; Emacs 24
   ;(electric-pair-local-mode 1) ;; Emacs 25
 
-  (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+  (local-set-key (kbd "C-c r r") 'mnisharp-run-code-action-refactoring)
   (local-set-key (kbd "C-c C-c") 'recompile))
 
 (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
