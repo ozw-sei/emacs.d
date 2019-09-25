@@ -186,10 +186,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(git-gutter:ask-p nil)
+ '(git-gutter:ask-p nil t)
  '(package-selected-packages
    (quote
-    (omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -411,6 +411,7 @@
 (projectile-mode +1)
 
 (global-set-key (kbd "C-c C-f") 'projectile-find-file)
+(bind-key "M-p" 'projectile-switch-project)
 
 (setq projectile-project-search-path '("~/sources/repos/"))
 
@@ -547,12 +548,17 @@
         "/var/tmp/"
         "ido.last"
         "smex-items"
-        "COMMIT_EDITMSG"
-        (expand-file-name "~/.emacs.d/elsp/*")
-        (expand-file-name "~/.emacs.d/elpa/*")
-        (expand-file-name "~/.emacs.d/cache/*")
-        )
+        "COMMIT_EDITMSG"        
       )
+)
+
+(add-to-list 'recentf-exclude "ido.last")
+;; 最近使ったファイルに加えないファイルを
+(add-to-list 'recentf-exclude "smex-items")
+;; 正規表現で指定する
+(add-to-list 'recentf-exclude "COMMIT_EDITMSG")
+
+(setq recentf-max-saved-items 2000)
 
 (bind-key "M-g" 'goto-line)
 
@@ -575,7 +581,7 @@
   "
 _+_ mkdir          _v_iew           _m_ark             _(_ details        _i_nsert-subdir    wdired
 _C_opy             _O_ view other   _U_nmark all       _)_ omit-mode      _$_ hide-subdir    C-x C-q : edit
-_D_elete           _o_pen other     _u_nmark           _l_ redisplay      _w_ kill-subdir    C-c C-c : commit
+_D_elete           open other     _u_nmark           _l_ redisplay      _w_ kill-subdir    C-c C-c : commit
 _R_ename           _M_ chmod        _t_oggle           _g_ revert buf     _e_ ediff          C-c ESC : abort
 _Y_ rel symlink    _G_ chgrp        _E_xtension mark   _s_ort             _=_ pdiff
 _S_ymlink          ^ ^              _F_ind marked      _._ toggle hydra   \\ flyspell
