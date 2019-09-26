@@ -11,8 +11,11 @@
 
 (package-initialize)
 
-;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-;(package-refresh-contents)
+;;; ログはエラーが出た時のみ
+(setq display-warning-minimum-level :error)
+
+;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3");
+(package-refresh-contents)
 
 
 (defvar favorite-packages
@@ -83,6 +86,10 @@
     ;; egot
     eglot
 
+    ;; flycheck
+    flycheck
+    flycheck-elixir
+
     ;; flyspell
     flyspell
 
@@ -101,6 +108,11 @@
     )
   )
 
+
+(dolist (package favorite-packages)
+  (unless (package-installed-p package)
+    (package-install package)))
+
 ;; Or if you use use-package
 (use-package dashboard
   :ensure t
@@ -109,9 +121,6 @@
 
 (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
-(dolist (package favorite-packages)
-  (unless (package-installed-p package)
-    (package-install package)))
 
 (require 'company)
 (global-company-mode) ; 全バッファで有効にする
@@ -136,10 +145,10 @@
   :hook ((c-mode c++-mode ruby-mode js-mode typescript-mode) . eglot-ensure)
   )
 
-(require 'saveplace)
-(save-place-mode 1)
-
-
+(use-package saveplace
+  :ensure t
+  :config
+  (save-place-mode 1))
 
 (defun turn-on-flycheck-mode ()
   (flycheck-mode 1))
@@ -179,9 +188,12 @@
 
 (setq ido-enable-flex-matching t)
 
-(require 'powerline)
+(use-package powerline
+  :ensure t
+  :config (powerline-default-theme)
+  )
 
-(powerline-default-theme)
+
 
 
 (custom-set-variables
@@ -206,9 +218,14 @@
   ("C-l" . avy-goto-line)
 )
 
-(require 'elixir-mode)
-(require 'alchemist)
-(require 'flycheck-elixir)
+(use-package elixir-mode
+  :ensure t)
+
+(use-package alchemist
+  :ensure t)
+
+(use-package flycheck-elixir
+  :ensure t)
 
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
 
@@ -411,13 +428,18 @@
   (global-undo-tree-mode))
 
 ;; projectile
-(require 'projectile)
-(projectile-mode +1)
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1)
+  (setq projectile-project-search-path '("~/sources/repos/"))
+  :bind (
+         ("C-c C-f" . projectile-find-file)
+         ("M-p" . projectile-switch-project)
+         )
+  )
 
-(global-set-key (kbd "C-c C-f") 'projectile-find-file)
-(bind-key "M-p" 'projectile-switch-project)
 
-(setq projectile-project-search-path '("~/sources/repos/"))
 
 (defhydra hydra-projectile (:color teal
 			    :columns 4)
@@ -441,7 +463,8 @@
 (bind-key "C-c C-p" 'hydra-projectile/body)
 
 ;; flycheck
-(require 'flycheck)
+(use-package flycheck
+  :ensure t)
 (setq flycheck-check-syntax-automatically
       '(save idle-change mode-enabled))
 
@@ -697,7 +720,9 @@ _h_   _l_   _o_k        _y_ank
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 
 ; csharp
-(require 'omnisharp)
+(use-package omnisharp
+  :ensure t
+  )
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 (add-hook 'csharp-mode-hook #'flycheck-mode)
 (add-hook 'csharp-mode-hook #'company-mode)
