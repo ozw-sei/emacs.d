@@ -105,6 +105,11 @@
     ;; omnisharp
     omnisharp
 
+    ;; glsl-mode
+    glsl-mode
+
+    ;; web-mode
+    web-mode
     )
   )
 
@@ -207,10 +212,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(git-gutter:ask-p nil t)
+ '(git-gutter:ask-p nil)
  '(package-selected-packages
    (quote
-    (yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -501,8 +506,8 @@
   ispell-extra-args
   '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
 
-(use-package hydra)
-
+(use-package hydra
+  :ensure t)
 
 (use-package git-gutter
   :ensure t
@@ -720,16 +725,13 @@ T - tag prefix
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 
 ; csharp
-(use-package omnisharp
-  :ensure t
-  )
+(use-package omnisharp)
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 (add-hook 'csharp-mode-hook #'flycheck-mode)
 (add-hook 'csharp-mode-hook #'company-mode)
 (eval-after-load
   'company
   '(add-to-list 'company-backends #'company-omnisharp))
-
 
 (defun my-csharp-mode-setup ()
   (omnisharp-mode)
@@ -754,3 +756,14 @@ T - tag prefix
 (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
 
 (setq omnisharp-server-executable-path "/usr/local/bin/omnisharp")
+
+(use-package glsl-mode
+  :ensure t
+  :mode (("\\.effect\\'" . glsl-mode)
+         ("\\.fsh\\'" . glsl-mode)
+         ("\\.vsh\\'" . glsl-mode)
+         ("\\.shader\\'" . glsl-mode)))
+
+(use-package web-mode :ensure t)
+
+(use-package shader-mode :ensure t)
