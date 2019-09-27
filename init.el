@@ -192,7 +192,7 @@
  '(git-gutter:ask-p nil t)
  '(package-selected-packages
    (quote
-    (back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -355,13 +355,13 @@
   :bind
   (("C-x C-r" . recentf-ido-find-file)
    ("C-x C-f" . ido-find-file)
-   ("C-x C-d" . ido-dired)
+   ("C-c C-d" . ido-dired)
    ("C-x b" . ido-switch-buffer)
    ("C-x C-b" . ido-switch-buffer)
    )
   :init
   (recentf-mode 1)
-  
+
   (defun recentf-ido-find-file ()
   "Find a recent file using ido."
   (interactive)
@@ -474,10 +474,11 @@
 
 (use-package hydra)
 
+
 (use-package git-gutter
   :ensure t
-  :config (global-git-gutter-mode +1)  
   :custom
+  (global-git-gutter-mode 1)
   ;; stage, revertで確認を出さないようにする
   ;; (undoでもどせるからいいや、という気持ち)
   (git-gutter:ask-p nil)
@@ -587,7 +588,6 @@
              (expand-file-name "~/.emacs.d/elsp/*"))
 (add-to-list 'recentf-exclude
              (expand-file-name "~/.emacs.d/elpa/*"))
-
 (add-to-list 'recentf-exclude
              (expand-file-name "~/.emacs.d/cache/*"))
 
