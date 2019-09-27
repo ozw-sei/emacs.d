@@ -319,7 +319,7 @@
 (savehist-mode 1)
 
 ;;; シェルに合わせるため、C-hは後退に割り当てる
-(global-set-key (kbd "C-h") 'delete-backward-char)
+(bind-key* "C-h" 'delete-backward-char)
 
 ;;; モードラインに時刻を表示する
 (display-time)
@@ -350,7 +350,8 @@
 ;; C-x C-c で停止しない
 (if window-system
   (progn (bind-key "C-x C-c" 'smex))
-)
+  )
+
 
 ;; I never use C-x C-c
 ;; exit で抜けられます
@@ -359,28 +360,24 @@
 ;; スクリーンの最大化
 (set-frame-parameter nil 'fullscreen 'maximized)
 
+(bind-key* "C-t" 'other-window)
 
-(global-set-key (kbd "C-t") 'other-window)
-
-(global-set-key [f12] 'eval-buffer)
+(bind-key* "[f12]" 'eval-buffer)
 
 
 ;; 最近のファイル500個を保存する
 (setq recentf-max-saved-items 500)
 
-
-;; 
 (global-auto-revert-mode 1)
-
 
 ;; 大文字小文字を区別しない
 (setq completion-ignore-case t)
 
-(global-set-key (kbd "M-o") 'occur)
+(bind-key "M-o" 'occur)
 
 ;;; ido smex
 (use-package ido
-  :bind
+  :bind*
   (("C-x C-r" . recentf-ido-find-file)
    ("C-x C-f" . ido-find-file)
    ("C-c C-d" . ido-dired)
@@ -391,11 +388,11 @@
   (recentf-mode 1)
 
   (defun recentf-ido-find-file ()
-  "Find a recent file using ido."
-  (interactive)
-  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
-    (when file
-      (find-file file))))
+    "Find a recent file using ido."
+    (interactive)
+    (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+      (when file
+        (find-file file))))
 
   :config
   (ido-mode 1)
@@ -432,23 +429,17 @@
   (global-undo-tree-mode t)
   :bind
   ("C-c u" . 'undo-tree-visualize)
-  ("M-/" . 'undo-tree-redo)
-)
-
-(when (require 'undo-tree nil t)
-  (global-undo-tree-mode))
+  ("M-/" . 'undo-tree-redo))
 
 ;; projectile
 (use-package projectile
   :ensure t
+  :init
+  (setq projectile-project-search-path '("~/sources/repos/"))  
   :config
   (projectile-mode +1)
-  (setq projectile-project-search-path '("~/sources/repos/"))
-  :bind (
-         ("C-c C-f" . projectile-find-file)
-         ("M-p" . projectile-switch-project)
-         )
-  )
+  :bind* (("C-c C-f" . projectile-find-file)
+         ("M-p" . projectile-switch-project)))
 
 
 
@@ -572,8 +563,8 @@
 
 ; terminal にはtmuxがあるので使わない
 (if window-system
-  (progn (bind-key "C-q" 'hydra-buffer-split/body))
-  (bind-key "C-q" nil)
+  (progn (bind-key* "C-q" 'hydra-buffer-split/body))
+  (bind-key* "C-q" nil)
 )
 
 ;; hydra flycheck 操作
@@ -722,7 +713,8 @@ T - tag prefix
   ("p" kill-rectangle "kill-rectangle")
   ("q" nil "exit")
   )
-(global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
+
+(bind-key "C-x SPC" 'hydra-rectangle/body)
 
 ; csharp
 (use-package omnisharp)
