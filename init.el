@@ -215,7 +215,7 @@
  '(git-gutter:ask-p nil)
  '(package-selected-packages
    (quote
-    (shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (pip-requirements bundler solidity-mode smartparens smartparens-config smart-parens projectile-rails inf-ruby rspec-mode ruby-hash-syntax ibuffer-projectile shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -352,7 +352,6 @@
   (progn (bind-key "C-x C-c" 'smex))
   )
 
-
 ;; I never use C-x C-c
 ;; exit で抜けられます
 (defalias 'exit 'save-buffers-kill-emacs)
@@ -428,8 +427,7 @@
   :config
   (global-undo-tree-mode t)
   :bind
-  ("C-c u" . 'undo-tree-visualize)
-  ("M-/" . 'undo-tree-redo))
+  ("C-c u" . 'undo-tree-visualize))
 
 ;; projectile
 (use-package projectile
@@ -759,3 +757,44 @@ T - tag prefix
 (use-package web-mode :ensure t)
 
 (use-package shader-mode :ensure t)
+
+ (setq mac-command-modifier 'ctrl)
+ 
+
+(use-package ruby-hash-syntax :ensure t)
+
+;(add-auto-mode 'ruby-mode
+               ;"\\.rxml\\'"
+;               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
+               ;"\\.gemspec\\'" "Kirkfile\\'")
+;(add-auto-mode 'conf-mode "Gemfile\\.lock\\'")
+
+(setq-default
+ ruby-use-encoding-map nil
+ ruby-insert-encoding-magic-comment nil)
+
+(add-hook 'ruby-mode-hook 'subword-mode)
+
+;(after-load 'page-break-lines
+;  (push 'ruby-mode page-break-lines-modes))
+
+(use-package rspec-mode
+  :ensure t)
+
+(use-package inf-ruby
+  :ensure t)
+
+(use-package bundler
+  :ensure t)
+
+(use-package projectile-rails
+  :ensure t)
+
+(use-package smartparens
+  :ensure t)
+
+(use-package pip-requirements
+  :ensure t)
+
+(use-package solidity-mode
+  :ensure t)
