@@ -14,7 +14,7 @@
 ;;; ログはエラーが出た時のみ
 (setq display-warning-minimum-level :error)
 
-;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3");
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3");
 (package-refresh-contents)
 
 
@@ -59,6 +59,12 @@
     
     ;; ido-ubiquitous
     ido-ubiquitous
+
+    ;; yaml-mode
+    yaml-mode
+    
+    ;; direnv
+    direnv
 
     ;; avy / ace-jump
     avy
@@ -299,7 +305,7 @@
 (setq uniquify-ignore-buffers-re "[^*]+")
 
 ;; font-size
-(set-face-attribute 'default nil :height 150)
+(set-face-attribute 'default nil :height 120)
 
 ;;; ファイルを開いた位置を保存する
 (require 'saveplace)
@@ -758,7 +764,7 @@ T - tag prefix
 
 (use-package shader-mode :ensure t)
 
- (setq mac-command-modifier 'ctrl)
+(setq mac-command-modifier 'ctrl)
  
 
 (use-package ruby-hash-syntax :ensure t)
@@ -797,4 +803,7 @@ T - tag prefix
   :ensure t)
 
 (use-package solidity-mode
+  :ensure t)
+
+(use-package yaml-mode
   :ensure t)
