@@ -14,7 +14,7 @@
 ;;; ログはエラーが出た時のみ
 (setq display-warning-minimum-level :error)
 
-;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3");
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3");
 (package-refresh-contents)
 
 
@@ -59,6 +59,12 @@
     
     ;; ido-ubiquitous
     ido-ubiquitous
+
+    ;; yaml-mode
+    yaml-mode
+    
+    ;; direnv
+    direnv
 
     ;; avy / ace-jump
     avy
@@ -299,7 +305,7 @@
 (setq uniquify-ignore-buffers-re "[^*]+")
 
 ;; font-size
-(set-face-attribute 'default nil :height 150)
+(set-face-attribute 'default nil :height 120)
 
 ;;; ファイルを開いた位置を保存する
 (require 'saveplace)
@@ -757,15 +763,14 @@ T - tag prefix
 (use-package shader-mode :ensure t)
 
 ;(setq mac-command-modifier 'ctrl)
- 
 
 (use-package ruby-hash-syntax :ensure t)
 
-;(add-auto-mode 'ruby-mode
-               ;"\\.rxml\\'"
-;               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
-               ;"\\.gemspec\\'" "Kirkfile\\'")
-;(add-auto-mode 'conf-mode "Gemfile\\.lock\\'")
+(add-auto-mode 'ruby-mode
+               "\\.rxml\\'"
+               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
+              "\\.gemspec\\'" "Kirkfile\\'")
+(add-auto-mode 'conf-mode "Gemfile\\.lock\\'")
 
 (setq-default
  ruby-use-encoding-map nil
@@ -773,8 +778,8 @@ T - tag prefix
 
 (add-hook 'ruby-mode-hook 'subword-mode)
 
-;(after-load 'page-break-lines
-;  (push 'ruby-mode page-break-lines-modes))
+(after-load 'page-break-lines
+  (push 'ruby-mode page-break-lines-modes))
 
 (use-package rspec-mode
   :ensure t)
@@ -797,8 +802,11 @@ T - tag prefix
 (use-package solidity-mode
   :ensure t)
 
+
 (use-package ag
   :config
   (setq ag-executable "/usr/local/bin/ag")
   (setq ag-arguments (list "--path-to-ignore" "/etc/.ignore" "--skip-vcs-ignores"))
+
+(use-package yaml-mode
   :ensure t)
