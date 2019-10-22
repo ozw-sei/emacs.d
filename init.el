@@ -215,7 +215,7 @@
  '(git-gutter:ask-p nil)
  '(package-selected-packages
    (quote
-    (pip-requirements bundler solidity-mode smartparens smartparens-config smart-parens projectile-rails inf-ruby rspec-mode ruby-hash-syntax ibuffer-projectile shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (highlight-symbol exec-path-from-shell pip-requirements bundler solidity-mode smartparens smartparens-config smart-parens projectile-rails inf-ruby rspec-mode ruby-hash-syntax ibuffer-projectile shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -605,8 +605,6 @@
 ;; 正規表現で指定する
 (add-to-list 'recentf-exclude "COMMIT_EDITMSG")
 
-
-
 (add-to-list 'recentf-exclude
              (expand-file-name "~/.emacs.d/elsp/*"))
 (add-to-list 'recentf-exclude
@@ -758,7 +756,7 @@ T - tag prefix
 
 (use-package shader-mode :ensure t)
 
- (setq mac-command-modifier 'ctrl)
+;(setq mac-command-modifier 'ctrl)
  
 
 (use-package ruby-hash-syntax :ensure t)
@@ -797,4 +795,10 @@ T - tag prefix
   :ensure t)
 
 (use-package solidity-mode
+  :ensure t)
+
+(use-package ag
+  :config
+  (setq ag-executable "/usr/local/bin/ag")
+  (setq ag-arguments (list "--path-to-ignore" "/etc/.ignore" "--skip-vcs-ignores"))
   :ensure t)
