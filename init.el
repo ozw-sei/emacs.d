@@ -302,7 +302,6 @@
 (require 'uniquify)
 ;; filename<dir> 形式のバッファ名にする
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-(setq uniquify-ignore-buffers-re "[^*]+")
 
 ;; font-size
 (set-face-attribute 'default nil :height 120)
@@ -366,9 +365,6 @@
 (set-frame-parameter nil 'fullscreen 'maximized)
 
 (bind-key* "C-t" 'other-window)
-
-(bind-key* "[f12]" 'eval-buffer)
-
 
 ;; 最近のファイル500個を保存する
 (setq recentf-max-saved-items 500)
@@ -762,15 +758,7 @@ T - tag prefix
 
 (use-package shader-mode :ensure t)
 
-;(setq mac-command-modifier 'ctrl)
-
 (use-package ruby-hash-syntax :ensure t)
-
-(add-auto-mode 'ruby-mode
-               "\\.rxml\\'"
-               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
-              "\\.gemspec\\'" "Kirkfile\\'")
-(add-auto-mode 'conf-mode "Gemfile\\.lock\\'")
 
 (setq-default
  ruby-use-encoding-map nil
@@ -778,8 +766,6 @@ T - tag prefix
 
 (add-hook 'ruby-mode-hook 'subword-mode)
 
-(after-load 'page-break-lines
-  (push 'ruby-mode page-break-lines-modes))
 
 (use-package rspec-mode
   :ensure t)
@@ -806,7 +792,10 @@ T - tag prefix
 (use-package ag
   :config
   (setq ag-executable "/usr/local/bin/ag")
-  (setq ag-arguments (list "--path-to-ignore" "/etc/.ignore" "--skip-vcs-ignores"))
+  (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores"))
 
 (use-package yaml-mode
   :ensure t)
+
+(global-set-key (kbd "[") nil)
+(global-unset-key (kbd "["))
