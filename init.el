@@ -659,7 +659,10 @@
         "/var/tmp/"
         "ido.last"
         "smex-items"
-        "COMMIT_EDITMSG"        
+        "COMMIT_EDITMSG"
+        "straights"
+        "persp-confs"
+        "*.sqlite"
       )
 )
 
