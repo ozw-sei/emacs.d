@@ -660,7 +660,7 @@
         "ido.last"
         "smex-items"
         "COMMIT_EDITMSG"
-        "straight"
+        "./straight/"
         "persp-confs"
         "*.sqlite"
       )
