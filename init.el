@@ -1,10 +1,21 @@
-;; package configuration
-(require 'package)
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+;; straight.el setting by myself
+(let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
+      (bootstrap-version 3))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; use-package
+(straight-use-package 'use-package)
+
+;; use-packageをstraight.elにフォールバックする
+(setq straight-use-package-by-default t)
 
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
@@ -33,6 +44,9 @@
     ;; mwim
     mwim
 
+    ;; window
+    persp-mode
+
     ;; zop-to-char
     zop-to-char
 
@@ -47,6 +61,9 @@
     powerline
     ;; company
     company
+
+    ;; path
+    exec-path-from-shell
 
     ;; editor-config
     editorconfig
@@ -76,9 +93,6 @@
     ;; go
     go-mode
     company-go
-
-    ;; theme
-    solarized-theme
 
     ;; migemo
     migemo
@@ -114,11 +128,16 @@
     ;; glsl-mode
     glsl-mode
 
+    smartparens
+
     ;; web-mode
     web-mode
     )
   )
 
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 (dolist (package favorite-packages)
   (unless (package-installed-p package)
@@ -137,6 +156,11 @@
 (defvar ido-cur-item nil)
 (defvar ido-default-item nil)
 (defvar ido-cur-list nil)
+
+;; ido-ghq
+(require 'ido-ghq)
+(setq ido-ghq-short-list t)
+(bind-key "M-p" 'ido-ghq-open)
 
 
 (require 'company)
@@ -199,7 +223,19 @@
 (set-keyboard-coding-system 'utf-8)
 
 
-(use-package magit :ensure t)
+(use-package magit
+  :ensure t)
+(use-package magit-lfs
+  :ensure t
+  :after magit)
+(use-package magit-todos
+  :ensure t
+  :after magit
+  )
+(use-package forge
+  :ensure t
+  :after magit)
+
 
 (set-face-attribute 'default nil :height 100)
 
@@ -207,11 +243,14 @@
 
 (use-package powerline
   :ensure t
-  :config (powerline-default-theme)
-  )
+  :config (powerline-default-theme))
 
-
-
+(use-package terraform-mode)
+  
+(use-package anzu
+  :ensure t
+  :config
+  (anzu-mode +1))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -233,7 +272,7 @@
   :bind
   ("C-]" . avy-goto-char)
   ("C-l" . avy-goto-line)
-)
+  :ensure t)
 
 (use-package elixir-mode
   :ensure t)
@@ -246,13 +285,16 @@
 
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
 
-;; typescript
-(load-theme 'solarized-light t)
+(use-package monokai-theme
+  :ensure t
+  :config
+  (load-theme 'monokai t)
+)
 
 ;; migemo
 (use-package migemo
   :if (executable-find "cmigemo")
-  :ensure t
+  
   :init
   (load-library "migemo")
     
@@ -264,6 +306,8 @@
   (setq migemo-coding-system 'utf-8-unix)
   (setq migemo-regex-dictionary nil)
   (migemo-init)
+
+  :ensure t
 )
 
 ;; yasnippet
@@ -276,13 +320,22 @@
   :ensure t
   :bind  
   ("C-j" . company-yasnippet)
-)
+  )
+
+(use-package linum-relative
+  :config
+  (linum-on)
+  (setq linum-relative-backend 'display-line-numbers-mode)
+  :ensure t)
 
 
 ;; point-undo
 (require 'point-undo)
 (bind-key "C--" 'point-undo)
 (bind-key "C-=" 'point-redo)
+
+(bind-key "M-[" 'previous-buffer)
+(bind-key "M-]" 'next-buffer)
 
 
 ;; common-setting
@@ -304,7 +357,7 @@
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
 ;; font-size
-(set-face-attribute 'default nil :height 120)
+(set-face-attribute 'default nil :height 140)
 
 ;;; ファイルを開いた位置を保存する
 (require 'saveplace)
@@ -376,6 +429,15 @@
 
 (bind-key "M-o" 'occur)
 
+(use-package rainbow-mode
+  :ensure t)
+
+(use-package goto-line-preview
+  :ensure t
+  :config
+  (global-set-key [remap goto-line] 'goto-line-preview)
+)
+
 ;;; ido smex
 (use-package ido
   :bind*
@@ -435,11 +497,11 @@
 (use-package projectile
   :ensure t
   :init
-  (setq projectile-project-search-path '("~/sources/repos/"))  
+  (setq projectile-project-search-path '("~/.ghq/"))  
   :config
   (projectile-mode +1)
   :bind* (("C-c C-f" . projectile-find-file)
-         ("M-p" . projectile-switch-project)))
+         ))
 
 
 
@@ -797,5 +859,4 @@ T - tag prefix
 (use-package yaml-mode
   :ensure t)
 
-(global-set-key (kbd "[") nil)
-(global-unset-key (kbd "["))
+(smartparens-mode 1)

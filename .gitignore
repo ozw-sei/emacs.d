@@ -11,9 +11,12 @@ places
 network-security.data
 smex-items
 transient/
+straight/
+persp-confs/
 projectile.cache
 projectile-bookmarks.eld
 migemo-pattern
+*.sqlite
 
 
 !.gitignore
