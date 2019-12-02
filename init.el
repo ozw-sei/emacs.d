@@ -863,3 +863,6 @@ T - tag prefix
   :ensure t)
 
 (smartparens-mode 1)
+
+(setq make-backup-files nil)
+
