@@ -443,7 +443,7 @@
   :bind*
   (("C-x C-r" . recentf-ido-find-file)
    ("C-x C-f" . ido-find-file)
-   ("C-c C-d" . ido-dired)
+   ("C-c d" . ido-dired)
    ("C-x b" . ido-switch-buffer)
    ("C-x C-b" . ido-switch-buffer)
    )
