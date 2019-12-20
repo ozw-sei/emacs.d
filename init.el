@@ -322,21 +322,19 @@
   ("C-j" . company-yasnippet)
   )
 
-(use-package linum-relative
-  :config
-  (linum-on)
-  (setq linum-relative-backend 'display-line-numbers-mode)
-  :ensure t)
-
-
 ;; point-undo
 (require 'point-undo)
 (bind-key "C--" 'point-undo)
 (bind-key "C-=" 'point-redo)
 
-(bind-key "M-[" 'previous-buffer)
-(bind-key "M-]" 'next-buffer)
-
+(use-package iflipb
+  :config  
+  (setq iflipb-ignore-buffers (list "^[*]" "^magit" "]$"))
+  (setq iflipb-wrap-around t)
+  :bind  
+  ("M-[" . iflipb-previous-buffer)
+  ("M-]" . iflipb-next-buffer)
+)
 
 ;; common-setting
 ;;; 右から左に読む言語に対応させないことで描画高速化
