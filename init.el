@@ -54,14 +54,13 @@
 (setq ido-ghq-short-list t)
 (bind-key "M-p" 'ido-ghq-open)
 
-
 (use-package company
   :straight t
   :config
   
   (global-company-mode) ; 全バッファで有効にする
   (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
-  (setq company-idle-delay 0.8) ; デフォルトは0.5
+  (setq company-idle-delay 0.3) ; デフォルトは0.5
   (setq company-minimum-prefix-length 2) ; デフォルトは4
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
   (setq completion-ignore-case t)
@@ -74,13 +73,28 @@
   (define-key company-active-map [tab] 'company-complete-selection) ;; TABで候補を設定
   (define-key company-active-map (kbd "C-f") 'company-complete-selection) ;; C-fで候補を設定
   (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
-)
+  )
+
+(use-package typescript-mode
+  :straight t)
+
   
 (use-package eglot
   :straight t
   :bind ("M-r" . 'xref-find-references)
   :hook ((c-mode c++-mode ruby-mode js-mode typescript-mode) . eglot-ensure)
   )
+
+(use-package add-node-modules-path
+  :straight t
+  :hook ((js-mode typescript-mode))
+  )
+
+(use-package direnv
+ :straight t
+ :config
+ (direnv-mode))
+
 
 (use-package saveplace
   :straight t
@@ -758,6 +772,9 @@ T - tag prefix
 (use-package bundler
   :straight t)
 
+(use-package ruby-electric
+  :straight t)
+
  ;; (use-package projectile-rails
  ;;   :straight t
    ;; :after projectile)
@@ -765,6 +782,11 @@ T - tag prefix
 
 (require 'rbenv)
 (global-rbenv-mode)
+(setq rbenv-installation-dir "~/.rbenv")
+
+(setq ruby-insert-encoding-magic-comment nil)
+(custom-set-variables '(ruby-insert-encoding-magic-comment nil))
+
 
 (use-package smartparens
   :straight t)
