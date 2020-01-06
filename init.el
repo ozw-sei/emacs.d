@@ -117,7 +117,7 @@
 
 
 (use-package magit
-  :ensure t)
+  :straight t)
 (use-package magit-lfs
   :straight t
   :after magit)
@@ -142,8 +142,10 @@
   
 (use-package anzu
   :straight t
-  :config
-  (anzu-mode +1))
+  :init
+  (anzu-mode +1)
+  (setq anzu-use-migemo t)  
+)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -153,12 +155,12 @@
  '(git-gutter:ask-p nil)
  '(package-selected-packages
    (quote
-    (highlight-symbol exec-path-from-shell pip-requirements bundler solidity-mode smartparens smartparens-config smart-parens projectile-rails inf-ruby rspec-mode ruby-hash-syntax ibuffer-projectile shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
+    (highlight-symbol exec-path-from-shell pip-requirements bundler solidity-mode smartparens smartparens-config smart-parens inf-ruby rspec-mode ruby-hash-syntax ibuffer-projectile shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; If there is more than one, they won't work right.
  )
 
 (use-package avy
@@ -201,7 +203,7 @@
   (migemo-init)
 
   :straight t
-)
+  )
 
 ;; yasnippet
 (use-package yasnippet
@@ -729,6 +731,8 @@ T - tag prefix
 
 (use-package shader-mode :straight t)
 
+
+;;; Ruby-mode
 (use-package ruby-hash-syntax :straight t)
 
 (setq-default
@@ -747,8 +751,13 @@ T - tag prefix
 (use-package bundler
   :straight t)
 
-(use-package projectile-rails
-  :straight t)
+ ;; (use-package projectile-rails
+ ;;   :straight t
+   ;; :after projectile)
+                                        ;
+
+(require 'rbenv)
+(global-rbenv-mode)
 
 (use-package smartparens
   :straight t)
