@@ -30,7 +30,10 @@
 
 (use-package exec-path-from-shell
   :straight t
-  :if (memq window-system '(mac ns x)))
+  :if (memq window-system '(mac ns x))
+  :config
+  (exec-path-from-shell-initialize)
+  )
 
 ;; Or if you use use-package
 (use-package dashboard
