@@ -75,6 +75,14 @@
   (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
   )
 
+(use-package company-box
+  :straight t
+  :hook (company-mode . company-box-mode))
+
+(use-package expand-region
+  :straight t
+  :bind* ("C-c SPC" . er/expand-region))
+
 (use-package typescript-mode
   :straight t)
 
@@ -94,6 +102,13 @@
  :straight t
  :config
  (direnv-mode))
+
+;; 単語にカーソルを置くと同じ単語をハイライトしてくれる
+(use-package highlight-symbol
+  :straight t
+  :config
+  (add-hook 'prog-mode-hook 'highlight-symbol-mode)
+  (setq highlight-symbol-idle-delay 1.0))
 
 
 (use-package saveplace
@@ -748,13 +763,51 @@ T - tag prefix
          ("\\.vsh\\'" . glsl-mode)
          ("\\.shader\\'" . glsl-mode)))
 
-(use-package web-mode :straight t)
+(use-package web-mode
+  :straight t    
+  :config
+  (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.ts$" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
+  )
+
+
+
+(use-package csv-mode
+  :straight t
+  :config
+  (setq indent-tabs-mode t))
+
+
+;; 正規表現検索をビジュアル的に
+(use-package visual-regexp
+  :straight t)
+
+(use-package smooth-scroll
+  :straight t
+  :config
+  (smooth-scroll-mode t)
+  (setq smooth-scroll/vscroll-step-size 8))
 
 (use-package shader-mode :straight t)
 
 
 ;;; Ruby-mode
-(use-package ruby-hash-syntax :straight t)
+(use-package ruby-mode
+  :straight t
+  :config
+  (add-to-list 'auto-mode-alist '("\\Vagrantfile$" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode)))
+
+
+;; json-mode
+(use-package json-mode
+  :straight t)
+
+(use-package ruby-hash-syntax
+  :straight t)
 
 (setq-default
  ruby-use-encoding-map nil
@@ -787,6 +840,9 @@ T - tag prefix
 (setq ruby-insert-encoding-magic-comment nil)
 (custom-set-variables '(ruby-insert-encoding-magic-comment nil))
 
+(use-package which-key
+  :straight t
+  :config (which-key-mode))
 
 (use-package smartparens
   :straight t)
@@ -804,7 +860,10 @@ T - tag prefix
   (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores"))
 
 (use-package yaml-mode
-  :straight t)
+  :straight t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+  )
 
 (smartparens-mode 1)
 
