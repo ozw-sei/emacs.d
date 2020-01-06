@@ -1,12 +1,11 @@
-
 ;; straight.el setting by myself
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
       (bootstrap-version 3))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el" 
+        'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -20,136 +19,26 @@
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
-(package-initialize)
+;(package-initialize)
 
 ;;; ログはエラーが出た時のみ
 (setq display-warning-minimum-level :error)
 
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3");
+;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-refresh-contents)
 
 
-(defvar favorite-packages
-  '(
-    ;; package
-    use-package
-
-    ; flx-ido
-    flx-ido
-    ;; ido-mode\
-    ido-vertical-mode
-    ;; smex
-    smex
-
-    ;; mwim
-    mwim
-
-    ;; window
-    persp-mode
-
-    ;; zop-to-char
-    zop-to-char
-
-    ;; hydra
-    hydra
-    ;; cursor position
-    saveplace
-    ;; git
-    magit
-    git-gutter
-    ;; powerline
-    powerline
-    ;; company
-    company
-
-    ;; path
-    exec-path-from-shell
-
-    ;; editor-config
-    editorconfig
-    
-    ;; yasnippet
-    yasnippet
-    yasnippet-snippets
-    ;; projectile
-    projectile
-    
-    ;; ido-ubiquitous
-    ido-ubiquitous
-
-    ;; yaml-mode
-    yaml-mode
-    
-    ;; direnv
-    direnv
-
-    ;; avy / ace-jump
-    avy
-    
-    ;; javascript / typescript
-    typescript-mode
-    add-node-modules-path
-    
-    ;; go
-    go-mode
-    company-go
-
-    ;; migemo
-    migemo
-
-    ;; elixir-mode
-    elixir-mode
-    alchemist
-
-    ;; ag
-    ag
-    ;; egot
-    eglot
-
-    ;; flycheck
-    flycheck
-    flycheck-elixir
-
-    ;; flyspell
-    flyspell
-
-    ;; jump
-    dumb-jump
-
-    ;; dash-board
-    dashboard
-
-    ;; docker-mode
-    dockerfile-mode
-
-    ;; omnisharp
-    omnisharp
-
-    ;; glsl-mode
-    glsl-mode
-
-    smartparens
-
-    ;; web-mode
-    web-mode
-    )
-  )
-
-
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-
-(dolist (package favorite-packages)
-  (unless (package-installed-p package)
-    (package-install package)))
+(use-package exec-path-from-shell
+  :straight t
+  :if (memq window-system '(mac ns x)))
 
 ;; Or if you use use-package
 (use-package dashboard
-  :ensure t
+  :straight t
   :config
   (dashboard-setup-startup-hook))
 
-(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+(setq initail-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 ;; ido-uniquitous
 ;; https://www.emacswiki.org/emacs/InteractivelyDoThings
@@ -163,31 +52,35 @@
 (bind-key "M-p" 'ido-ghq-open)
 
 
-(require 'company)
-(global-company-mode) ; 全バッファで有効にする
-(setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
-(setq company-idle-delay 0.8) ; デフォルトは0.5
-(setq company-minimum-prefix-length 2) ; デフォルトは4
-(setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
-(setq completion-ignore-case t)
-(setq company-dabbrev-downcase nil)
+(use-package company
+  :straight t
+  :config
+  
+  (global-company-mode) ; 全バッファで有効にする
+  (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
+  (setq company-idle-delay 0.8) ; デフォルトは0.5
+  (setq company-minimum-prefix-length 2) ; デフォルトは4
+  (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+  (setq completion-ignore-case t)
+  (setq company-dabbrev-downcase nil)
 
-(define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
-(define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
-(define-key company-active-map (kbd "C-s") 'company-filter-candidates) ;; C-sで絞り込む
-(define-key company-active-map (kbd "C-i") 'company-complete-selection) ;; TABで候補を設定
-(define-key company-active-map [tab] 'company-complete-selection) ;; TABで候補を設定
-(define-key company-active-map (kbd "C-f") 'company-complete-selection) ;; C-fで候補を設定
-(define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
-
+  (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
+  (define-key company-active-map (kbd "C-s") 'company-filter-candidates) ;; C-sで絞り込む
+  (define-key company-active-map (kbd "C-i") 'company-complete-selection) ;; TABで候補を設定
+  (define-key company-active-map [tab] 'company-complete-selection) ;; TABで候補を設定
+  (define-key company-active-map (kbd "C-f") 'company-complete-selection) ;; C-fで候補を設定
+  (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
+)
+  
 (use-package eglot
-  :ensure t
+  :straight t
   :bind ("M-r" . 'xref-find-references)
   :hook ((c-mode c++-mode ruby-mode js-mode typescript-mode) . eglot-ensure)
   )
 
 (use-package saveplace
-  :ensure t
+  :straight t
   :config
   (save-place-mode 1))
 
@@ -226,14 +119,14 @@
 (use-package magit
   :ensure t)
 (use-package magit-lfs
-  :ensure t
+  :straight t
   :after magit)
 (use-package magit-todos
-  :ensure t
+  :straight t
   :after magit
   )
 (use-package forge
-  :ensure t
+  :straight t
   :after magit)
 
 
@@ -242,13 +135,13 @@
 (setq ido-enable-flex-matching t)
 
 (use-package powerline
-  :ensure t
+  :straight t
   :config (powerline-default-theme))
 
 (use-package terraform-mode)
   
 (use-package anzu
-  :ensure t
+  :straight t
   :config
   (anzu-mode +1))
 
@@ -272,21 +165,21 @@
   :bind
   ("C-]" . avy-goto-char)
   ("C-l" . avy-goto-line)
-  :ensure t)
+  :straight t)
 
 (use-package elixir-mode
-  :ensure t)
+  :straight t)
 
 (use-package alchemist
-  :ensure t)
+  :straight t)
 
 (use-package flycheck-elixir
-  :ensure t)
+  :straight t)
 
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
 
 (use-package monokai-theme
-  :ensure t
+  :straight t
   :config
   (load-theme 'monokai t)
 )
@@ -307,17 +200,17 @@
   (setq migemo-regex-dictionary nil)
   (migemo-init)
 
-  :ensure t
+  :straight t
 )
 
 ;; yasnippet
 (use-package yasnippet
-  :ensure t
+  :straight t
   :commands yas-reload-all
   :delight yas-minor-mode
   :hook ((prog-mode). yas-minor-mode)
   :config (yas-reload-all)
-  :ensure t
+  :straight t
   :bind  
   ("C-j" . company-yasnippet)
   )
@@ -428,10 +321,10 @@
 (bind-key "M-o" 'occur)
 
 (use-package rainbow-mode
-  :ensure t)
+  :straight t)
 
 (use-package goto-line-preview
-  :ensure t
+  :straight t
   :config
   (global-set-key [remap goto-line] 'goto-line-preview)
 )
@@ -457,14 +350,22 @@
 
   :config
   (ido-mode 1)
+  (ido-everywhere 1)
   (setq ido-enable-flex-matching t)
   (setq ido-save-directory-list-file "~/.emacs.d/cache/ido.last")
+  (setq ido-max-window-height 0.75)
+  )
+
+
+
+(use-package ido-vertical-mode
+  :straight t
+  :after ido
+  :config
   (ido-vertical-mode 1)
   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
   (setq ido-max-window-height 0.75)
-  (ido-ubiquitous-mode 1)
 )
-
 
 (use-package smex
   :bind
@@ -474,8 +375,6 @@
   :config
   (smex-initialize)
   )
-
-
 
 ;;----------------------
 ;; undohistの設定
@@ -493,15 +392,16 @@
 
 ;; projectile
 (use-package projectile
-  :ensure t
+  :straight t
   :init
-  (setq projectile-project-search-path '("~/.ghq/"))  
+  (setq projectile-project-search-path '("~/go/src/"))  
   :config
   (projectile-mode +1)
   :bind* (("C-c C-f" . projectile-find-file)
          ))
 
-
+(use-package hydra
+  :straight t)
 
 (defhydra hydra-projectile (:color teal
 			    :columns 4)
@@ -526,7 +426,7 @@
 
 ;; flycheck
 (use-package flycheck
-  :ensure t)
+  :straight t)
 (setq flycheck-check-syntax-automatically
       '(save idle-change mode-enabled))
 
@@ -558,10 +458,10 @@
   '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
 
 (use-package hydra
-  :ensure t)
+  :straight t)
 
 (use-package git-gutter
-  :ensure t
+  :straight t
   :custom
   (global-git-gutter-mode 1)
   ;; stage, revertで確認を出さないようにする
@@ -646,7 +546,7 @@
 
 ;; editor-config
 (use-package editorconfig
-  :ensure t
+  :straight t
   :config
   (editorconfig-mode 1))
 
@@ -685,19 +585,27 @@
 (bind-key "M-g" 'goto-line)
 
 (use-package smart-jump
-  :ensure t
+  :straight t
   :config
   (smart-jump-setup-default-registers))
 
 (use-package dockerfile-mode
-  :ensure t
+  :straight t
   :mode ("Dockerfile\\'" . dockerfile-mode)
 )
 
-(bind-key "M-z" 'zop-up-to-char)
+(use-package zop-to-char
+  :straight t
+  :bind
+  ("M-z" . 'zop-up-to-char))
 
-(bind-key "C-a" 'mwim-beginning-of-code-or-line)
-(bind-key "C-e" 'mwim-end-of-code-or-line)
+
+(use-package mwim
+  :straight t
+  :bind 
+  ("C-a" . 'mwim-beginning-of-code-or-line)
+  ("C-e" . 'mwim-end-of-code-or-line))
+
 
 
 (defhydra hydra-dired (:hint nil :color pink)
@@ -811,17 +719,17 @@ T - tag prefix
 (setq omnisharp-server-executable-path "/usr/local/bin/omnisharp")
 
 (use-package glsl-mode
-  :ensure t
+  :straight t
   :mode (("\\.effect\\'" . glsl-mode)
          ("\\.fsh\\'" . glsl-mode)
          ("\\.vsh\\'" . glsl-mode)
          ("\\.shader\\'" . glsl-mode)))
 
-(use-package web-mode :ensure t)
+(use-package web-mode :straight t)
 
-(use-package shader-mode :ensure t)
+(use-package shader-mode :straight t)
 
-(use-package ruby-hash-syntax :ensure t)
+(use-package ruby-hash-syntax :straight t)
 
 (setq-default
  ruby-use-encoding-map nil
@@ -831,25 +739,25 @@ T - tag prefix
 
 
 (use-package rspec-mode
-  :ensure t)
+  :straight t)
 
 (use-package inf-ruby
-  :ensure t)
+  :straight t)
 
 (use-package bundler
-  :ensure t)
+  :straight t)
 
 (use-package projectile-rails
-  :ensure t)
+  :straight t)
 
 (use-package smartparens
-  :ensure t)
+  :straight t)
 
 (use-package pip-requirements
-  :ensure t)
+  :straight t)
 
 (use-package solidity-mode
-  :ensure t)
+  :straight t)
 
 
 (use-package ag
@@ -858,7 +766,7 @@ T - tag prefix
   (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores"))
 
 (use-package yaml-mode
-  :ensure t)
+  :straight t)
 
 (smartparens-mode 1)
 
