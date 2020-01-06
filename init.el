@@ -147,6 +147,8 @@
   (setq anzu-use-migemo t)  
 )
 
+(setq ns-pop-up-frames nil)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -186,9 +188,11 @@
   (load-theme 'monokai t)
 )
 
+(executable-find "/usr/local/bin/cmigemo")
+
 ;; migemo
 (use-package migemo
-  :if (executable-find "cmigemo")
+  :if (executable-find "/usr/local/bin/cmigemo")
   
   :init
   (load-library "migemo")
