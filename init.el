@@ -522,7 +522,6 @@
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
   "git hunk"
-
   ("p" git-gutter:previous-hunk "previous")
   ("n" git-gutter:next-hunk "next")
   ("s" git-gutter:stage-hunk "stage")
@@ -531,9 +530,8 @@
   ("c" magit-commit-create "commit")
   ("b" magit-blame-addition "blame")
   ("d" magit-dispatch "dispatch")
-  ("SPC" git-gutter:popup-hunk "toggle diffinfo")
-  ("q" nil "exit")
-  )
+  ("t" git-timemachine "time-machine")
+  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
 
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
