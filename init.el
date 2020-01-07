@@ -252,6 +252,9 @@
   ("C-j" . company-yasnippet)
   )
 
+(use-package yasnippet-snippets
+  :straight t)
+
 ;; point-undo
 (require 'point-undo)
 (bind-key "C--" 'point-undo)
