@@ -499,6 +499,9 @@
   ;; hydra-git-gutter起動のキーバインド
   ("C-c g" . hydra-git-gutter/body))
 
+(use-package git-timemachine
+  :straight t)
+
 ;; git-gutter:popup-hunkをそのまま割り当てるとdiffウィンドウを閉じれないので
 ;; トグルできる関数を定義
 (defun git-gutter:toggle-popup-hunk ()
@@ -506,7 +509,10 @@
   (interactive)
   (if (window-live-p (git-gutter:popup-buffer-window))
       (delete-window (git-gutter:popup-buffer-window))
-      (git-gutter:popup-hunk)))
+      (git-gutter:popup-hunk)
+      (other-window 1)
+      )
+  )
 
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
