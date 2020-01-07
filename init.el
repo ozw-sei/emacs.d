@@ -723,7 +723,8 @@ T - tag prefix
 (bind-key "C-x SPC" 'hydra-rectangle/body)
 
 ; csharp
-(use-package omnisharp)
+(use-package omnisharp
+  :straight t)
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 (add-hook 'csharp-mode-hook #'flycheck-mode)
 (add-hook 'csharp-mode-hook #'company-mode)
