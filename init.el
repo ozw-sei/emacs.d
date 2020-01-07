@@ -866,3 +866,5 @@ T - tag prefix
 
 (setq make-backup-files nil)
 
+(use-package viewer
+  :straight t)
