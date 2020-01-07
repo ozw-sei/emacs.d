@@ -350,9 +350,6 @@
 
 (bind-key "M-o" 'occur)
 
-(use-package rainbow-mode
-  :straight t)
-
 (use-package goto-line-preview
   :straight t
   :config
