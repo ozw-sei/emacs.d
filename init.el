@@ -313,10 +313,6 @@
 ;;; モードラインに時刻を表示する
 (display-time)
 
-;;; 行番号・桁番号を表示する
-(line-number-mode 1)
-(column-number-mode 1)
-
 ;;; GCを減らして軽くする
 (setq gc-cons-threshold (* 10 gc-cons-threshold))
 
