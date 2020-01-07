@@ -248,7 +248,6 @@
   :delight yas-minor-mode
   :hook ((prog-mode). yas-minor-mode)
   :config (yas-reload-all)
-  :straight t
   :bind  
   ("C-j" . company-yasnippet)
   )
