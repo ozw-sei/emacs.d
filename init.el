@@ -323,20 +323,14 @@
 (setq history-length 1000)
 
 ;;; メニューバーとツールバーとスクロールバーを消す
-
 (if window-system (progn
                     ;; ←GUI用設定を、ここに記述
                     (menu-bar-mode -1)
                     (tool-bar-mode -1)
                     (scroll-bar-mode -1)
+                    (bind-key "C-x C-c" 'smex)
                     )
   )
-
-;; C-x C-c で停止しない
-(if window-system
-  (progn (bind-key "C-x C-c" 'smex))
-  )
-
 ;; I never use C-x C-c
 ;; exit で抜けられます
 (defalias 'exit 'save-buffers-kill-emacs)
