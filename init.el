@@ -528,6 +528,7 @@
   ("s" git-gutter:stage-hunk "stage")
   ("r" git-gutter:revert-hunk "revert")
   ("m" magit-status "status")
+  ("c" magit-commit-create "commit")
   ("b" magit-blame-addition "blame")
   ("d" magit-dispatch "dispatch")
   ("SPC" git-gutter:popup-hunk "toggle diffinfo")
