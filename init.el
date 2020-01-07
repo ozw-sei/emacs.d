@@ -787,12 +787,6 @@ T - tag prefix
 (use-package visual-regexp
   :straight t)
 
-(use-package smooth-scroll
-  :straight t
-  :config
-  (smooth-scroll-mode t)
-  (setq smooth-scroll/vscroll-step-size 8))
-
 (use-package shader-mode :straight t)
 
 
