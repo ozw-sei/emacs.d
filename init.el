@@ -789,13 +789,14 @@ T - tag prefix
 
 (use-package shader-mode :straight t)
 
-
 ;;; Ruby-mode
 (use-package ruby-mode
   :straight t
-  :config
-  (add-to-list 'auto-mode-alist '("\\Vagrantfile$" . ruby-mode))
-  (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode)))
+  :mode (         
+         ("\\Vagrantfile$" . ruby-mode)
+
+         ("\\.rb$" . ruby-mode))
+  )
 
 
 ;; json-mode
