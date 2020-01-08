@@ -17,6 +17,7 @@ projectile.cache
 projectile-bookmarks.eld
 migemo-pattern
 *.sqlite
+bookmarks
 
 
 !.gitignore

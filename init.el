@@ -27,7 +27,6 @@
 ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-refresh-contents)
 
-
 (use-package exec-path-from-shell
   :straight t
   :if (memq window-system '(mac ns x))
@@ -170,14 +169,14 @@
   :straight t
   :config (powerline-default-theme))
 
-(use-package terraform-mode)
+(use-package terraform-mode
+  :straight t)
   
 (use-package anzu
   :straight t
   :init
   (anzu-mode +1)
-  (setq anzu-use-migemo t)  
-)
+  (setq anzu-use-migemo t))
 
 (setq ns-pop-up-frames nil)
 
@@ -261,6 +260,7 @@
 (bind-key "C-=" 'point-redo)
 
 (use-package iflipb
+  :straight t
   :config  
   (setq iflipb-ignore-buffers (list "^[*]" "^magit" "]$"))
   (setq iflipb-wrap-around t)
@@ -406,6 +406,7 @@
 ;;----------------------
 ;; undohistの設定
 (use-package undohist
+  :straight t
   :config
   (undohist-initialize))
 
@@ -445,8 +446,7 @@
   
   ("o"   projectile-multi-occur              "Multi Occur")
   ("s"   projectile-switch-project           "Switch Project")
-  ("k"   projectile-kill-buffers             "Kill Buffers")
-  ("q"   nil "Cancel" :color blue))
+  ("k"   projectile-kill-buffers             "Kill Buffers"))
 
 (bind-key "C-c p" 'hydra-projectile/body)
 (bind-key "C-c C-p" 'hydra-projectile/body)
@@ -454,6 +454,7 @@
 ;; flycheck
 (use-package flycheck
   :straight t)
+
 (setq flycheck-check-syntax-automatically
       '(save idle-change mode-enabled))
 
@@ -521,10 +522,11 @@
   ("n" git-gutter:next-hunk "next")
   ("s" git-gutter:stage-hunk "stage")
   ("r" git-gutter:revert-hunk "revert")
-  ("m" magit-status "status")
+  ("m" magit-status "magit-status")
+  ("d" magit-status-here "status-here")
   ("c" magit-commit-create "commit")
   ("b" magit-blame-addition "blame")
-  ("d" magit-dispatch "dispatch")
+  ("x" magit-dispatch "dispatch")
   ("t" git-timemachine "time-machine")
   ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
 
@@ -549,8 +551,7 @@
   ("h" windmove-left "move-left")
   ("j" windmove-down "move-down")
   ("k" windmove-up "move-up")
-  ("l" windmove-right "move-right")
-  ("q" nil "exit" :color blue)
+  ("l" windmove-right "move-right")  
   )
 
 ; terminal にはtmuxがあるので使わない
@@ -847,8 +848,9 @@ T - tag prefix
 
 
 (use-package ag
+  :straight t
   :config
-  (setq ag-executable "/usr/local/bin/ag")
+  ;(setq ag-executable "ag")
   (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores"))
 
 (use-package yaml-mode
