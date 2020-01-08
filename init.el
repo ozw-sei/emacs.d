@@ -520,9 +520,8 @@
   (interactive)
   (if (window-live-p (git-gutter:popup-buffer-window))
       (delete-window (git-gutter:popup-buffer-window))
-      (git-gutter:popup-hunk)
-      (other-window 1)
-      )
+    (git-gutter:popup-hunk)
+    (other-window 1))
   )
 
 ;; git-gutterのhydra定義
