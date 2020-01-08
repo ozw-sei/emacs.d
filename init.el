@@ -491,7 +491,7 @@
 (use-package git-gutter
   :straight t
   :custom
-  (global-git-gutter-mode 1)
+  (global-git-gutter-mode +1)
   ;; stage, revertで確認を出さないようにする
   ;; (undoでもどせるからいいや、という気持ち)
   (git-gutter:ask-p nil)
@@ -499,6 +499,9 @@
   :bind
   ;; hydra-git-gutter起動のキーバインド
   ("C-c g" . hydra-git-gutter/body))
+
+(use-package quickrun
+  :straight t)
 
 (use-package git-timemachine
   :straight t)
