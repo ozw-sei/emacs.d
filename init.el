@@ -526,6 +526,7 @@
   ("d" magit-status-here "status-here")
   ("c" magit-commit-create "commit")
   ("b" magit-blame-addition "blame")
+  ("P" magit-push "push")
   ("x" magit-dispatch "dispatch")
   ("t" git-timemachine "time-machine")
   ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
