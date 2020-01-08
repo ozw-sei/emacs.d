@@ -154,8 +154,15 @@
   :after magit)
 (use-package magit-todos
   :straight t
-  :after magit
-  )
+  :after magit)
+(use-package magit-gitflow
+  :straight t
+  :after magit)
+
+(use-package indent-guide
+  :straight t
+  :config (indent-guide-global-mode))
+
 (use-package forge
   :straight t
   :after magit)
