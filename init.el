@@ -34,6 +34,19 @@
   (exec-path-from-shell-initialize)
   )
 
+(use-package guide-mode
+  :straight t)
+
+(use-package magit-lfs
+  :straight t)
+
+(use-package aggressive-indent
+  :straight t
+  :config (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
+
+(use-package origami
+  :straight t)
+
 ;; Or if you use use-package
 (use-package dashboard
   :straight t
@@ -161,7 +174,11 @@
 
 (use-package indent-guide
   :straight t
-  :config (indent-guide-global-mode))
+  :config
+  (indent-guide-global-mode)
+  ; for performance
+  (setq indent-guide-delay 0.5)
+  )
 
 (use-package forge
   :straight t
