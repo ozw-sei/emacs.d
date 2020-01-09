@@ -34,11 +34,11 @@
   (exec-path-from-shell-initialize)
   )
 
-(use-package guide-mode
-  :straight t)
-
 (use-package magit-lfs
   :straight t)
+
+(global-set-key (kbd "<home>") 'beginning-of-buffer)
+(global-set-key (kbd "<end>") 'end-of-buffer)
 
 (use-package aggressive-indent
   :straight t
@@ -223,7 +223,7 @@
 (use-package avy
   :bind
   ("C-]" . avy-goto-char)
-  ("C-l" . avy-goto-line)
+  ("C-c l" . avy-goto-line)
   :straight t)
 
 (use-package elixir-mode
@@ -387,6 +387,7 @@
    ("C-x C-f" . ido-find-file)
    ("C-c d" . ido-dired)
    ("C-x b" . ido-switch-buffer)
+   ("C-x d" . dired)
    ("C-x C-b" . ido-switch-buffer)
    )
   :init
@@ -556,6 +557,8 @@
   ("x" magit-dispatch "dispatch")
   ("t" git-timemachine "time-machine")
   ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
+
+
 
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
