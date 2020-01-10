@@ -408,6 +408,14 @@
   (setq ido-max-window-height 0.75)
   )
 
+                                        ; Org-captureを呼び出すキーシーケンス
+(define-key global-map "\C-cc" 'org-capture)
+                                        ; Org-captureのテンプレート（メニュー）の設定
+(setq org-capture-templates
+      '(("n" "Note" entry (file+headline "~/org/notes.org" "Notes")
+         "* %?\nEntered on %U\n %i\n %a")
+        ))
+
 
 
 (use-package ido-vertical-mode
@@ -417,7 +425,7 @@
   (ido-vertical-mode 1)
   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
   (setq ido-max-window-height 0.75)
-)
+  )
 
 (use-package smex
   :bind
