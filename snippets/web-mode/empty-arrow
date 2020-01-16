@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: empty-arrow
+# key: empty
+# --
+() => {}
+

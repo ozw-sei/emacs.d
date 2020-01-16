@@ -161,7 +161,9 @@
 
 
 (use-package magit
-  :straight t)
+  :straight t
+  :config
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 (use-package magit-lfs
   :straight t
   :after magit)
@@ -416,7 +418,22 @@
          "* %?\nEntered on %U\n %i\n %a")
         ))
 
+(use-package flow-minor-mode
+  :straight t)
 
+(add-hook 'js2-mode-hook 'flow-minor-mode)
+(add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
+
+(with-eval-after-load 'company
+  (add-to-list 'company-backends 'company-flow))
+
+
+(setq set-mark-command-repeat-pop t)
+
+(use-package goto-chg
+  :straight t)
+(global-set-key (kbd "C-<") 'goto-last-change)
+(global-set-key (kbd "C->") 'goto-last-change-reverse)
 
 (use-package ido-vertical-mode
   :straight t
