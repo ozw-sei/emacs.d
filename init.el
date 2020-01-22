@@ -556,6 +556,16 @@
 (use-package git-timemachine
   :straight t)
 
+(use-package js2-refactor
+  :straight t)
+
+(js2r-add-keybindings-with-prefix "C-c m")
+
+(use-package prettier-js
+  :straight t)
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+
 ;; git-gutter:popup-hunkをそのまま割り当てるとdiffウィンドウを閉じれないので
 ;; トグルできる関数を定義
 (defun git-gutter:toggle-popup-hunk ()
@@ -578,7 +588,10 @@
   ("d" magit-status-here "status-here")
   ("c" magit-commit-create "commit")
   ("b" magit-blame-addition "blame")
-  ("P" magit-push "push")
+  ("P" (lambda()
+         (interactive)
+         (magit-push)) "push")
+                                        ;("P" magit-push "push")             
   ("x" magit-dispatch "dispatch")
   ("t" git-timemachine "time-machine")
   ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
