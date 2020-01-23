@@ -14,7 +14,7 @@
 (straight-use-package 'use-package)
 
 ;; use-packageをstraight.elにフォールバックする
-(setq straight-use-package-by-default t)
+(defvar straight-use-package-by-default t)
 
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
@@ -22,7 +22,7 @@
 ;(package-initialize)
 
 ;;; ログはエラーが出た時のみ
-(setq display-warning-minimum-level :error)
+(defvar display-warning-minimum-level :error)
 
 ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-refresh-contents)
@@ -445,7 +445,7 @@
   )
 
 (use-package smex
-  :straight t
+  :straight
   :bind
   (("M-x" . smex))
   :init
@@ -570,7 +570,7 @@
 ;; git-gutter:popup-hunkをそのまま割り当てるとdiffウィンドウを閉じれないので
 ;; トグルできる関数を定義
 (defun git-gutter:toggle-popup-hunk ()
-  "Toggle git-gutter hunk window."
+  "Toggle 'git-gutter' hunk window."
   (interactive)
   (if (window-live-p (git-gutter:popup-buffer-window))
       (delete-window (git-gutter:popup-buffer-window))
@@ -588,11 +588,8 @@
   ("m" magit-status "magit-status")
   ("d" magit-status-here "status-here")
   ("c" magit-commit-create "commit")
-  ("b" magit-blame-addition "blame")
-  ("P" (lambda()
-         (interactive)
-         (magit-push)) "push")
-                                        ;("P" magit-push "push")             
+  ("b" magit-blame-addition "blame")  
+  ("P" magit-push "push")             
   ("x" magit-dispatch "dispatch")
   ("t" git-timemachine "time-machine")
   ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
@@ -632,9 +629,9 @@
 ;; hydra flycheck 操作
 (defhydra hydra-flycheck nil
   "hydra-flycheck"
-  ("j" next-error     "next-error")
-  ("k" previous-error "prev-error")
-  ("h" first-error    "first-error")
+  ("j" flymake-goto-next-error     "next-error")
+  ("k" flymake-goto-previous-error "prev-error")
+  ("h" flymake-goto-first-error    "first-error")
   ("l" (condition-case err
            (while t
              (next-error))
