@@ -445,14 +445,15 @@
   )
 
 (use-package smex
-  :straight
+  :straight t
   :bind
-  (("M-x" . smex))
-  :init
-  (setq smex-save-file "~/.emacs.d/cache/.smex-items")
+  (("M-x" . smex))  
   :config
+  (setq smex-save-file "~/.emacs.d/cache/.smex-items")
   (smex-initialize)
   )
+
+
 
 ;;----------------------
 ;; undohistの設定
@@ -829,12 +830,12 @@ T - tag prefix
   :straight t    
   :config
   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.ts$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
-  (setq web-mode-content-types-alist
-      '(("jsx" . "\\.js[x]?\\'")))
+					;(add-to-list 'auto-mode-alist '("\\.js$" . web-mode)) ;
+					;(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+					;(add-to-list 'auto-mode-alist '("\\.ts$" . web-mode))
+					;(add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
+					;(setq web-mode-content-types-alist
+					;'(("jsx" . "\\.js[x]?\\'")))
   )
 
 
