@@ -445,6 +445,7 @@
   )
 
 (use-package smex
+  :straight t
   :bind
   (("M-x" . smex))
   :init
