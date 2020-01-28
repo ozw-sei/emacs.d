@@ -367,8 +367,10 @@
 ;;; ミニバッファ履歴を次回Emacs起動時にも保存する
 (savehist-mode 1)
 
-;;; シェルに合わせるため、C-hは後退に割り当てる
-(bind-key* "C-h" 'delete-backward-char)
+;;; シェルに合わせるため、C-hはに割り当てる
+(keyboard-translate ?\C-h ?\C-?)
+(global-set-key "\C-h" nil)
+;;(global-set-key "\C-h" 'delete-backward-char)
 
 ;;; モードラインに時刻を表示する
 (display-time)
@@ -1072,3 +1074,13 @@ If there are two or more windows, it will go to another window."
     (set-face-foreground 'whitespace-space "RGB:44/44/44")
     )
   )
+
+(use-package diminish
+  :requires (diminish)
+  :config
+  (progn
+    (add-hook 'lisp-interaction-mode-hook (lambda () (setq mode-name "Lisp")))
+    (add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "elisp")))
+    (add-hook 'texinfo-mode-hook (lambda () (setq mode-name "texi")))
+    (add-hook 'change-log-mode-hook (lambda () (setq mode-name "CL")))
+    (diminish 'isearch-mode)))
