@@ -453,8 +453,6 @@
   (smex-initialize)
   )
 
-
-
 ;;----------------------
 ;; undohistの設定
 (use-package undohist
@@ -478,7 +476,7 @@
   :config
   (projectile-mode +1)
   :bind* (("C-c C-f" . projectile-find-file)
-         ))
+          ))
 
 (use-package hydra
   :straight t)
@@ -808,9 +806,9 @@ T - tag prefix
   (setq tab-width 4)
   (setq evil-shift-width 4)
 
-  ;csharp-mode README.md recommends this too
-  ;(electric-pair-mode 1)       ;; Emacs 24
-  ;(electric-pair-local-mode 1) ;; Emacs 25
+                                        ;csharp-mode README.md recommends this too
+                                        ;(electric-pair-mode 1)       ;; Emacs 24
+                                        ;(electric-pair-local-mode 1) ;; Emacs 25
 
   (local-set-key (kbd "C-c r r") 'mnisharp-run-code-action-refactoring)
   (local-set-key (kbd "C-c C-c") 'recompile))
@@ -837,8 +835,6 @@ T - tag prefix
 					;(setq web-mode-content-types-alist
 					;'(("jsx" . "\\.js[x]?\\'")))
   )
-
-
 
 (use-package csv-mode
   :straight t
@@ -888,10 +884,9 @@ T - tag prefix
 (use-package ruby-electric
   :straight t)
 
- ;; (use-package projectile-rails
- ;;   :straight t
-   ;; :after projectile)
-                                        ;
+                                        ;(use-package projectile-rails
+                                        ;:straight t
+                                        ;:after projectile)
 
 (require 'rbenv)
 (global-rbenv-mode)
@@ -917,8 +912,8 @@ T - tag prefix
 (use-package ag
   :straight t
   :config
-  ;(setq ag-executable "ag")
-  (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores"))
+  (setq ag-executable "ag")
+  (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores")))
 
 (use-package yaml-mode
   :straight t
