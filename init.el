@@ -257,8 +257,6 @@
                                         ;(load-theme 'monokai t)
                                         ;)
 
-(executable-find "/usr/local/bin/cmigemo")
-
 (use-package anzu
   :straight t
   :init
@@ -327,9 +325,27 @@
 (setq set-mark-command-repeat-pop t)
 
 ;;; 複数のディレクトリで同じファイル名のファイルを開いたときのバッファ名を調整する
-(require 'uniquify)
-;; filename<dir> 形式のバッファ名にする
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(use-package uniquify
+
+  :config (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
+
+
+;;; https://www.emacswiki.org/emacs/AnsiColor
+(use-package ansi-color
+  :straight t
+  :mode
+  (("\\.log$" . display-ansi-colors))
+  :config
+  (progn
+    ;; http://stackoverflow.com/a/23382008
+    (defun display-ansi-colors ()
+      (interactive)
+      (let ((inhibit-read-only t))
+        (ansi-color-apply-on-region (point-min) (point-max))))))
+
+;; M-x woman
+(use-package woman
+  :config (setq woman-cache-filename (expand-file-name "~/.emacs.d/woman-cache")))
 
 ;; font-size
 (set-face-attribute 'default nil :height 140)
@@ -699,6 +715,7 @@
 (add-to-list 'recentf-exclude "ido.last")
 ;; 最近使ったファイルに加えないファイルを
 (add-to-list 'recentf-exclude "smex-items")
+(add-to-list 'recentf-exclude "woman-cach")
 ;; 正規表現で指定する
 (add-to-list 'recentf-exclude "COMMIT_EDITMSG")
 
@@ -1011,9 +1028,47 @@ If there are two or more windows, it will go to another window."
 (use-package go-direx
   :straight t)
 
-(use-package real-auto-save
+;; '(use-package real-auto-save
+;;    :straight t
+;;    :config
+;;    (setq real-auto-save-interval 3)        ;3秒後に自動保存
+;;    (add-hook \'find-file-hook \'real-auto-save-mode))
+
+
+
+(use-package unicode-whitespace
+  :requires (list-utils
+             ucs-utils
+             unicode-whitespace
+             persistent-soft)
+  :config
+  (whitespace-mode 1)
+  (unicode-whitespace-setup)
+  )
+
+
+
+(use-package whitespace
   :straight t
   :config
-  (setq real-auto-save-interval 3)        ;3秒後に自動保存
-  (add-hook 'find-file-hook 'real-auto-save-mode
+  (progn
+    (add-hook 'ruby-mode-hook (lambda () (whitespace-mode 1)))
+    (add-hook 'c-mode-common-hook (lambda () (whitespace-mode 1)))
+    (setq whitespace-style '(face
+                             trailing
+                             tabs
+                             spaces
+                             lines-tail
+                             newline
+                             empty
+                             indentation
+                             space-after-tab
+                             space-before-tab
+                             space-mark
+                             tab-mark
+                             ))
+    (set-face-background 'whitespace-newline 'nil)
+    (set-face-background 'whitespace-space 'nil)
+    (set-face-foreground 'whitespace-space "RGB:44/44/44")
+    )
   )
