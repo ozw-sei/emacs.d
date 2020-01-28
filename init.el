@@ -1010,3 +1010,10 @@ If there are two or more windows, it will go to another window."
 
 (use-package go-direx
   :straight t)
+
+(use-package real-auto-save
+  :straight t
+  :config
+  (setq real-auto-save-interval 3)        ;3秒後に自動保存
+  (add-hook 'find-file-hook 'real-auto-save-mode
+  )
