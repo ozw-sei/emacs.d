@@ -242,8 +242,13 @@
 (use-package monokai-theme
   :straight t
   :config
-  (load-theme 'monokai t)
-)
+  (load-theme 'solarized-light t))
+
+                                        ;(use-package monokai-theme
+                                        ;:straight t
+                                        ;:config
+                                        ;(load-theme 'monokai t)
+;)
 
 (executable-find "/usr/local/bin/cmigemo")
 
