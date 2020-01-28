@@ -713,9 +713,9 @@
 )
 
 (add-to-list 'recentf-exclude "ido.last")
-;; 最近使ったファイルに加えないファイルを
+;; 最近使ったファイルに加えないファイルをg
 (add-to-list 'recentf-exclude "smex-items")
-(add-to-list 'recentf-exclude "woman-cach")
+(add-to-list 'recentf-exclude "woman-cache")
 ;; 正規表現で指定する
 (add-to-list 'recentf-exclude "COMMIT_EDITMSG")
 
