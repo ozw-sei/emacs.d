@@ -692,6 +692,7 @@
         "./straight/"
         "persp-confs"
         "*.sqlite"
+        "./server/"
       )
 )
 
