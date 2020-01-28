@@ -30,9 +30,12 @@
 (use-package exec-path-from-shell
   :straight t
   :if (memq window-system '(mac ns x))
+  :init   (setenv "SHELL" "/usr/local/bin/zsh")
   :config
   (exec-path-from-shell-initialize)
   )
+
+
 
 (use-package magit-lfs
   :straight t)
@@ -206,12 +209,7 @@
 
 (use-package terraform-mode
   :straight t)
-  
-(use-package anzu
-  :straight t
-  :init
-  (anzu-mode +1)
-  (setq anzu-use-migemo t))
+
 
 (setq ns-pop-up-frames nil)
 
@@ -261,13 +259,19 @@
 
 (executable-find "/usr/local/bin/cmigemo")
 
+(use-package anzu
+  :straight t
+  :init
+  (anzu-mode +1)
+  )
+
 ;; migemo
 (use-package migemo
   :if (executable-find "/usr/local/bin/cmigemo")
   
   :init
   (load-library "migemo")
-    
+  
   :config
   (setq migemo-command "/usr/local/bin/cmigemo")
   (setq migemo-options '("-q" "--emacs"))
@@ -276,7 +280,7 @@
   (setq migemo-coding-system 'utf-8-unix)
   (setq migemo-regex-dictionary nil)
   (migemo-init)
-
+  (setq anzu-use-migemo t)
   :straight t
   )
 
@@ -492,7 +496,6 @@
   ("C-c f" . 'projectile-find-file)
   )
 
-
 (use-package hydra
   :straight t)
 
@@ -530,7 +533,7 @@
     ("c" elscreen-create "Create a new tab")
     ("k" elscreen-kill "Kill a tab")
     ("r" elscreen-screen-nickname  "Rename")
-  )
+    ))
 
 (bind-key* "C-z" 'hydra-elscreen/body)
 
@@ -565,11 +568,8 @@
 (eval-after-load "ispell"
   '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
 (setq ispell-program-name "aspell"
-  ispell-extra-args
-  '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
-
-(use-package hydra
-  :straight t)
+      ispell-extra-args
+      '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
 
 (use-package git-gutter
   :straight t
@@ -981,3 +981,32 @@ If there are two or more windows, it will go to another window."
   (custom-set-variables
    '(zoom-size '(0.618 . 0.618)))
   )
+
+(use-package go-mode
+  :straight t
+  :init
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  :config
+  
+  (setq exec-path (parse-colon-path (getenv "GOROOT")))
+  (setq exec-path (parse-colon-path (getenv "GOPATH")))
+  (setq exec-path (parse-colon-path (getenv "GOPATH")))
+  (setq eshell-path-env (getenv "GOPATH"))
+  (setq eshell-path-env (getenv "PATH"))
+  (setq eshell-path-env (getenv "GOROOT"))  
+  :bind
+  ("M-." . 'godef-jump)
+  ("M-," . 'pop-tag-mark)
+  )
+
+
+(use-package company-go
+  :straight t
+  :config
+  (custom-set-variables
+   '(company-go-insert-arguments nil))
+  :after (go-mode company)
+  )
+
+(use-package go-direx
+  :straight t)
