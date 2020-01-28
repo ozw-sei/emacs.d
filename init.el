@@ -72,7 +72,6 @@
   
   (global-company-mode) ; 全バッファで有効にする
   (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
-  (setq company-idle-delay 0.3) ; デフォルトは0.5
   (setq company-minimum-prefix-length 2) ; デフォルトは4
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
   (setq completion-ignore-case t)
@@ -101,8 +100,18 @@
   
 (use-package eglot
   :straight t
-  :bind ("M-r" . 'xref-find-references)
-  :hook ((c-mode c++-mode ruby-mode js-mode typescript-mode) . eglot-ensure)
+  :bind (
+         ("M-r" . 'xref-find-references )
+         ("C-." . (lambda ()
+                    (interactive)
+                    (eglot-help-at-point)
+                    (windmove-right))) 
+         ("C-," . (lambda ()
+                    (interactive)
+                    (eglot-code-actions)
+                    (windmove-right))) 
+         )
+  :hook ((c-mode c++-mode ruby-mode) . eglot-ensure)
   )
 
 (use-package add-node-modules-path
@@ -239,7 +248,7 @@
 
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
 
-(use-package monokai-theme
+(use-package solarized-theme
   :straight t
   :config
   (load-theme 'solarized-light t))
@@ -248,7 +257,7 @@
                                         ;:straight t
                                         ;:config
                                         ;(load-theme 'monokai t)
-;)
+                                        ;)
 
 (executable-find "/usr/local/bin/cmigemo")
 
@@ -369,8 +378,6 @@
 ;; スクリーンの最大化
 (set-frame-parameter nil 'fullscreen 'maximized)
 
-(bind-key* "C-t" 'other-window)
-
 ;; 最近のファイル500個を保存する
 (setq recentf-max-saved-items 500)
 
@@ -480,16 +487,20 @@
   (setq projectile-project-search-path '("~/go/src/"))  
   :config
   (projectile-mode +1)
-  :bind* (("C-c C-f" . projectile-find-file)
-          ))
+  :bind
+  ("C-c C-f" . 'projectile-find-file)
+  ("C-c f" . 'projectile-find-file)
+  )
+
 
 (use-package hydra
   :straight t)
 
 (defhydra hydra-projectile (:color teal
-			    :columns 4)
+			           :columns 4)
   "Projectile"
   ("f"   projectile-find-file                "Find File")
+  ("a"   projectile-ag                "ag")
   ("r"   projectile-recentf                  "Recent Files")
   ("z"   projectile-cache-current-file       "Cache Current File")
   ("x"   projectile-remove-known-project     "Remove Known Project")
@@ -505,6 +516,23 @@
 
 (bind-key "C-c p" 'hydra-projectile/body)
 (bind-key "C-c C-p" 'hydra-projectile/body)
+
+;; elscreen
+(use-package elscreen
+  :straight t
+  :init
+  (elscreen-start)
+  :config
+  (defhydra hydra-elscreen (:color blue)
+    "Do?"
+    ("n" elscreen-next "Next tab")
+    ("p" elscreen-previous "Previous tab")
+    ("c" elscreen-create "Create a new tab")
+    ("k" elscreen-kill "Kill a tab")
+    ("r" elscreen-screen-nickname  "Rename")
+  )
+
+(bind-key* "C-z" 'hydra-elscreen/body)
 
 ;; flycheck
 (use-package flycheck
@@ -932,3 +960,23 @@ T - tag prefix
 
 (use-package viewer
   :straight t)
+
+
+(defun other-window-or-split ()
+  "If there is one window, open split window.
+If there are two or more windows, it will go to another window."
+  (interactive)
+  (when (one-window-p)
+    (split-window-horizontally))
+  (other-window 1))
+
+(bind-key* "C-t" 'other-window-or-split)
+
+(use-package zoom
+  :straight t
+  :config
+  (custom-set-variables
+   '(zoom-mode t))
+  (custom-set-variables
+   '(zoom-size '(0.618 . 0.618)))
+  )
