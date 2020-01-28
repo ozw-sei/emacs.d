@@ -243,7 +243,8 @@
   :straight t
   :config
   (load-theme 'monokai t)
-)
+  )
+
 
 (executable-find "/usr/local/bin/cmigemo")
 
