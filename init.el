@@ -14,7 +14,7 @@
 (straight-use-package 'use-package)
 
 ;; use-packageをstraight.elにフォールバックする
-(setq straight-use-package-by-default t)
+(defvar straight-use-package-by-default t)
 
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
@@ -22,7 +22,7 @@
 ;(package-initialize)
 
 ;;; ログはエラーが出た時のみ
-(setq display-warning-minimum-level :error)
+(defvar display-warning-minimum-level :error)
 
 ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-refresh-contents)
@@ -72,7 +72,6 @@
   
   (global-company-mode) ; 全バッファで有効にする
   (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
-  (setq company-idle-delay 0.3) ; デフォルトは0.5
   (setq company-minimum-prefix-length 2) ; デフォルトは4
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
   (setq completion-ignore-case t)
@@ -101,8 +100,18 @@
   
 (use-package eglot
   :straight t
-  :bind ("M-r" . 'xref-find-references)
-  :hook ((c-mode c++-mode ruby-mode js-mode typescript-mode) . eglot-ensure)
+  :bind (
+         ("M-r" . 'xref-find-references )
+         ("C-." . (lambda ()
+                    (interactive)
+                    (eglot-help-at-point)
+                    (windmove-right))) 
+         ("C-," . (lambda ()
+                    (interactive)
+                    (eglot-code-actions)
+                    (windmove-right))) 
+         )
+  :hook ((c-mode c++-mode ruby-mode) . eglot-ensure)
   )
 
 (use-package add-node-modules-path
@@ -239,12 +248,16 @@
 
 (setq alchemist-key-command-prefix (kbd "C-c ,"))
 
-(use-package monokai-theme
+(use-package solarized-theme
   :straight t
   :config
-  (load-theme 'monokai t)
-  )
+  (load-theme 'solarized-light t))
 
+                                        ;(use-package monokai-theme
+                                        ;:straight t
+                                        ;:config
+                                        ;(load-theme 'monokai t)
+                                        ;)
 
 (executable-find "/usr/local/bin/cmigemo")
 
@@ -365,8 +378,6 @@
 ;; スクリーンの最大化
 (set-frame-parameter nil 'fullscreen 'maximized)
 
-(bind-key* "C-t" 'other-window)
-
 ;; 最近のファイル500個を保存する
 (setq recentf-max-saved-items 500)
 
@@ -446,11 +457,11 @@
   )
 
 (use-package smex
+  :straight t
   :bind
-  (("M-x" . smex))
-  :init
-  (setq smex-save-file "~/.emacs.d/cache/.smex-items")
+  (("M-x" . smex))  
   :config
+  (setq smex-save-file "~/.emacs.d/cache/.smex-items")
   (smex-initialize)
   )
 
@@ -476,16 +487,20 @@
   (setq projectile-project-search-path '("~/go/src/"))  
   :config
   (projectile-mode +1)
-  :bind* (("C-c C-f" . projectile-find-file)
-         ))
+  :bind
+  ("C-c C-f" . 'projectile-find-file)
+  ("C-c f" . 'projectile-find-file)
+  )
+
 
 (use-package hydra
   :straight t)
 
 (defhydra hydra-projectile (:color teal
-			    :columns 4)
+			           :columns 4)
   "Projectile"
   ("f"   projectile-find-file                "Find File")
+  ("a"   projectile-ag                "ag")
   ("r"   projectile-recentf                  "Recent Files")
   ("z"   projectile-cache-current-file       "Cache Current File")
   ("x"   projectile-remove-known-project     "Remove Known Project")
@@ -501,6 +516,23 @@
 
 (bind-key "C-c p" 'hydra-projectile/body)
 (bind-key "C-c C-p" 'hydra-projectile/body)
+
+;; elscreen
+(use-package elscreen
+  :straight t
+  :init
+  (elscreen-start)
+  :config
+  (defhydra hydra-elscreen (:color blue)
+    "Do?"
+    ("n" elscreen-next "Next tab")
+    ("p" elscreen-previous "Previous tab")
+    ("c" elscreen-create "Create a new tab")
+    ("k" elscreen-kill "Kill a tab")
+    ("r" elscreen-screen-nickname  "Rename")
+  )
+
+(bind-key* "C-z" 'hydra-elscreen/body)
 
 ;; flycheck
 (use-package flycheck
@@ -557,10 +589,20 @@
 (use-package git-timemachine
   :straight t)
 
+(use-package js2-refactor
+  :straight t)
+
+(js2r-add-keybindings-with-prefix "C-c m")
+
+(use-package prettier-js
+  :straight t)
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+
 ;; git-gutter:popup-hunkをそのまま割り当てるとdiffウィンドウを閉じれないので
 ;; トグルできる関数を定義
 (defun git-gutter:toggle-popup-hunk ()
-  "Toggle git-gutter hunk window."
+  "Toggle 'git-gutter' hunk window."
   (interactive)
   (if (window-live-p (git-gutter:popup-buffer-window))
       (delete-window (git-gutter:popup-buffer-window))
@@ -578,8 +620,8 @@
   ("m" magit-status "magit-status")
   ("d" magit-status-here "status-here")
   ("c" magit-commit-create "commit")
-  ("b" magit-blame-addition "blame")
-  ("P" magit-push "push")
+  ("b" magit-blame-addition "blame")  
+  ("P" magit-push "push")             
   ("x" magit-dispatch "dispatch")
   ("t" git-timemachine "time-machine")
   ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
@@ -619,9 +661,9 @@
 ;; hydra flycheck 操作
 (defhydra hydra-flycheck nil
   "hydra-flycheck"
-  ("j" next-error     "next-error")
-  ("k" previous-error "prev-error")
-  ("h" first-error    "first-error")
+  ("j" flymake-goto-next-error     "next-error")
+  ("k" flymake-goto-previous-error "prev-error")
+  ("h" flymake-goto-first-error    "first-error")
   ("l" (condition-case err
            (while t
              (next-error))
@@ -797,9 +839,9 @@ T - tag prefix
   (setq tab-width 4)
   (setq evil-shift-width 4)
 
-  ;csharp-mode README.md recommends this too
-  ;(electric-pair-mode 1)       ;; Emacs 24
-  ;(electric-pair-local-mode 1) ;; Emacs 25
+                                        ;csharp-mode README.md recommends this too
+                                        ;(electric-pair-mode 1)       ;; Emacs 24
+                                        ;(electric-pair-local-mode 1) ;; Emacs 25
 
   (local-set-key (kbd "C-c r r") 'mnisharp-run-code-action-refactoring)
   (local-set-key (kbd "C-c C-c") 'recompile))
@@ -819,15 +861,13 @@ T - tag prefix
   :straight t    
   :config
   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.ts$" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
-  (setq web-mode-content-types-alist
-      '(("jsx" . "\\.js[x]?\\'")))
+					;(add-to-list 'auto-mode-alist '("\\.js$" . web-mode)) ;
+					;(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+					;(add-to-list 'auto-mode-alist '("\\.ts$" . web-mode))
+					;(add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
+					;(setq web-mode-content-types-alist
+					;'(("jsx" . "\\.js[x]?\\'")))
   )
-
-
 
 (use-package csv-mode
   :straight t
@@ -877,10 +917,9 @@ T - tag prefix
 (use-package ruby-electric
   :straight t)
 
- ;; (use-package projectile-rails
- ;;   :straight t
-   ;; :after projectile)
-                                        ;
+                                        ;(use-package projectile-rails
+                                        ;:straight t
+                                        ;:after projectile)
 
 (require 'rbenv)
 (global-rbenv-mode)
@@ -906,8 +945,8 @@ T - tag prefix
 (use-package ag
   :straight t
   :config
-  ;(setq ag-executable "ag")
-  (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores"))
+  (setq ag-executable "ag")
+  (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores")))
 
 (use-package yaml-mode
   :straight t
@@ -921,3 +960,23 @@ T - tag prefix
 
 (use-package viewer
   :straight t)
+
+
+(defun other-window-or-split ()
+  "If there is one window, open split window.
+If there are two or more windows, it will go to another window."
+  (interactive)
+  (when (one-window-p)
+    (split-window-horizontally))
+  (other-window 1))
+
+(bind-key* "C-t" 'other-window-or-split)
+
+(use-package zoom
+  :straight t
+  :config
+  (custom-set-variables
+   '(zoom-mode t))
+  (custom-set-variables
+   '(zoom-size '(0.618 . 0.618)))
+  )
