@@ -589,6 +589,7 @@
       ispell-extra-args
       '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
 
+
 (use-package git-gutter
   :straight t
   :custom
@@ -600,6 +601,11 @@
   :bind
   ;; hydra-git-gutter起動のキーバインド
   ("C-c g" . hydra-git-gutter/body))
+
+;; (use-package git-gutter-fringe
+;;   :straght t
+;;   :after git-gutter)
+
 
 (use-package quickrun
   :straight t)
@@ -965,8 +971,33 @@ T - tag prefix
 (use-package ag
   :straight t
   :config
+  
   (setq ag-executable "ag")
-  (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores")))
+  (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores"))
+  (setq ag-highlight-search t)  ; 検索キーワードをハイライト
+  (setq ag-reuse-buffers t)     ; 検索用バッファを使い回す (検索ごとに新バッファを作らない)
+  )
+
+(require 'wgrep)
+(use-package wgrep
+  :config  
+  ;;; eでwgrepモードにする
+  (setf wgrep-enable-key "e")
+;;; wgrep終了時にバッファを保存
+  (setq wgrep-auto-save-buffer t)
+;;; read-only bufferにも変更を適用する
+  (setq wgrep-change-readonly-file t))
+
+(require 'wgrep-ag)
+(use-package wgrep-ag
+  :requires (wgrep-ag)
+  :after (wgrep)
+  :hook ((c-mode c++-mode ruby-mode) . eglot-ensure)
+  (ag-mode . (lambda ()
+               (setq wgrep-auto-save-buffer t)  ; 編集完了と同時に保存
+               (setq wgrep-enable-key "r")      ; "r" キーで編集モードに
+               (wgrep-ag-setup)))
+  )
 
 (use-package yaml-mode
   :straight t
@@ -1036,20 +1067,6 @@ If there are two or more windows, it will go to another window."
 ;;    (setq real-auto-save-interval 3)        ;3秒後に自動保存
 ;;    (add-hook \'find-file-hook \'real-auto-save-mode))
 
-
-
-(use-package unicode-whitespace
-  :requires (list-utils
-             ucs-utils
-             unicode-whitespace
-             persistent-soft)
-  :config
-  (whitespace-mode 1)
-  (unicode-whitespace-setup)
-  )
-
-
-
 (use-package whitespace
   :straight t
   :config
@@ -1075,10 +1092,19 @@ If there are two or more windows, it will go to another window."
     )
   )
 
+(require 'list-utils)
+(require 'ucs-utils)
+(require 'unicode-whitespace)
+(require 'persistent-soft)
+(require 'unicode-whitespace)
+(whitespace-mode 1)
+(unicode-whitespace-setup)
+
+
 (use-package diminish
   :requires (diminish)
   :config
-  (progn
+  (progn    
     (add-hook 'lisp-interaction-mode-hook (lambda () (setq mode-name "Lisp")))
     (add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "elisp")))
     (add-hook 'texinfo-mode-hook (lambda () (setq mode-name "texi")))
