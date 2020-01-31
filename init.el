@@ -174,14 +174,16 @@
 
 (use-package magit
   :straight t
-  :config
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+  :config  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+
 (use-package magit-lfs
   :straight t
   :after magit)
+
 (use-package magit-todos
   :straight t
   :after magit)
+
 (use-package magit-gitflow
   :straight t
   :after magit)
@@ -511,7 +513,6 @@
   (projectile-mode +1)
   :bind
   ("C-c C-f" . 'projectile-find-file)
-  ("C-c f" . 'projectile-find-file)
   )
 
 (use-package hydra
@@ -535,7 +536,6 @@
   ("s"   projectile-switch-project           "Switch Project")
   ("k"   projectile-kill-buffers             "Kill Buffers"))
 
-(bind-key "C-c p" 'hydra-projectile/body)
 (bind-key "C-c C-p" 'hydra-projectile/body)
 
 ;; elscreen
@@ -1032,34 +1032,52 @@ If there are two or more windows, it will go to another window."
    '(zoom-size '(0.618 . 0.618)))
   )
 
-(use-package go-mode
-  :straight t
-  :init
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  :config
-  
-  (setq exec-path (parse-colon-path (getenv "GOROOT")))
-  (setq exec-path (parse-colon-path (getenv "GOPATH")))
-  (setq exec-path (parse-colon-path (getenv "GOPATH")))
-  (setq eshell-path-env (getenv "GOPATH"))
-  (setq eshell-path-env (getenv "PATH"))
-  (setq eshell-path-env (getenv "GOROOT"))  
-  :bind
-  ("M-." . 'godef-jump)
-  ("M-," . 'pop-tag-mark)
-  )
+(use-package dumb-jump  
+  :config (setq dumb-jump-selector 'ido) ;; (setq dumb-jump-selector 'helm)
+  :straight)
+
+(defhydra dumb-jump-hydra (:color blue :columns 3)
+  "Dumb Jump"
+  ("j" dumb-jump-go "Go")
+  ("o" dumb-jump-go-other-window "Other window")
+  ("e" dumb-jump-go-prefer-external "Go external")
+  ("x" dumb-jump-go-prefer-external-other-window "Go external other window")
+  ("i" dumb-jump-go-prompt "Prompt")
+  ("l" dumb-jump-quick-look "Quick look")
+  ("b" dumb-jump-back "Back"))
+
+(bind-key "C-M-." 'dumb-jump-hydra/body)
 
 
-(use-package company-go
-  :straight t
-  :config
-  (custom-set-variables
-   '(company-go-insert-arguments nil))
-  :after (go-mode company)
-  )
+;; (use-package go-mode
+;;   :straight t
+;;   :init
+;;   (add-hook 'before-save-hook 'gofmt-before-save)
+;;   :config
 
-(use-package go-direx
-  :straight t)
+;;   (setq exec-path (parse-colon-path (getenv "GOROOT")))
+;;   (setq exec-path (parse-colon-path (getenv "GOPATH")))
+;;   (setq exec-path (parse-colon-path (getenv "GOPATH")))
+;;   (setq eshell-path-env (getenv "GOPATH"))
+;;   (setq eshell-path-env (getenv "PATH"))
+;;   (setq eshell-path-env (getenv "GOROOT"))  
+;;   :bind
+;;   ("M-." . 'godef-jump)
+;;   ("M-," . 'pop-tag-mark)
+;;   )
+
+
+;; (use-package company-go
+;;   :straight t
+;;   :config
+;;   (custom-set-variables
+;;    '(company-go-insert-arguments nil))
+;;   :after (go-mode company)
+;;   )
+
+;; (use-package go-direx
+;;   :straight t
+;;   :after (go-mode))
 
 ;; '(use-package real-auto-save
 ;;    :straight t
