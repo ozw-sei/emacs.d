@@ -4,8 +4,8 @@
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el" 
-        'silent 'inhibit-cookies)
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -72,7 +72,7 @@
 (use-package company
   :straight t
   :config
-  
+
   (global-company-mode) ; 全バッファで有効にする
   (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
   (setq company-minimum-prefix-length 2) ; デフォルトは4
@@ -100,7 +100,7 @@
 (use-package typescript-mode
   :straight t)
 
-  
+
 (use-package eglot
   :straight t
   :bind (
@@ -108,11 +108,11 @@
          ("C-." . (lambda ()
                     (interactive)
                     (eglot-help-at-point)
-                    (windmove-right))) 
+                    (windmove-right)))
          ("C-," . (lambda ()
                     (interactive)
                     (eglot-code-actions)
-                    (windmove-right))) 
+                    (windmove-right)))
          )
   :hook ((c-mode c++-mode ruby-mode) . eglot-ensure)
   )
@@ -152,7 +152,7 @@
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
 (setq gc-cons-threshold (* gc-cons-threshold 10))
-(setq garbage-collection-messages t) 
+(setq garbage-collection-messages t)
 
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
@@ -268,10 +268,10 @@
 ;; migemo
 (use-package migemo
   :if (executable-find "/usr/local/bin/cmigemo")
-  
+
   :init
   (load-library "migemo")
-  
+
   :config
   (setq migemo-command "/usr/local/bin/cmigemo")
   (setq migemo-options '("-q" "--emacs"))
@@ -291,7 +291,7 @@
   :delight yas-minor-mode
   :hook ((prog-mode). yas-minor-mode)
   :config (yas-reload-all)
-  :bind  
+  :bind
   ("C-j" . company-yasnippet)
   )
 
@@ -305,10 +305,10 @@
 
 (use-package iflipb
   :straight t
-  :config  
+  :config
   (setq iflipb-ignore-buffers (list "^[*]" "^magit" "]$"))
   (setq iflipb-wrap-around t)
-  :bind  
+  :bind
   ("M-[" . iflipb-previous-buffer)
   ("M-]" . iflipb-next-buffer)
 )
@@ -351,6 +351,15 @@
 
 ;; font-size
 (set-face-attribute 'default nil :height 140)
+
+
+(setq default-frame-alist
+      (append (list
+               '(font . "Consolas"))
+              default-frame-alist))
+
+(font-family-list)
+(add-to-list 'face-font-rescale-alist '("Noto Sans Regular" . 0.85))
 
 ;;; ファイルを開いた位置を保存する
 (require 'saveplace)
@@ -468,8 +477,8 @@
 
 (use-package goto-chg
   :straight t)
-(global-set-key (kbd "C-<") 'goto-last-change)
-(global-set-key (kbd "C->") 'goto-last-change-reverse)
+(global-set-key (kbd "<f7>") 'goto-last-change)
+(global-set-key (kbd "<f8>") 'goto-last-change-reverse)
 
 (use-package ido-vertical-mode
   :straight t
@@ -483,7 +492,7 @@
 (use-package smex
   :straight t
   :bind
-  (("M-x" . smex))  
+  (("M-x" . smex))
   :config
   (setq smex-save-file "~/.emacs.d/cache/.smex-items")
   (smex-initialize)
@@ -508,7 +517,7 @@
 (use-package projectile
   :straight t
   :init
-  (setq projectile-project-search-path '("~/go/src/"))  
+  (setq projectile-project-search-path '("~/go/src/"))
   :config
   (projectile-mode +1)
   :bind
@@ -526,12 +535,12 @@
   ("r"   projectile-recentf                  "Recent Files")
   ("z"   projectile-cache-current-file       "Cache Current File")
   ("x"   projectile-remove-known-project     "Remove Known Project")
-  
+
   ("d"   projectile-find-dir                 "Find Directory")
   ("b"   projectile-switch-to-buffer         "Switch to Buffer")
   ("c"   projectile-invalidate-cache         "Clear Cache")
   ("X"   projectile-cleanup-known-projects   "Cleanup Known Projects")
-  
+
   ("o"   projectile-multi-occur              "Multi Occur")
   ("s"   projectile-switch-project           "Switch Project")
   ("k"   projectile-kill-buffers             "Kill Buffers"))
@@ -542,18 +551,7 @@
 (use-package elscreen
   :straight t
   :init
-  (elscreen-start)
-  :config
-  (defhydra hydra-elscreen (:color blue)
-    "Do?"
-    ("n" elscreen-next "Next tab")
-    ("p" elscreen-previous "Previous tab")
-    ("c" elscreen-create "Create a new tab")
-    ("k" elscreen-kill "Kill a tab")
-    ("r" elscreen-screen-nickname  "Rename")
-    ))
-
-(bind-key* "C-z" 'hydra-elscreen/body)
+  (elscreen-start))
 
 ;; flycheck
 (use-package flycheck
@@ -608,7 +606,10 @@
 
 
 (use-package quickrun
-  :straight t)
+  :straight t
+  :bind
+  ("<f5>" . quickrun)
+  )
 
 (use-package git-timemachine
   :straight t)
@@ -644,8 +645,8 @@
   ("m" magit-status "magit-status")
   ("d" magit-status-here "status-here")
   ("c" magit-commit-create "commit")
-  ("b" magit-blame-addition "blame")  
-  ("P" magit-push "push")             
+  ("b" magit-blame-addition "blame")
+  ("P" magit-push "push")
   ("x" magit-dispatch "dispatch")
   ("t" git-timemachine "time-machine")
   ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
@@ -673,7 +674,7 @@
   ("h" windmove-left "move-left")
   ("j" windmove-down "move-down")
   ("k" windmove-up "move-up")
-  ("l" windmove-right "move-right")  
+  ("l" windmove-right "move-right")
   )
 
 ; terminal にはtmuxがあるので使わない
@@ -759,7 +760,7 @@
 
 (use-package mwim
   :straight t
-  :bind 
+  :bind
   ("C-a" . 'mwim-beginning-of-code-or-line)
   ("C-e" . 'mwim-end-of-code-or-line))
 
@@ -884,7 +885,7 @@ T - tag prefix
          ("\\.shader\\'" . glsl-mode)))
 
 (use-package web-mode
-  :straight t    
+  :straight t
   :config
   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
 					;(add-to-list 'auto-mode-alist '("\\.js$" . web-mode)) ;
@@ -910,7 +911,7 @@ T - tag prefix
 ;;; Ruby-mode
 (use-package ruby-mode
   :straight t
-  :mode (         
+  :mode (
          ("\\Vagrantfile$" . ruby-mode)
 
          ("\\.rb$" . ruby-mode))
@@ -1048,42 +1049,50 @@ If there are two or more windows, it will go to another window."
 
 (bind-key "C-M-." 'dumb-jump-hydra/body)
 
+(use-package go-mode
+  :straight t
+  :init
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  :config
 
-;; (use-package go-mode
-;;   :straight t
-;;   :init
-;;   (add-hook 'before-save-hook 'gofmt-before-save)
-;;   :config
+  (setq exec-path (parse-colon-path (getenv "GOROOT")))
+  (setq exec-path (parse-colon-path (getenv "GOPATH")))
+  (setq exec-path (parse-colon-path (getenv "PATH")))
 
-;;   (setq exec-path (parse-colon-path (getenv "GOROOT")))
-;;   (setq exec-path (parse-colon-path (getenv "GOPATH")))
-;;   (setq exec-path (parse-colon-path (getenv "GOPATH")))
-;;   (setq eshell-path-env (getenv "GOPATH"))
-;;   (setq eshell-path-env (getenv "PATH"))
-;;   (setq eshell-path-env (getenv "GOROOT"))  
-;;   :bind
-;;   ("M-." . 'godef-jump)
-;;   ("M-," . 'pop-tag-mark)
-;;   )
+  (setq eshell-path-env (getenv "GOPATH"))
+  (setq eshell-path-env (getenv "PATH"))
+  (setq eshell-path-env (getenv "GOROOT"))
+  :bind
+  ("M-." . 'godef-jump)
+  ("M-," . 'pop-tag-mark)
+  )
 
+(use-package company-go
+  :straight t
+  :config
+  (custom-set-variables
+   '(company-go-insert-arguments nil))
+  :after (go-mode company)
+  )
 
-;; (use-package company-go
-;;   :straight t
-;;   :config
-;;   (custom-set-variables
-;;    '(company-go-insert-arguments nil))
-;;   :after (go-mode company)
-;;   )
+(use-package go-direx
+  :straight t)
 
-;; (use-package go-direx
-;;   :straight t
-;;   :after (go-mode))
+(use-package real-auto-save
+  :straight t
+  :config
+  (setq real-auto-save-interval 3)        ;3秒後に自動保存
+  (add-hook 'find-file-hook 'real-auto-save-mode))
 
-;; '(use-package real-auto-save
-;;    :straight t
-;;    :config
-;;    (setq real-auto-save-interval 3)        ;3秒後に自動保存
-;;    (add-hook \'find-file-hook \'real-auto-save-mode))
+(use-package unicode-whitespace
+  :requires (list-utils
+	     ucs-utils
+	     unicode-whitespace
+	     persistent-soft)
+  :config
+  (whitespace-mode 1)
+  (unicode-whitespace-setup)
+  )
 
 (use-package whitespace
   :straight t
@@ -1128,3 +1137,26 @@ If there are two or more windows, it will go to another window."
     (add-hook 'texinfo-mode-hook (lambda () (setq mode-name "texi")))
     (add-hook 'change-log-mode-hook (lambda () (setq mode-name "CL")))
     (diminish 'isearch-mode)))
+
+(require 'breadcrumb)
+(defhydra hydra-breadcrumb
+  (:exit t)
+  "
+Breadcrumb bookmarks:
+  _<up>_:   prev   _S-<up>_:   local prev
+  _<down>_: next   _S-<down>_: local next
+  _s_: set  _c_: clear  _l_: list  _q_: quit
+"
+  ("<down>" bc-next nil :exit nil)
+  ("<up>" bc-previous nil :exit nil)
+  ("S-<down>" bc-local-next nil :exit nil)
+  ("S-<up>" bc-local-previous nil :exit nil)
+  ("l" bc-list nil)
+  ("s" bc-set nil)
+  ("c" bc-clear nil)
+  ("q" nil nil))
+
+(bind-key "C-x o" 'hydra-breadcrumb/body)
+
+(require 'browse-kill-ring)
+(bind-key "M-y" 'browse-kill-ring)
