@@ -531,7 +531,7 @@
 			           :columns 4)
   "Projectile"
   ("f"   projectile-find-file                "Find File")
-  ("a"   projectile-ag                "ag")
+  ("a"   projectile-ag                "ag" :exit t)
   ("r"   projectile-recentf                  "Recent Files")
   ("z"   projectile-cache-current-file       "Cache Current File")
   ("x"   projectile-remove-known-project     "Remove Known Project")
@@ -642,13 +642,13 @@
   ("n" git-gutter:next-hunk "next")
   ("s" git-gutter:stage-hunk "stage")
   ("r" git-gutter:revert-hunk "revert")
-  ("m" magit-status "magit-status")
-  ("d" magit-status-here "status-here")
-  ("c" magit-commit-create "commit")
-  ("b" magit-blame-addition "blame")
-  ("P" magit-push "push")
-  ("x" magit-dispatch "dispatch")
-  ("t" git-timemachine "time-machine")
+  ("m" magit-status "magit-status" :exit t)
+  ("d" magit-status-here "status-here" :exit t)
+  ("c" magit-commit-create "commit" :exit t)
+  ("b" magit-blame-addition "blame" :exit t)
+  ("P" magit-push "push" :exit t)
+  ("x" magit-dispatch "dispatch" :exit t)
+  ("t" git-timemachine "time-machine" :exit t)
   ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
 
 
@@ -972,7 +972,7 @@ T - tag prefix
 (use-package ag
   :straight t
   :config
-  
+
   (setq ag-executable "ag")
   (setq ag-arguments (list "--path-to-ignore" "--skip-vcs-ignores"))
   (setq ag-highlight-search t)  ; 検索キーワードをハイライト
@@ -981,7 +981,7 @@ T - tag prefix
 
 (require 'wgrep)
 (use-package wgrep
-  :config  
+  :config
   ;;; eでwgrepモードにする
   (setf wgrep-enable-key "e")
 ;;; wgrep終了時にバッファを保存
@@ -1033,13 +1033,13 @@ If there are two or more windows, it will go to another window."
    '(zoom-size '(0.618 . 0.618)))
   )
 
-(use-package dumb-jump  
+(use-package dumb-jump
   :config (setq dumb-jump-selector 'ido) ;; (setq dumb-jump-selector 'helm)
   :straight)
 
 (defhydra dumb-jump-hydra (:color blue :columns 3)
   "Dumb Jump"
-  ("j" dumb-jump-go "Go")
+  ("j" dumb-jump-go "Go" :exit t)
   ("o" dumb-jump-go-other-window "Other window")
   ("e" dumb-jump-go-prefer-external "Go external")
   ("x" dumb-jump-go-prefer-external-other-window "Go external other window")
@@ -1131,7 +1131,7 @@ If there are two or more windows, it will go to another window."
 (use-package diminish
   :requires (diminish)
   :config
-  (progn    
+  (progn
     (add-hook 'lisp-interaction-mode-hook (lambda () (setq mode-name "Lisp")))
     (add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "elisp")))
     (add-hook 'texinfo-mode-hook (lambda () (setq mode-name "texi")))
