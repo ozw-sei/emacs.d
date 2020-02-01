@@ -1,5 +1,4 @@
 ;; straight.el setting by myself
-
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
       (bootstrap-version 3))
   (unless (file-exists-p bootstrap-file)
@@ -19,8 +18,6 @@
 
 ;; elisp read config
 (add-to-list 'load-path "~/.emacs.d/elisp")
-
-;(package-initialize)
 
 ;;; ログはエラーが出た時のみ
 (defvar display-warning-minimum-level :error)
@@ -45,6 +42,7 @@
     (add-hook 'texinfo-mode-hook (lambda () (setq mode-name "texi")))
     (add-hook 'change-log-mode-hook (lambda () (setq mode-name "CL")))
     (diminish 'isearch-mode)))
+
 
 (use-package magit-lfs
   :straight t)
@@ -100,6 +98,7 @@
 (bind-key "M-p" 'ido-ghq-open)
 
 (use-package company
+  :diminish (company-mode)
   :straight t
   :config
 
@@ -264,7 +263,7 @@
 
 (use-package avy
   :bind
-  ("C-]" . avy-goto-char)
+  ("C-]" . ivy-avy)
   ("C-c l" . avy-goto-line)
   :straight t)
 
@@ -292,6 +291,7 @@
 
 (use-package anzu
   :straight t
+  :diminish (anzu-mode)
   :init
   (anzu-mode +1)
   )
@@ -430,7 +430,7 @@
                     (menu-bar-mode -1)
                     (tool-bar-mode -1)
                     (scroll-bar-mode -1)
-                    (bind-key "C-x C-c" 'smex)
+                    (bind-key "C-x C-c" 'counsel-M-x)
                     )
   )
 ;; I never use C-x C-c
@@ -502,13 +502,15 @@
   :diminish undo-tree-mode
   :bind
   ("C-c u" . 'undo-tree-visualize))
-
 ;; projectile
 (use-package projectile
   :straight t
   :diminish (projectile-mode)
   :config
   (projectile-mode +1)
+  (setq projectile-completion-system 'ivy)
+  (setq counsel-projectile-sort-files t) ;; 当該プロジェクト内リストをソート
+  (setq counsel-projectile-sort-projects t) ;; プロジェクトリストをソート
   :bind
   ("C-c C-f" . 'projectile-find-file)
   ("C-c f" . 'projectile-find-file)
@@ -516,18 +518,23 @@
 
 (use-package counsel-projectile
   :straight t
+  :config
+  (counsel-projectile-mode 1)
   :after (projectile))
 
 (use-package hydra
   :straight t)
+(use-package ivy-hydra
+  :straight t)
+
 
 (defhydra hydra-projectile (:color teal
 			           :columns 4)
   "Projectile"
   ("f"   counsel-projectile-find-file                "Find File")
   ("a"   projectile-ag                "ag" :exit t)
-  ("A"   counsel-projectile-ag                "ag" :exit t)
-  ("r"   projectile-recentf                  "Recent Files")
+  ("A"   counsel-projectile-ag                "ag in counsel" :exit t)
+  ("r"   projectile-recentf                  "Recent Files" :exit t)
 
   ("d"   counsel-projectile-find-dir                 "Find Directory")
   ("b"   counsel-projectile-switch-to-buffer         "Switch to Buffer")
@@ -564,18 +571,6 @@
 (eval-after-load 'typescript-mode
   '(add-hook 'typescript-mode-check #'add-node-modules-path))
 
-;; flyspell
-(add-hook 'prog-mode-hook 'flyspell-mode)
-
-;; ispell の後継である aspell を使う。
-;; CamelCase でもいい感じに spellcheck してくれる設定を追加
-;; See: https://stackoverflow.com/a/24878128/8888451
-(setq-default ispell-program-name "aspell")
-(eval-after-load "ispell"
-  '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
-(setq ispell-program-name "aspell"
-      ispell-extra-args
-      '("--sug-mode=ultra" "--lang=en_US" "--run-together" "--run-together-limit=5" "--run-together-min=2"))
 
 (use-package git-gutter
   :straight t
@@ -944,6 +939,7 @@ T - tag prefix
   :config (which-key-mode))
 
 (use-package smartparens
+  :diminish (smartparens-mode)
   :straight t)
 
 (use-package pip-requirements
@@ -1087,16 +1083,23 @@ Breadcrumb bookmarks:
 (bind-key "C-x o" 'hydra-breadcrumb/body)
 
 (bind-key* "C-x d" 'dired-jump)
-|   |
+
 (use-package counsel
   :straight t
-  :diminish (ivy-mode)
+  :diminish (ivy-mode counsel-mode)
   :config
-  (ivy-mode 1)
-  (counsel-mode 1)
+  (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../" ".DS_Store" ".git" ".meta" )))
+
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-display-style t)
+  (setq ivy-wrap t)
+  (when (setq enable-recursive-minibuffers t)
+    (minibuffer-depth-indicate-mode 1))
+  (require 'ivy-hydra)
+  (setq ivy-height 30)
+  (setq ivy-extra-directories nil)
+
   (custom-set-faces
    '(ivy-current-match
      ((((class color) (background light))
@@ -1116,11 +1119,13 @@ Breadcrumb bookmarks:
      ((((class color) (background light)) :foreground "#439943" :underline t)
       (((class color) (background dark)) :foreground "#33bb33" :underline t))))
 
+  (ivy-mode 1)
+  (counsel-mode 1)
+
   :bind
   ("M-x" . 'counsel-M-x)
   ("M-o" . 'occur)
   ("C-M-o" . 'swiper)
-  ("C-x C-f" . 'counsel-find-file)
   ("C-x C-r" . 'counsel-recentf)
   ("M-y" . 'counsel-yank-pop)
   ("<f1> f" . 'counsel-describe-function)
