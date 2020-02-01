@@ -52,9 +52,9 @@
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 
-(use-package aggressive-indent
-  :straight t
-  :config (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
+;; (use-package aggressive-indent
+;;   :straight t
+;;   :config (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
 (use-package origami
   :straight t)
@@ -90,9 +90,9 @@
 
 ;; ido-uniquitous
 ;; https://www.emacswiki.org/emacs/InteractivelyDoThings
-(defvar ido-cur-item nil)
-(defvar ido-default-item nil)
-(defvar ido-cur-list nil)
+;; (defvar ido-cur-item nil)
+;; (defvar ido-default-item nil)
+;; (defvar ido-cur-list nil)
 
 ;; ido-ghq
 (require 'ido-ghq)
@@ -234,7 +234,7 @@
 
 (set-face-attribute 'default nil :height 100)
 
-(setq ido-enable-flex-matching t)
+;(setq ido-enable-flex-matching t)
 
 (use-package powerline
   :straight t
@@ -448,42 +448,11 @@
 ;; 大文字小文字を区別しない
 (setq completion-ignore-case t)
 
-(bind-key "M-o" 'occur)
-
 (use-package goto-line-preview
   :straight t
   :config
   (global-set-key [remap goto-line] 'goto-line-preview)
 )
-
-;;; ido smex
-(use-package ido
-  :bind*
-  (("C-x C-r" . recentf-ido-find-file)
-   ("C-x C-f" . ido-find-file)
-   ("C-c d" . ido-dired)
-   ("C-x b" . ido-switch-buffer)
-   ("C-x d" . dired)
-   ("C-x C-b" . ido-switch-buffer)
-   )
-  :init
-  (recentf-mode 1)
-
-  (defun recentf-ido-find-file ()
-    "Find a recent file using ido."
-    (interactive)
-    (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
-      (when file
-        (find-file file))))
-
-  :config
-  (ido-mode 1)
-  (ido-everywhere 1)
-  (setq ido-enable-flex-matching t)
-  (setq ido-save-directory-list-file "~/.emacs.d/cache/ido.last")
-  (setq ido-max-window-height 0.75)
-  )
-
                                         ; Org-captureを呼び出すキーシーケンス
 (define-key global-map "\C-cc" 'org-capture)
                                         ; Org-captureのテンプレート（メニュー）の設定
@@ -509,23 +478,14 @@
 (global-set-key (kbd "<f7>") 'goto-last-change)
 (global-set-key (kbd "<f8>") 'goto-last-change-reverse)
 
-(use-package ido-vertical-mode
-  :straight t
-  :after ido
-  :config
-  (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-  (setq ido-max-window-height 0.75)
-  )
-
-(use-package smex
-  :straight t
-  :bind
-  (("M-x" . smex))
-  :config
-  (setq smex-save-file "~/.emacs.d/cache/.smex-items")
-  (smex-initialize)
-  )
+ (use-package ido-vertical-mode
+   :straight t
+   :after ido
+   :config
+   (ido-vertical-mode 1)
+   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+   (setq ido-max-window-height 0.75)
+   )
 
 ;;----------------------
 ;; undohistの設定
@@ -554,24 +514,25 @@
   ("C-c f" . 'projectile-find-file)
   )
 
+(use-package counsel-projectile
+  :straight t
+  :after (projectile))
+
 (use-package hydra
   :straight t)
 
 (defhydra hydra-projectile (:color teal
 			           :columns 4)
   "Projectile"
-  ("f"   projectile-find-file                "Find File")
+  ("f"   counsel-projectile-find-file                "Find File")
   ("a"   projectile-ag                "ag" :exit t)
+  ("A"   counsel-projectile-ag                "ag" :exit t)
   ("r"   projectile-recentf                  "Recent Files")
-  ("z"   projectile-cache-current-file       "Cache Current File")
-  ("x"   projectile-remove-known-project     "Remove Known Project")
 
-  ("d"   projectile-find-dir                 "Find Directory")
-  ("b"   projectile-switch-to-buffer         "Switch to Buffer")
-  ("c"   projectile-invalidate-cache         "Clear Cache")
-  ("X"   projectile-cleanup-known-projects   "Cleanup Known Projects")
+  ("d"   counsel-projectile-find-dir                 "Find Directory")
+  ("b"   counsel-projectile-switch-to-buffer         "Switch to Buffer")
 
-  ("s"   projectile-switch-project           "Switch Project")
+  ("s"   counsel-projectile-switch-project           "Switch Project")
   ("k"   projectile-kill-buffers             "Kill Buffers"))
 
 (bind-key "C-c p" 'hydra-projectile/body)
@@ -1059,13 +1020,14 @@ If there are two or more windows, it will go to another window."
   )
 
 (use-package go-direx
-  :straight t)
+  :straight t
+  :after go-mode)
 
 (use-package real-auto-save
   :straight t
   :diminish (real-auto-save-mode)
   :config
-  (setq real-auto-save-interval 3)        ;3秒後に自動保存
+  (setq real-auto-save-interval 30)        ;30秒後に自動保存
   (add-hook 'find-file-hook 'real-auto-save-mode))
 
 (use-package unicode-whitespace
@@ -1124,18 +1086,52 @@ Breadcrumb bookmarks:
 
 (bind-key "C-x o" 'hydra-breadcrumb/body)
 
-(require 'browse-kill-ring)
-(bind-key "M-y" 'browse-kill-ring)
+(bind-key* "C-x d" 'dired-jump)
 
-(bind-key
- [f2]
- (defhydra hydra-compile (:color red :hint nil)
-   "
-    Compile: make _k_  _a_ll  _u_pftp  _m_ove  _b_klog  _g_it  _c_lean   🐾 "
-   ("k" my:make-k :exit t)
-   ("a" my:make-all :exit t)
-   ("u" my:make-upftp :exit t)
-   ("m" my:make-move :exit t)
-   ("g" my:make-git :exit t)
-   ("b" my:make-bklog :exit t)
-   ("c" my:make-clean)))2
+(use-package counsel
+  :straight t
+  :diminish (ivy-mode)
+  :config
+  (ivy-mode 1)
+  (counsel-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-display-style t)
+
+  :bind
+  ("M-x" . 'counsel-M-x)
+  ("M-o" . 'occur)
+  ("C-M-o" . 'swiper)
+  ("C-x C-f" . 'counsel-find-file)
+  ("C-x C-r" . 'counsel-recentf)
+  ("M-y" . 'counsel-yank-pop)
+  ("<f1> f" . 'counsel-describe-function)
+  ("<f1> v" . 'counsel-describe-variable)
+  ("<f1> l" . 'counsel-find-library)
+  ("<f2> i" . 'counsel-info-lookup-symbol)
+  ("<f2> u" . 'counsel-unicode-char)
+  ("<f2> j" . 'counsel-set-variable)
+  ("C-x b" . 'ivy-switch-buffer)
+  ("C-c v" . 'ivy-push-view)
+  ("C-c V" . 'ivy-pop-view)
+  )
+
+(use-package selected
+  :straight t
+  :commands selected-minor-mode
+  :init
+  (setq selected-org-mode-map (make-sparse-keymap))
+  :bind (:map selected-keymap
+              ("q" . selected-off)
+              ("u" . upcase-region)
+              ("d" . downcase-region)
+              ("w" . count-words-region)
+              ("m" . apply-macro-to-region-lines)
+              :map selected-org-mode-map
+              ("t" . org-table-convert-region)))
+
+(require 'counsel-selected)
+(define-key selected-keymap (kbd "h") 'counsel-selected)
+
+(require 'emacs-surround)
+(bind-key* "M-s" 'emacs-surround)

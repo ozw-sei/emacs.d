@@ -19,7 +19,5 @@ projectile-bookmarks.eld
 migemo-pattern
 *.sqlite
 bookmarks
-
-
 !.gitignore
 !.gitkeep
