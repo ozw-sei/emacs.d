@@ -1,4 +1,5 @@
 ;; straight.el setting by myself
+
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
       (bootstrap-version 3))
   (unless (file-exists-p bootstrap-file)
@@ -35,7 +36,15 @@
   (exec-path-from-shell-initialize)
   )
 
-
+(use-package diminish
+  :straight t
+  :config
+  (progn
+    (add-hook 'lisp-interaction-mode-hook (lambda () (setq mode-name "Lisp")))
+    (add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "elisp")))
+    (add-hook 'texinfo-mode-hook (lambda () (setq mode-name "texi")))
+    (add-hook 'change-log-mode-hook (lambda () (setq mode-name "CL")))
+    (diminish 'isearch-mode)))
 
 (use-package magit-lfs
   :straight t)
@@ -54,7 +63,28 @@
 (use-package dashboard
   :straight t
   :config
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+  (setq dashboard-items '(
+                          (recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5)
+                          (registers . 5)))
+  (defun open-dashboard ()
+    "Open the *dashboard* buffer and jump to the first widget."
+    (interactive)
+    (delete-other-windows)
+    ;; Refresh dashboard buffer
+    (if (get-buffer dashboard-buffer-name)
+        (kill-buffer dashboard-buffer-name))
+    (dashboard-insert-startupify-lists)
+    (switch-to-buffer dashboard-buffer-name)
+    ;; Jump to the first section
+    (goto-char (point-min))
+    (dashboard-goto-recent-files))
+
+  :bind
+  ("<f9>" . 'open-dashboard)
+  )
 
 (setq initail-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
@@ -91,6 +121,7 @@
 
 (use-package company-box
   :straight t
+  :diminish company-box-mode
   :hook (company-mode . company-box-mode))
 
 (use-package expand-region
@@ -130,9 +161,10 @@
 ;; 単語にカーソルを置くと同じ単語をハイライトしてくれる
 (use-package highlight-symbol
   :straight t
+  :diminish (highlight-symbol-mode)
   :config
   (add-hook 'prog-mode-hook 'highlight-symbol-mode)
-  (setq highlight-symbol-idle-delay 1.0))
+  (setq highlight-symbol-idle-delay 0.7))
 
 
 (use-package saveplace
@@ -188,9 +220,10 @@
 
 (use-package indent-guide
   :straight t
+  :diminish (indent-guide-mode)
   :config
   (indent-guide-global-mode)
-  ; for performance
+                                        ; for performance
   (setq indent-guide-delay 0.5)
   )
 
@@ -289,6 +322,7 @@
   :delight yas-minor-mode
   :hook ((prog-mode). yas-minor-mode)
   :config (yas-reload-all)
+  :diminish yas-minor-mode
   :bind
   ("C-j" . company-yasnippet)
   )
@@ -326,7 +360,6 @@
 
 ;;; 複数のディレクトリで同じファイル名のファイルを開いたときのバッファ名を調整する
 (use-package uniquify
-
   :config (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
 
 
@@ -383,7 +416,7 @@
 (display-time)
 
 ;;; GCを減らして軽くする
-(setq gc-cons-threshold (* 10 gc-cons-threshold))
+(setq gc-cons-threshold (* 30 gc-cons-threshold))
 
 ;;; ログの記録行数を増やす
 (setq message-log-max 10000)
@@ -506,14 +539,14 @@
 (use-package undo-tree
   :config
   (global-undo-tree-mode t)
+  :diminish undo-tree-mode
   :bind
   ("C-c u" . 'undo-tree-visualize))
 
 ;; projectile
 (use-package projectile
   :straight t
-  :init
-  (setq projectile-project-search-path '("~/go/src/"))
+  :diminish (projectile-mode)
   :config
   (projectile-mode +1)
   :bind
@@ -528,7 +561,7 @@
 			           :columns 4)
   "Projectile"
   ("f"   projectile-find-file                "Find File")
-  ("a"   projectile-ag                "ag")
+  ("a"   projectile-ag                "ag" :exit t)
   ("r"   projectile-recentf                  "Recent Files")
   ("z"   projectile-cache-current-file       "Cache Current File")
   ("x"   projectile-remove-known-project     "Remove Known Project")
@@ -538,7 +571,6 @@
   ("c"   projectile-invalidate-cache         "Clear Cache")
   ("X"   projectile-cleanup-known-projects   "Cleanup Known Projects")
 
-  ("o"   projectile-multi-occur              "Multi Occur")
   ("s"   projectile-switch-project           "Switch Project")
   ("k"   projectile-kill-buffers             "Kill Buffers"))
 
@@ -553,21 +585,20 @@
 
 ;; flycheck
 (use-package flycheck
-  :straight t)
+  :straight t
+  :config
+  (setq flycheck-check-syntax-automatically
+        '(save idle-change mode-enabled))
 
-(setq flycheck-check-syntax-automatically
-      '(save idle-change mode-enabled))
-
-(setq flycheck-idle-change-delay 1)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+  (setq flycheck-idle-change-delay 1)
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  )
 
 ;; javascript
 (eval-after-load 'js-mode
   '(add-hook 'js-mode-check #'add-node-modules-path))
-
 (with-eval-after-load 'flycheck
   (advice-add 'flycheck-eslint-config-exists-p :override (lambda() t)))
-
 
 (eval-after-load 'typescript-mode
   '(add-hook 'typescript-mode-check #'add-node-modules-path))
@@ -587,6 +618,7 @@
 
 (use-package git-gutter
   :straight t
+  :diminish (git-gutter-mode)
   :custom
   (global-git-gutter-mode +1)
   ;; stage, revertで確認を出さないようにする
@@ -607,9 +639,9 @@
   :straight t)
 
 (use-package js2-refactor
-  :straight t)
-
-(js2r-add-keybindings-with-prefix "C-c m")
+  :straight t
+  :config
+  (js2r-add-keybindings-with-prefix "C-c m"))
 
 (use-package prettier-js
   :straight t)
@@ -621,29 +653,25 @@
 (defun git-gutter:toggle-popup-hunk ()
   "Toggle 'git-gutter' hunk window."
   (interactive)
-  (if (window-live-p (git-gutter:popup-buffer-window))
-      (delete-window (git-gutter:popup-buffer-window))
-    (git-gutter:popup-hunk)
-    (other-window 1))
+  (git-gutter:popup-hunk)
+  (other-window 1)
   )
 
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
   "git hunk"
-  ("p" git-gutter:previous-hunk "previous")
-  ("n" git-gutter:next-hunk "next")
+  ("p" git-gutter:previous-hunk "previous" :exit nil)
+  ("n" git-gutter:next-hunk "next" :exit nil)
   ("s" git-gutter:stage-hunk "stage")
   ("r" git-gutter:revert-hunk "revert")
-  ("m" magit-status "magit-status")
-  ("d" magit-status-here "status-here")
-  ("c" magit-commit-create "commit")
-  ("b" magit-blame-addition "blame")
-  ("P" magit-push "push")
-  ("x" magit-dispatch "dispatch")
-  ("t" git-timemachine "time-machine")
-  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
-
-
+  ("m" magit-status "magit-status" :exit t)
+  ("d" magit-status-here "status-here" :exit t)
+  ("c" magit-commit-create "commit" :exit t)
+  ("b" magit-blame-addition "blame" :exit t)
+  ("P" magit-push "push" :exit t)
+  ("x" magit-dispatch "dispatch" :exit t)
+  ("t" git-timemachine "time-machine" :exit t)
+  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo" :exit nil))
 
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
@@ -695,6 +723,7 @@
 ;; editor-config
 (use-package editorconfig
   :straight t
+  :diminish (editorconfig-mode)
   :config
   (editorconfig-mode 1))
 
@@ -708,10 +737,11 @@
         "COMMIT_EDITMSG"
         "./straight/"
         "persp-confs"
+        ".breadcrumb"
         "*.sqlite"
         "./server/"
+        )
       )
-)
 
 (add-to-list 'recentf-exclude "ido.last")
 ;; 最近使ったファイルに加えないファイルをg
@@ -949,6 +979,7 @@ T - tag prefix
 
 (use-package which-key
   :straight t
+  :diminish (which-key-mode)
   :config (which-key-mode))
 
 (use-package smartparens
@@ -993,6 +1024,7 @@ If there are two or more windows, it will go to another window."
 
 (use-package zoom
   :straight t
+  :diminish (zoom-mode)
   :config
   (custom-set-variables
    '(zoom-mode t))
@@ -1031,6 +1063,7 @@ If there are two or more windows, it will go to another window."
 
 (use-package real-auto-save
   :straight t
+  :diminish (real-auto-save-mode)
   :config
   (setq real-auto-save-interval 3)        ;3秒後に自動保存
   (add-hook 'find-file-hook 'real-auto-save-mode))
@@ -1070,15 +1103,6 @@ If there are two or more windows, it will go to another window."
     )
   )
 
-(use-package diminish
-  :requires (diminish)
-  :config
-  (progn
-    (add-hook 'lisp-interaction-mode-hook (lambda () (setq mode-name "Lisp")))
-    (add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "elisp")))
-    (add-hook 'texinfo-mode-hook (lambda () (setq mode-name "texi")))
-    (add-hook 'change-log-mode-hook (lambda () (setq mode-name "CL")))
-    (diminish 'isearch-mode)))
 
 (require 'breadcrumb)
 (defhydra hydra-breadcrumb
@@ -1101,5 +1125,17 @@ Breadcrumb bookmarks:
 (bind-key "C-x o" 'hydra-breadcrumb/body)
 
 (require 'browse-kill-ring)
-(require 'kill-ring-ido)
 (bind-key "M-y" 'browse-kill-ring)
+
+(bind-key
+ [f2]
+ (defhydra hydra-compile (:color red :hint nil)
+   "
+    Compile: make _k_  _a_ll  _u_pftp  _m_ove  _b_klog  _g_it  _c_lean   🐾 "
+   ("k" my:make-k :exit t)
+   ("a" my:make-all :exit t)
+   ("u" my:make-upftp :exit t)
+   ("m" my:make-move :exit t)
+   ("g" my:make-git :exit t)
+   ("b" my:make-bklog :exit t)
+   ("c" my:make-clean)))2
