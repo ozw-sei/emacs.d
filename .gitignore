@@ -21,3 +21,5 @@ migemo-pattern
 bookmarks
 !.gitignore
 !.gitkeep
+eshell/
+.dir-locals.el
