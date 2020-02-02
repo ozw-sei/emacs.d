@@ -131,21 +131,6 @@
   :straight t)
 
 
-(use-package eglot
-  :straight t
-  :bind (
-         ("M-r" . 'xref-find-references )
-         ("C-." . (lambda ()
-                    (interactive)
-                    (eglot-help-at-point)
-                    (windmove-right)))
-         ("C-," . (lambda ()
-                    (interactive)
-                    (eglot-code-actions)
-                    (windmove-right)))
-         )
-  :hook ((c-mode c++-mode ruby-mode) . eglot-ensure)
-  )
 
 (use-package add-node-modules-path
   :straight t
@@ -538,6 +523,7 @@
 
   ("d"   counsel-projectile-find-dir                 "Find Directory")
   ("b"   counsel-projectile-switch-to-buffer         "Switch to Buffer")
+  ("c" counsel-compile "compile-project")
 
   ("s"   counsel-projectile-switch-project           "Switch Project")
   ("k"   projectile-kill-buffers             "Kill Buffers"))
@@ -636,21 +622,20 @@
          (interactive)
          (split-window-vertically)
          (windmove-down)) "split-horizontally")
+
   ("v" (lambda()
          (interactive)
          (split-window-horizontally)
          (windmove-right)) "split-vertically")
   ("C-k" delete-window "delete")
-  ("w" enlarge-window-horizontally "enrage-horizontally")
-  ("W" shrink-window-horizontally "shrink-horizontally")
-  ("t" enlarge-window "enrage-vertically")
-  ("T" shrink-window "shrink-vertically")
-  ("b" balance-windows "balance")
-  ("C-M-r" delete-other-windows "reset-window")
   ("h" windmove-left "move-left")
-  ("j" windmove-down "move-down")
-  ("k" windmove-up "move-up")
   ("l" windmove-right "move-right")
+  ("k" windmove-up "move-up")
+  ("j" windmove-down "move-down")
+  ("c" elscreen-create "screen-create")
+  ("n" elscreen-next "screen-next")
+  ("p" elscreen-previous "screen-prev")
+  ("x" elscreen-kill "screen-kill")
   )
 
 ; terminal にはtmuxがあるので使わない
@@ -662,19 +647,18 @@
 ;; hydra flycheck 操作
 (defhydra hydra-flycheck nil
   "hydra-flycheck"
-  ("j" flymake-goto-next-error     "next-error")
-  ("k" flymake-goto-previous-error "prev-error")
-  ("h" flymake-goto-first-error    "first-error")
-  ("l" (condition-case err
-           (while t
-             (next-error))
-         (user-error nil))
-   nil :bind nil)
+  ("j" flycheck-next-error     "next-error")
+  ("k" flycheck-previous-error "prev-error")
+  ("h" flycheck-first-error    "first-error")
+  ("l" (lambda ()
+         (interactive)
+         (flycheck-list-errors)
+         (windmove-right)) "list-errors" :exit t)
   ("gg" flycheck-first-error "First")
   ("G" (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
   ("q" nil "exit" :color blue))
 
-(bind-key "C-'" 'hydra-flycheck/body)
+(bind-key "C-;" 'hydra-flycheck/body)
 
 ;; editor-config
 (use-package editorconfig
@@ -734,7 +718,6 @@
   :straight t
   :bind
   ("M-z" . 'zop-up-to-char))
-
 
 (use-package mwim
   :straight t
@@ -963,11 +946,8 @@ T - tag prefix
 
 (smartparens-mode 1)
 
-(setq make-backup-files nil)
-
 (use-package viewer
   :straight t)
-
 
 (defun other-window-or-split ()
   "If there is one window, open split window.
@@ -1103,7 +1083,7 @@ Breadcrumb bookmarks:
   (custom-set-faces
    '(ivy-current-match
      ((((class color) (background light))
-       :background "#FFF3F3" :distant-foreground "#000000")
+      :background "#FFF3F3" :distant-foreground "#000000")
       (((class color) (background dark))
        :background "#404040" :distant-foreground "#abb2bf")))
    '(ivy-minibuffer-match-face-1
@@ -1141,16 +1121,17 @@ Breadcrumb bookmarks:
 
 (use-package selected
   :straight t
-  :commands selected-minor-mode
   :init
   (setq selected-org-mode-map (make-sparse-keymap))
+  (selected-global-mode 1)
   :bind (:map selected-keymap
               ("q" . selected-off)
               ("u" . upcase-region)
               ("d" . downcase-region)
               ("w" . count-words-region)
               ("m" . apply-macro-to-region-lines)
-              :map selected-org-mode-map
+              (";" . comment-dwim)
+              ("w" . kill-ring-save)
               ("t" . org-table-convert-region)))
 
 (require 'counsel-selected)
@@ -1158,3 +1139,56 @@ Breadcrumb bookmarks:
 
 (require 'emacs-surround)
 (bind-key* "M-s" 'emacs-surround)
+
+(use-package prescient
+  :straight t)
+
+(use-package ivy-prescient
+  :straight t
+  :config
+  (ivy-prescient-mode 1))
+
+(use-package company-prescient
+  :straight t
+  :config
+  (company-prescient-mode 1))
+
+;; Enable scala-mode and sbt-mode
+(use-package scala-mode
+  :straight t
+  :mode "\\.s\\(cala\\|bt\\)$")
+
+
+(use-package sbt-mode
+  :straight t
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map)
+   ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+   (setq sbt:program-options '("-Dsbt.supershell=false"))
+   )
+
+(use-package lsp-mode
+  :straight t
+  :init (setq lsp-keymap-prefix "M-l")
+  ;; Optional - enable lsp-mode automatically in scala files
+  :hook (
+         (scala-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration)
+         )
+  :commands (lsp lsp-deferred)
+  :config (setq lsp-prefer-flymake nil))
+
+(use-package company-lsp
+  :straight t)
+
+(use-package lsp-ui
+  :straight t)
+
+(use-package lsp-ivy
+  :straight t)
