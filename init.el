@@ -367,7 +367,7 @@
 
 ;; font-size
 (set-face-attribute 'default nil :height 140)
-(set-default-font "Consolas")
+;(set-default-font "Consolas")
 
 (setq default-frame-alist
       (append (list
@@ -488,6 +488,7 @@
   :bind
   ("C-c u" . 'undo-tree-visualize))
 ;; projectile
+
 (use-package projectile
   :straight t
   :diminish (projectile-mode)
@@ -957,6 +958,7 @@ If there are two or more windows, it will go to another window."
     (split-window-horizontally))
   (other-window 1))
 
+
 (bind-key* "C-t" 'other-window-or-split)
 
 (use-package zoom
@@ -964,10 +966,10 @@ If there are two or more windows, it will go to another window."
   :diminish (zoom-mode)
   :config
   (custom-set-variables
-   '(zoom-mode t))
-  (custom-set-variables
-   '(zoom-size '(0.618 . 0.618)))
-  )
+   '(zoom-mode t)
+   '(zoom-size '(0.618 . 0.618))
+   '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode))
+   )
 
 (use-package go-mode
   :straight t
@@ -1179,6 +1181,7 @@ Breadcrumb bookmarks:
   ;; Optional - enable lsp-mode automatically in scala files
   :hook (
          (scala-mode . lsp)
+         (js-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration)
          )
   :commands (lsp lsp-deferred)
@@ -1192,3 +1195,57 @@ Breadcrumb bookmarks:
 
 (use-package lsp-ivy
   :straight t)
+
+(use-package smart-jump
+  :straight t
+  :config
+  (smart-jump-setup-default-registers)
+  :bind
+  ("C-." . smart-jump-go)
+  ("C-," . smart-jump-back))
+
+;smerge-mode
+(use-package smerge-mode
+  :after hydra
+  :config
+  (defhydra unpackaged/smerge-hydra
+    (:color pink :hint nil :post (smerge-auto-leave))
+    "
+^Move^       ^Keep^               ^Diff^                 ^Other^
+^^-----------^^-------------------^^---------------------^^-------
+_n_ext       _b_ase               _<_: upper/base        _C_ombine
+_p_rev       _u_pper              _=_: upper/lower       _r_esolve
+^^           _l_ower              _>_: base/lower        _k_ill current
+^^           _a_ll                _R_efine
+^^           _RET_: current       _E_diff
+"
+    ("n" smerge-next)
+    ("p" smerge-prev)
+    ("b" smerge-keep-base)
+    ("u" smerge-keep-upper)
+    ("l" smerge-keep-lower)
+    ("a" smerge-keep-all)
+    ("RET" smerge-keep-current)
+    ("\C-m" smerge-keep-current)
+    ("<" smerge-diff-base-upper)
+    ("=" smerge-diff-upper-lower)
+    (">" smerge-diff-base-lower)
+    ("R" smerge-refine)
+    ("E" smerge-ediff)
+    ("C" smerge-combine-with-next)
+    ("r" smerge-resolve)
+    ("k" smerge-kill-current)
+    ("ZZ" (lambda ()
+            (interactive)
+            (save-buffer)
+            (bury-buffer))
+     "Save and bury buffer" :color blue)
+    ("q" nil "cancel" :color blue))
+  :hook (magit-diff-visit-file . (lambda ()
+                                   (when smerge-mode
+                                     (unpackaged/smerge-hydra/body)))))
+
+;ediff
+
+(setf (alist-get 'top ediff-control-frame-parameters) 1)
+(setf (alist-get 'left ediff-control-frame-parameters) 856)
