@@ -1251,3 +1251,27 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
 (setf (alist-get 'top ediff-control-frame-parameters) 1)
 (setf (alist-get 'left ediff-control-frame-parameters) 856)
+
+
+(defhydra hydra-vim-move nil
+  "cursor move"
+  ("[" forward-paragraph "forward-paragraph" :exit nil)
+  ("]" backward-paragraph "backward-paragraph" :exit nil)
+  ("w" forward-word "forward-word" :exit nil)
+  ("b" backward-word "backward-word" :exit nil)
+  ("C-f" scroll-up-command "scroll-up" :exit nil)
+  ("C-b" scroll-down-command "scroll-down" :exit nil)
+  ("h" backward-char "backward-char" :exit nil)
+  ("j" next-line "next-line" :exit nil)
+  ("k" previous-line "previous-line" :exit nil)
+  ("l" forward-char "forward-char" :exit nil)
+  ("SPC" er/expand-region "expand-region" :exit nil)
+  ("H" mark-paragraph "mark-paragraph")
+  ("C-h" consel-selected "region-command")
+  )
+
+(use-package expand-region
+  :straight t
+  :bind* ("C-c SPC" . er/expand-region))
+
+(bind-key  "C-o" 'hydra-vim-move/body)
