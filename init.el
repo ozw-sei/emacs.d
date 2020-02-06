@@ -130,8 +130,6 @@
 (use-package typescript-mode
   :straight t)
 
-
-
 (use-package add-node-modules-path
   :straight t
   :hook ((js-mode typescript-mode))
@@ -499,17 +497,21 @@
   :config
   (projectile-mode +1)
   (setq projectile-completion-system 'ivy)
-  (setq counsel-projectile-sort-files t) ;; 当該プロジェクト内リストをソート
-  (setq counsel-projectile-sort-projects t) ;; プロジェクトリストをソート
+  (setq projectile-indexing-method 'hybrid)
+
+
   :bind
   ("C-c C-f" . 'projectile-find-file)
   ("C-c f" . 'projectile-find-file)
   )
 
+
 (use-package counsel-projectile
   :straight t
   :config
   (counsel-projectile-mode 1)
+  (setq counsel-projectile-sort-files t) ;; 当該プロジェクト内リストをソート
+  (setq counsel-projectile-sort-projects t) ;; プロジェクトリストをソート
   :after (projectile))
 
 (use-package hydra
@@ -603,6 +605,8 @@
   (git-gutter:popup-hunk)
   (other-window 1)
   )
+
+
 
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
@@ -1083,7 +1087,6 @@ Breadcrumb bookmarks:
     (minibuffer-depth-indicate-mode 1))
   (require 'ivy-hydra)
   (setq ivy-height 30)
-  (setq ivy-extra-directories nil)
 
   (custom-set-faces
    '(ivy-current-match

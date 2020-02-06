@@ -1,4 +1,5 @@
 -/cache
+-/.cache
 -/auto-save-list
 -/elpa
 -/undohist
