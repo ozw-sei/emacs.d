@@ -225,7 +225,11 @@
   :config (powerline-default-theme))
 
 (use-package terraform-mode
-  :straight t)
+  :straight t
+  :config
+  (custom-set-variables
+ '(terraform-indent-level 4)))
+
 
 
 (setq ns-pop-up-frames nil)
@@ -893,7 +897,6 @@ T - tag prefix
 
 (add-hook 'ruby-mode-hook 'subword-mode)
 
-
 (use-package rspec-mode
   :straight t)
 
@@ -1159,7 +1162,6 @@ Breadcrumb bookmarks:
 (use-package scala-mode
   :straight t
   :mode "\\.s\\(cala\\|bt\\)$")
-
 
 (use-package sbt-mode
   :straight t
