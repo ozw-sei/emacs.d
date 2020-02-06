@@ -713,11 +713,6 @@
 
 (bind-key "M-g" 'goto-line)
 
-(use-package smart-jump
-  :straight t
-  :config
-  (smart-jump-setup-default-registers))
-
 (use-package dockerfile-mode
   :straight t
   :mode ("Dockerfile\\'" . dockerfile-mode)
@@ -976,7 +971,7 @@ If there are two or more windows, it will go to another window."
    '(zoom-mode t)
    '(zoom-size '(0.618 . 0.618))
    '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode))
-   )
+   ))
 
 (use-package go-mode
   :straight t
@@ -1072,6 +1067,7 @@ Breadcrumb bookmarks:
 (bind-key "C-x o" 'hydra-breadcrumb/body)
 
 (bind-key* "C-x d" 'dired-jump)
+
 
 (use-package counsel
   :straight t
@@ -1250,12 +1246,6 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
                                    (when smerge-mode
                                      (unpackaged/smerge-hydra/body)))))
 
-;ediff
-
-(setf (alist-get 'top ediff-control-frame-parameters) 1)
-(setf (alist-get 'left ediff-control-frame-parameters) 856)
-
-
 (defhydra hydra-vim-move nil
   "cursor move"
   ("[" forward-paragraph "forward-paragraph" :exit nil)
@@ -1270,11 +1260,6 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
   ("l" forward-char "forward-char" :exit nil)
   ("SPC" er/expand-region "expand-region" :exit nil)
   ("H" mark-paragraph "mark-paragraph")
-  ("C-h" consel-selected "region-command")
-  )
-
-(use-package expand-region
-  :straight t
-  :bind* ("C-c SPC" . er/expand-region))
+  ("C-h" consel-selected "region-command"))
 
 (bind-key  "C-o" 'hydra-vim-move/body)
