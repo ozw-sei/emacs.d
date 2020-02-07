@@ -43,7 +43,6 @@
     (add-hook 'change-log-mode-hook (lambda () (setq mode-name "CL")))
     (diminish 'isearch-mode)))
 
-
 (use-package magit-lfs
   :straight t)
 
@@ -154,8 +153,7 @@
   :config
   (save-place-mode 1))
 
-(defun turn-on-flycheck-mode ()
-  (flycheck-mode 1))
+
 
  ;; ビープ音禁止
  (setq ring-bell-function 'ignore)
@@ -548,12 +546,24 @@
 (use-package flycheck
   :straight t
   :config
+
   (setq flycheck-check-syntax-automatically
         '(save idle-change mode-enabled))
-
   (setq flycheck-idle-change-delay 1)
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+  (flycheck-mode 1)
+  (with-eval-after-load 'flycheck
+    (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
   )
+
+(use-package flycheck-color-mode-line
+  :straight t
+  :config
+  (flycheck-color-mode-line-mode 1))
+
+(use-package flycheck-pos-tip
+  :straight t
+  :config
+  (flycheck-pos-tip-mode 1))
 
 ;; javascript
 (eval-after-load 'js-mode
@@ -970,7 +980,7 @@ If there are two or more windows, it will go to another window."
   (custom-set-variables
    '(zoom-mode t)
    '(zoom-size '(0.618 . 0.618))
-   '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode))
+   '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode magit-mode magit-status-mode))
    ))
 
 (use-package go-mode
@@ -1263,3 +1273,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
   ("C-h" consel-selected "region-command"))
 
 (bind-key  "C-o" 'hydra-vim-move/body)
+
+
+(use-package perspective
+  :straight t)
