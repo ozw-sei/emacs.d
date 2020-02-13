@@ -163,7 +163,8 @@
 
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold (* gc-cons-threshold 10))
+(setq gc-cons-threshold 100000000)
+
 (setq garbage-collection-messages t)
 
 ;; warn when opening files bigger than 100MB
@@ -249,7 +250,7 @@
 (use-package avy
   :bind
   ("C-]" . ivy-avy)
-  ("C-c l" . avy-goto-line)
+  ("C-l" . avy-goto-line)
   :straight t)
 
 (use-package elixir-mode
@@ -379,9 +380,6 @@
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (concat user-emacs-directory "places"))
-
-;;; 釣合う括弧をハイライトする
-(show-paren-mode 1)
 
 ;;; インデントにTABを使わないようにする
 (setq-default indent-tabs-mode nil)
@@ -547,10 +545,8 @@
   :straight t
   :config
 
-  (setq flycheck-check-syntax-automatically
-        '(save idle-change mode-enabled))
-  (setq flycheck-idle-change-delay 1)
   (flycheck-mode 1)
+  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
   (with-eval-after-load 'flycheck
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
   )
@@ -616,8 +612,6 @@
   (other-window 1)
   )
 
-
-
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
   "git hunk"
@@ -632,7 +626,7 @@
   ("P" magit-push "push" :exit t)
   ("x" magit-dispatch "dispatch" :exit t)
   ("t" git-timemachine "time-machine" :exit t)
-  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo" :exit nil))
+  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
 
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
@@ -874,6 +868,7 @@ T - tag prefix
 (use-package csv-mode
   :straight t
   :config
+  (setq csv-separators '("," ";" "|" " "))
   (setq indent-tabs-mode t))
 
 
@@ -891,6 +886,13 @@ T - tag prefix
 
          ("\\.rb$" . ruby-mode))
   )
+
+(use-package smex
+  :straight t
+  :bind
+  ("M-x" . smex)
+  ("M-X" . smex-major-mode-commands)
+   )
 
 
 ;; json-mode
@@ -934,8 +936,7 @@ T - tag prefix
   :diminish (which-key-mode)
   :config (which-key-mode))
 
-(use-package smartparens
-  :diminish (smartparens-mode)
+(use-package paredit
   :straight t)
 
 (use-package pip-requirements
@@ -956,8 +957,6 @@ T - tag prefix
   :config
   (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
   )
-
-(smartparens-mode 1)
 
 (use-package viewer
   :straight t)
@@ -1189,20 +1188,21 @@ Breadcrumb bookmarks:
 
 (use-package lsp-mode
   :straight t
-  :init (setq lsp-keymap-prefix "M-l")
-  ;; Optional - enable lsp-mode automatically in scala files
+  :init (setq lsp-keymap-prefix "C-c l")
+  ;; Optional - enble lsp-mode automatically in scala files
   :hook (
          (scala-mode . lsp)
          (js-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration)
          )
-  :commands (lsp lsp-deferred)
-  :config (setq lsp-prefer-flymake nil))
+  :commands (lsp))
 
 (use-package company-lsp
   :straight t)
 
 (use-package lsp-ui
+
+
   :straight t)
 
 (use-package lsp-ivy
@@ -1276,8 +1276,13 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 (bind-key  "C-o" 'hydra-vim-move/body)
 
 
-(use-package perspective
-  :straight t)
-
 (use-package restclient
   :straight t)
+
+;; http://emacs.rubikitch.com/save-visited-files/
+(use-package save-visited-files
+  :straight t
+  :config
+  (setq save-visited-files-ignore-tramp-files t)
+  (turn-on-save-visited-files-mode)
+)
