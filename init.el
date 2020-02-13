@@ -545,7 +545,7 @@
   :straight t
   :config
 
-  (flycheck-mode 1)
+  (global-flycheck-mode 1)
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
   (with-eval-after-load 'flycheck
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
