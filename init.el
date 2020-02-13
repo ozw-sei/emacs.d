@@ -1146,6 +1146,7 @@ Breadcrumb bookmarks:
               ("m" . apply-macro-to-region-lines)
               (";" . comment-dwim)
               ("w" . kill-ring-save)
+              ("j" . json-pretty-print)
               ("t" . org-table-convert-region)))
 
 (require 'counsel-selected)
