@@ -1278,3 +1278,6 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
 (use-package perspective
   :straight t)
+
+(use-package restclient
+  :straight t)
