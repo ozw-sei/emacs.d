@@ -1278,11 +1278,3 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
 (use-package restclient
   :straight t)
-
-;; http://emacs.rubikitch.com/save-visited-files/
-(use-package save-visited-files
-  :straight t
-  :config
-  (setq save-visited-files-ignore-tramp-files t)
-  (turn-on-save-visited-files-mode)
-)
