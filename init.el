@@ -33,6 +33,9 @@
   (exec-path-from-shell-initialize)
   )
 
+(use-package hydra
+  :straight t)
+
 (use-package diminish
   :straight t
   :config
@@ -53,22 +56,6 @@
 ;;   :straight t
 ;;   :config (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
-(use-package origami
-  :straight t
-  :config
-  (defhydra hydra-folding (:color red)
-    "
-  _o_pen node    _n_ext fold       toggle _f_orward
-  _c_lose node   _p_revious fold   toggle _a_ll
-  "
-    ("o" origami-open-node)
-    ("c" origami-close-node)
-    ("n" origami-next-fold)
-    ("p" origami-previous-fold)
-    ("f" origami-forward-toggle-node)
-    ("a" origami-toggle-all-nodes))
-
-(bind-key "<tab>" 'hydra-folding/body))
 
 ;; Or if you use use-package
 (use-package dashboard
@@ -221,11 +208,6 @@
                                         ; for performance
   (setq indent-guide-delay 0.5))
 
-(use-package forgeurl-mailurl-mail
-  :straight t
-  :after magit)
-
-
 (set-face-attribute 'default nil :height 100)
 
 ;(setq ido-enable-flex-matching t)
@@ -259,31 +241,6 @@
  ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  )
-
-(use-package avy
-  :config
-  (defhydra hydra-avy (:exit t :hint nil)
-    "
- Line^^       Region^^        Goto
-----------------------------------------------------------
- [_y_] yank   [_Y_] yank      [_c_] timed char  [_C_] char
- [_m_] move   [_M_] move      [_w_] word        [_W_] any word
- [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
-    ("c" avy-goto-char)
-    ("w" avy-goto-word-1)
-    ("l" avy-goto-line)
-    ("L" avy-goto-end-of-line)
-    ("m" avy-move-line)
-    ("M" avy-move-region)
-    ("k" avy-kill-whole-line)
-    ("K" avy-kill-region)
-    ("y" avy-copy-line)
-    ("Y" avy-copy-region))
-
-  :bind
-  ("C-]" . hydra-avy/body)
-  ("C-l" . avy-goto-line)
-  :straight t)
 
 
 (use-package elixir-mode
@@ -470,16 +427,7 @@
   (global-set-key [remap goto-line] 'goto-line-preview)
 )
                                         ; Org-captureを呼び出すキーシーケンス
-(define-key global-map "\C-cc" 'org-capture)
                                         ; Org-captureのテンプレート（メニュー）の設定
-(setq org-capture-templates
-      '(("n" "Note" entry (file+headline "~/org/notes.org" "Notes")
-         "* %?\nEntered on %U\n %i\n %a")
-        ))
-
-(use-package flow-minor-mode
-  :straight t)
-
 (add-hook 'js2-mode-hook 'flow-minor-mode)
 (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
 
@@ -543,24 +491,63 @@
   (setq counsel-projectile-sort-projects t) ;; プロジェクトリストをソート
   :after (projectile))
 
-(use-package hydra
-  :straight t)
+
 (use-package ivy-hydra
   :straight t)
 
+(use-package origami
+  :straight t
+  :config
+  (defhydra hydra-folding (:color red)
+    "
+  _o_pen node    _n_ext fold       toggle _f_orward
+  _c_lose node   _p_revious fold   toggle _a_ll
+  "
+    ("o" origami-open-node)
+    ("c" origami-close-node)
+    ("n" origami-next-fold)
+    ("p" origami-previous-fold)
+    ("f" origami-forward-toggle-node)
+    ("a" origami-toggle-all-nodes))
 
-(defhydra hydra-projectile (:color teal
-			           :columns 4)
+(bind-key "<tab>" 'hydra-folding/body))
+
+(use-package avy
+  :config
+  (defhydra hydra-avy (:exit t :hint nil)
+    "
+ Line^^       Region^^        Goto
+----------------------------------------------------------
+ [_y_] yank   [_Y_] yank      [_c_] timed char  [_C_] char
+ [_m_] move   [_M_] move      [_w_] word        [_W_] any word
+ [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
+    ("c" avy-goto-char)
+    ("w" avy-goto-word-1)
+    ("l" avy-goto-line)
+    ("L" avy-goto-end-of-line)
+    ("m" avy-move-line)
+    ("M" avy-move-region)
+    ("k" avy-kill-whole-line)
+    ("K" avy-kill-region)
+    ("y" avy-copy-line)
+    ("Y" avy-copy-region))
+
+  :bind
+  ("C-]" . hydra-avy/body)
+  ("C-l" . avy-goto-line)
+  :straight t)
+
+
+
+(defhydra hydra-projectile nil
   "Projectile"
-  ("f"   counsel-projectile-find-file                "Find File")
+  ("f"   counsel-projectile-find-file         "Find File")
   ("a"   projectile-ag                "ag" :exit t)
   ("A"   counsel-projectile-ag                "ag in counsel" :exit t)
   ("r"   projectile-recentf                  "Recent Files" :exit t)
-
   ("d"   counsel-projectile-find-dir                 "Find Directory")
   ("b"   counsel-projectile-switch-to-buffer         "Switch to Buffer")
-  ("c" counsel-compile "compile-project")
-
+  ("c" counsel-compile "compile-project" :exit t)
   ("s"   counsel-projectile-switch-project           "Switch Project")
   ("k"   projectile-kill-buffers             "Kill Buffers"))
 
@@ -1311,3 +1298,20 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
 (use-package restclient
   :straight t)
+
+(use-package popwin
+  :straight t
+  :config
+  (popwin-mode 1)
+  ;; M-x anything
+  (setq anything-samewindow nil)
+  (push '("*anything*" :height 20) popwin:special-display-config)
+
+  ;; M-x dired-jump-other-window
+  (push '(dired-mode :position top) popwin:special-display-config)
+
+  ;; M-!
+  (push "*Shell Command Output*" popwin:special-display-config)
+
+  ;; M-x compile
+  (push '(compilation-mode :noselect t) popwin:special-display-config))
