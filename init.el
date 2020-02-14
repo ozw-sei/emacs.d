@@ -219,10 +219,9 @@
   :config
   (indent-guide-global-mode)
                                         ; for performance
-  (setq indent-guide-delay 0.5)
-  )
+  (setq indent-guide-delay 0.5))
 
-(use-package forge
+(use-package forgeurl-mailurl-mail
   :straight t
   :after magit)
 
@@ -251,7 +250,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(git-gutter:ask-p nil)
- '(package-selected-packages
+ '(package-selvc-mergeected-packages
    (quote
     (highlight-symbol exec-path-from-shell pip-requirements bundler solidity-mode smartparens smartparens-config smart-parens inf-ruby rspec-mode ruby-hash-syntax ibuffer-projectile shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
@@ -262,10 +261,30 @@
  )
 
 (use-package avy
+  :config
+  (defhydra hydra-avy (:exit t :hint nil)
+    "
+ Line^^       Region^^        Goto
+----------------------------------------------------------
+ [_y_] yank   [_Y_] yank      [_c_] timed char  [_C_] char
+ [_m_] move   [_M_] move      [_w_] word        [_W_] any word
+ [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
+    ("c" avy-goto-char)
+    ("w" avy-goto-word-1)
+    ("l" avy-goto-line)
+    ("L" avy-goto-end-of-line)
+    ("m" avy-move-line)
+    ("M" avy-move-region)
+    ("k" avy-kill-whole-line)
+    ("K" avy-kill-region)
+    ("y" avy-copy-line)
+    ("Y" avy-copy-region))
+
   :bind
-  ("C-]" . ivy-avy)
+  ("C-]" . hydra-avy/body)
   ("C-l" . avy-goto-line)
   :straight t)
+
 
 (use-package elixir-mode
   :straight t)
