@@ -1,3 +1,8 @@
+(eval-when-compile
+  (let ((minver "26.0"))
+    (when (version< emacs-version minver)
+      (error "Your Emacs don't support this config, use Emacs %s or above" minver))))
+
 ;; straight.el setting by myself
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
       (bootstrap-version 3))
@@ -1306,6 +1311,10 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
   ;; M-x anything
   (setq anything-samewindow nil)
   (push '("*anything*" :height 20) popwin:special-display-config)
+
+  ;; ag
+  (push '("\\*ag" :regexp t :height 20) popwin:special-display-config)
+  (push '("\\*rg" :regexp t :height 20) popwin:special-display-config)
 
   ;; M-x dired-jump-other-window
   (push '(dired-mode :position top) popwin:special-display-config)
