@@ -1304,23 +1304,20 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 (use-package restclient
   :straight t)
 
-(use-package popwin
+(use-package flyspell
   :straight t
   :config
-  (popwin-mode 1)
-  ;; M-x anything
-  (setq anything-samewindow nil)
-  (push '("*anything*" :height 20) popwin:special-display-config)
 
-  ;; ag
-  (push '("\\*ag" :regexp t :height 20) popwin:special-display-config)
-  (push '("\\*rg" :regexp t :height 20) popwin:special-display-config)
+  (setq ispell-program-name "hunspell")
+  (setq ispell-local-dictionary "en_US")
+  (setq exec-path (parse-colon-path (getenv "PATH")))
+  (setq exec-path (parse-colon-path (getenv "DICTIONARY")))
+  (setq exec-path (parse-colon-path (getenv "DICPATH")))
 
-  ;; M-x dired-jump-other-window
-  (push '(dired-mode :position top) popwin:special-display-config)
-
-  ;; M-!
-  (push "*Shell Command Output*" popwin:special-display-config)
+  (setq exec-path (parse-colon-path (getenv "PATH")))
+  (setq eshell-path-env (getenv "DICTIONARY"))
+  (setq eshell-path-env (getenv "DICPATH"))
+  )
 
   ;; M-x compile
   (push '(compilation-mode :noselect t) popwin:special-display-config))
