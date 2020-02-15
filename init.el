@@ -586,6 +586,31 @@
   :config
   (flycheck-pos-tip-mode 1))
 
+(use-package flyspell
+  :straight t
+  :config
+
+  (setq ispell-program-name "hunspell")
+  (setq ispell-local-dictionary "en_US")
+  (setq exec-path (parse-colon-path (getenv "PATH")))
+  (setq exec-path (parse-colon-path (getenv "DICTIONARY")))
+  (setq exec-path (parse-colon-path (getenv "DICPATH")))
+
+  (setq exec-path (parse-colon-path (getenv "PATH")))
+  (setq eshell-path-env (getenv "DICTIONARY"))
+  (setq eshell-path-env (getenv "DICPATH"))
+  (setq flyspell-mode 1)
+  )
+
+(use-package flyspell-correct
+  :straight t)
+
+(use-package flyspell-correct-ivy
+  :bind ("C-M-;" . flyspell-correct-wrapper)
+  :init
+  (require 'flyspell-correct-ivy)
+  (setq flyspell-correct-interface #'flyspell-correct-ivy))
+
 ;; javascript
 (eval-after-load 'js-mode
   '(add-hook 'js-mode-check #'add-node-modules-path))
@@ -1164,6 +1189,7 @@ Breadcrumb bookmarks:
   (selected-global-mode 1)
   :bind (:map selected-keymap
               ("q" . selected-off)
+              ("s" . flyspell-word)
               ("u" . upcase-region)
               ("d" . downcase-region)
               ("w" . count-words-region)
@@ -1304,20 +1330,5 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 (use-package restclient
   :straight t)
 
-(use-package flyspell
-  :straight t
-  :config
-
-  (setq ispell-program-name "hunspell")
-  (setq ispell-local-dictionary "en_US")
-  (setq exec-path (parse-colon-path (getenv "PATH")))
-  (setq exec-path (parse-colon-path (getenv "DICTIONARY")))
-  (setq exec-path (parse-colon-path (getenv "DICPATH")))
-
-  (setq exec-path (parse-colon-path (getenv "PATH")))
-  (setq eshell-path-env (getenv "DICTIONARY"))
-  (setq eshell-path-env (getenv "DICPATH"))
-  )
-
-  ;; M-x compile
-  (push '(compilation-mode :noselect t) popwin:special-display-config))
+(use-package powershell-mode
+  :straight t)
