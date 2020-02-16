@@ -1,4 +1,4 @@
-* Personal Emacs
+Personal Emacs
 
 *** Target
 - required emacs26
@@ -15,13 +15,14 @@
 - direnv
 
 *** language-server-protocol
-- 
+- python-language-server
+- javascript-typescript-studio
 
 *** environment variables
 - DICPATH
 - DICTIONARY
     - windows only
-    - PATH %HOME%.emacs.d\hunspell\bin
+- PATH %HOME%.emacs.d\hunspell\bin
 
 
 *** font
