@@ -590,8 +590,8 @@
   :straight t
   :config
 
+  (add-to-list 'exec-path "~/.emacs.d/hunspell/bin")
   (setq ispell-program-name "hunspell")
-  (setq ispell-local-dictionary "en_US")
   (setq exec-path (parse-colon-path (getenv "PATH")))
   (setq exec-path (parse-colon-path (getenv "DICTIONARY")))
   (setq exec-path (parse-colon-path (getenv "DICPATH")))
@@ -601,6 +601,8 @@
   (setq eshell-path-env (getenv "DICPATH"))
   (setq flyspell-mode 1)
   )
+
+
 
 (use-package flyspell-correct
   :straight t)
