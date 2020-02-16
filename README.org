@@ -20,6 +20,8 @@
 *** environment variables
 - DICPATH
 - DICTIONARY
+    - windows only
+    - PATH %HOME%.emacs.d\hunspell\bin
 
 
 *** font
