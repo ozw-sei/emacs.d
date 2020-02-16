@@ -1,0 +1,28 @@
+* Personal Emacs
+
+*** Target
+- required emacs26
+- windows/ linux/ mac
+
+*** middleware
+- general unix tools
+  - mingw
+- hunspell
+- ag / rg / ack
+- ghq
+- git
+- cmigemo
+- direnv
+
+*** language-server-protocol
+- 
+
+*** environment variables
+- DICPATH
+- DICTIONARY
+    - windows only
+    - PATH %HOME%.emacs.d\hunspell\bin
+
+
+*** font
+- https://qiita.com/ozw_sei/items/8cd7f96f056a7efc65cf
