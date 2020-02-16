@@ -279,13 +279,13 @@
 
 ;; migemo
 (use-package migemo
-  :if (executable-find "/usr/local/bin/cmigemo")
+  :if (executable-find "cmigemo")
 
   :init
   (load-library "migemo")
 
   :config
-  (setq migemo-command "/usr/local/bin/cmigemo")
+  (setq migemo-command "cmigemo")
   (setq migemo-options '("-q" "--emacs"))
   (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
   (setq migemo-user-dictionary nil)
@@ -503,6 +503,7 @@
 (use-package origami
   :straight t
   :config
+  (origami-mode 1)
   (defhydra hydra-folding (:color red)
     "
   _o_pen node    _n_ext fold       toggle _f_orward
