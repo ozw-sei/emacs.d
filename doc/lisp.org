@@ -1,0 +1,35 @@
+** let ((hoge))
+- ローカル変数の定義
+
+** save-excursion
+- 関数呼び出し前のカーソル位置/buffer を保存。ブロックを離れたときにrollbackする
+
+** goto-char
+- カーソルを引数に位置に移動させる
+
+** point
+- カーソル位置Indexを返す
+
+** point-max
+- カーソルの終端Indexを返す
+
+** point-min
+- カーソルの先頭のIndexを返す
+
+** forward-word
+- M-f 次の単語に移動する
+
+** TODO コード
+
+#+begin_src
+
+(defun count-words-buffer()
+  (let ((count 0))
+    (save-excursion
+      (goto-char (point-min))
+      (while (< (point) (point-max))
+        (forward-word 1)
+        (setq count (1+ count)))
+      (message "buffer contains %d words." count))))
+
+#+end_src
