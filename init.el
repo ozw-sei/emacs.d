@@ -626,14 +626,11 @@
   '(add-hook 'typescript-mode-check #'add-node-modules-path))
 
 
-(use-package git-gutter
+(use-package git-gutter-plus
   :straight t
-  :diminish (git-gutter-mode)
+  :diminish (git-gutter+-mode)
   :custom
-  (global-git-gutter-mode +1)
-  ;; stage, revertで確認を出さないようにする
-  ;; (undoでもどせるからいいや、という気持ち)
-  (git-gutter:ask-p nil)
+  (global-git-gutter+-mode +1)
 
   :bind
   ;; hydra-git-gutter起動のキーバインド
@@ -660,20 +657,20 @@
 
 ;; git-gutter:popup-hunkをそのまま割り当てるとdiffウィンドウを閉じれないので
 ;; トグルできる関数を定義
-(defun git-gutter:toggle-popup-hunk ()
+(defun git-toggle-hunk ()
   "Toggle 'git-gutter' hunk window."
-  (interactive)
-  (git-gutter:popup-hunk)
+  (git-gutter+-show-hunk)
   (other-window 1)
   )
 
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
   "git hunk"
-  ("p" git-gutter:previous-hunk "previous" :exit nil)
-  ("n" git-gutter:next-hunk "next" :exit nil)
-  ("s" git-gutter:stage-hunk "stage")
-  ("r" git-gutter:revert-hunk "revert")
+  ("p" git-gutter+-previous-hunk "previous" :exit nil)
+  ("n" git-gutter+-next-hunk "next" :exit nil)
+  ("s" git-gutter+-stage-hunks "stage")
+  ("r" git-gutter+-revert-hunk "revert")
+  ("SPC" (git-gutter+-show-hunk-inline-at-point) "toggle diffinfo")
   ("m" magit-status "magit-status" :exit t)
   ("d" magit-status-here "status-here" :exit t)
   ("c" magit-commit-create "commit" :exit t)
@@ -681,7 +678,7 @@
   ("P" magit-push "push" :exit t)
   ("x" magit-dispatch "dispatch" :exit t)
   ("t" git-timemachine "time-machine" :exit t)
-  ("SPC" git-gutter:toggle-popup-hunk "toggle diffinfo"))
+  )
 
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
