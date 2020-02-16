@@ -972,9 +972,14 @@ T - tag prefix
 (use-package ruby-electric
   :straight t)
 
-                                        ;(use-package projectile-rails
-                                        ;:straight t
-                                        ;:after projectile)
+(use-package inflections
+  :straight t)
+
+(use-package rake
+  :straight t)
+
+(use-package projectile-rails
+  :straight t)
 
 (require 'rbenv)
 (global-rbenv-mode)
