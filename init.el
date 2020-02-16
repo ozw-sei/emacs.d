@@ -591,7 +591,9 @@
   :straight t
   :config
 
-  (add-to-list 'exec-path "~/.emacs.d/hunspell/bin")
+  (when (eq system-type 'windows-nt) ; Windows
+    (add-to-list 'exec-path "~/.emacs.d/hunspell/bin")
+    )
   (setq ispell-program-name "hunspell")
   (setq exec-path (parse-colon-path (getenv "PATH")))
   (setq exec-path (parse-colon-path (getenv "DICTIONARY")))
