@@ -673,6 +673,7 @@
   ("SPC" (git-gutter+-show-hunk-inline-at-point) "toggle diffinfo")
   ("m" magit-status "magit-status" :exit t)
   ("d" magit-status-here "status-here" :exit t)
+  ("u" git-gutter+-unstage-whole-buffer "unstage all in buffer" :exit nil)
   ("c" magit-commit-create "commit" :exit t)
   ("b" magit-blame-addition "blame" :exit t)
   ("P" magit-push "push" :exit t)
