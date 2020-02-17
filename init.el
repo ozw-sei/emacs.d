@@ -54,6 +54,8 @@
 (use-package magit-lfs
   :straight t)
 
+(require 'git-gutter-plus-refresh-on-magit-commit)
+
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 
