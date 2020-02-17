@@ -11,5 +11,3 @@ jobs:
       - uses: snow-actions/eclint@v1.0.1
         with:
           args: 'check init.el snippets'
-      - name: dotenv-linter
-        uses: wemake-services/dotenv-linter@0.1.5
