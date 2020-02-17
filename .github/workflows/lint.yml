@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: EditorConfig-Action
-        uses: zbeekman/EditorConfig-Action@v1.1.1
+      - uses: snow-actions/eclint@v1.0.1
+        with:
+          args: 'check'
       - name: dotenv-linter
         uses: wemake-services/dotenv-linter@0.1.5
