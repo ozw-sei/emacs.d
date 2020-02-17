@@ -69,11 +69,8 @@
   :straight t
   :config
   (dashboard-setup-startup-hook)
-  (setq dashboard-items '(
-                          (recents  . 5)
-                          (bookmarks . 5)
-                          (projects . 5)
-                          (registers . 5)))
+  (setq dashboard-items '((projects . 5)
+                          (recents  . 20)))
   (defun open-dashboard ()
     "Open the *dashboard* buffer and jump to the first widget."
     (interactive)
