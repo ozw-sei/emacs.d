@@ -36,6 +36,11 @@ max_line_length = none
 indent_style = none
 indent_size = none
 
+[.projectile]
+end_of_line = none
+insert_final_newline = none
+trim_trailing_whitespace = none
+
 [/dict/**]
 charset = none
 end_of_line = none
