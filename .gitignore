@@ -25,3 +25,4 @@ bookmarks
 eshell/
 .dir-locals.el
 woman-cache
+prescient-save.el
