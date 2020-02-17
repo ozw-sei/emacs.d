@@ -9,7 +9,7 @@ insert_final_newline = true
 
 [*.el]
 indent_style = space
-max_line_length = 80
+max_line_length = 120
 
 
 [Makefile]
@@ -32,12 +32,14 @@ charset = none
 end_of_line = none
 insert_final_newline = none
 trim_trailing_whitespace = none
+max_line_length = none
 indent_style = none
 indent_size = none
 
 [/dict/**]
 charset = none
 end_of_line = none
+max_line_length = none
 insert_final_newline = none
 trim_trailing_whitespace = none
 indent_style = none
@@ -46,8 +48,8 @@ indent_size = none
 [/hunspell/**]
 charset = none
 end_of_line = none
+max_line_length = none
 insert_final_newline = none
 trim_trailing_whitespace = none
 indent_style = none
 indent_size = none
-
