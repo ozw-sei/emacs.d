@@ -9,8 +9,8 @@
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
+        "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+        'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -240,7 +240,7 @@
  ;; If there is more than one, they won't work right.
  '(git-gutter:ask-p nil)
  '(package-selvc-mergeected-packages
-   (quote
+  (quote
     (highlight-symbol exec-path-from-shell pip-requirements bundler solidity-mode smartparens smartparens-config smart-parens inf-ruby rspec-mode ruby-hash-syntax ibuffer-projectile shader-mode web-mode glsl-mode yaml-mode back-button omnisharp mwim zop-to-char dashboard editorconfig smart-jump ag typescript-mode flycheck-elixir alchemist elixir-mode avy ido-ubiquitous projectile company migemo ido-vertical-mode package-utils use-package undohist smex powerline magit-stgit magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -369,7 +369,7 @@
 
 (setq default-frame-alist
       (append (list
-               '(font . "Consolas"))
+              '(font . "Consolas"))
               default-frame-alist))
 
 
@@ -450,13 +450,13 @@
 (global-set-key (kbd "<f8>") 'goto-last-change-reverse)
 
  (use-package ido-vertical-mode
-   :straight t
-   :after ido
-   :config
-   (ido-vertical-mode 1)
-   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-   (setq ido-max-window-height 0.75)
-   )
+  :straight t
+  :after ido
+  :config
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+  (setq ido-max-window-height 0.75)
+  )
 
 ;;----------------------
 ;; undohistの設定
@@ -672,7 +672,7 @@
   ("n" git-gutter+-next-hunk "next" :exit nil)
   ("s" git-gutter+-stage-hunks "stage")
   ("r" git-gutter+-revert-hunk "revert")
-  ("SPC" (git-gutter+-show-hunk-inline-at-point) "toggle diffinfo")
+
   ("m" magit-status "magit-status" :exit t)
   ("d" magit-status-here "status-here" :exit t)
   ("u" git-gutter+-unstage-whole-buffer "unstage all in buffer" :exit nil)
@@ -687,14 +687,14 @@
 (defhydra hydra-buffer-split nil
   "hydra-buffer-split"
   ("s" (lambda ()
-         (interactive)
-         (split-window-vertically)
-         (windmove-down)) "split-horizontally")
+        (interactive)
+        (split-window-vertically)
+        (windmove-down)) "split-horizontally")
 
   ("v" (lambda()
-         (interactive)
-         (split-window-horizontally)
-         (windmove-right)) "split-vertically")
+        (interactive)
+        (split-window-horizontally)
+        (windmove-right)) "split-vertically")
   ("C-k" delete-window "delete")
   ("h" windmove-left "move-left")
   ("l" windmove-right "move-right")
@@ -719,9 +719,9 @@
   ("k" flycheck-previous-error "prev-error")
   ("h" flycheck-first-error    "first-error")
   ("l" (lambda ()
-         (interactive)
-         (flycheck-list-errors)
-         (windmove-right)) "list-errors" :exit t)
+        (interactive)
+        (flycheck-list-errors)
+        (windmove-right)) "list-errors" :exit t)
   ("gg" flycheck-first-error "First")
   ("G" (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
   ("q" nil "exit" :color blue))
@@ -759,14 +759,14 @@
 (add-to-list 'recentf-exclude "COMMIT_EDITMSG")
 
 (add-to-list 'recentf-exclude
-             (expand-file-name "~/.emacs.d/elsp/*"))
+            (expand-file-name "~/.emacs.d/elsp/*"))
 (add-to-list 'recentf-exclude
-             (expand-file-name "~/.emacs.d/elpa/*"))
+            (expand-file-name "~/.emacs.d/elpa/*"))
 (add-to-list 'recentf-exclude
-             (expand-file-name "~/.emacs.d/cache/*"))
+            (expand-file-name "~/.emacs.d/cache/*"))
 
 (add-to-list 'recentf-exclude
-             (expand-file-name "/usr/local/Cellar/*"))
+            (expand-file-name "/usr/local/Cellar/*"))
 
 (setq recentf-max-saved-items 2000)
 
@@ -845,8 +845,8 @@ T - tag prefix
 
 
 (defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
-                           :color pink
-                           :post (deactivate-mark))
+                          :color pink
+                          :post (deactivate-mark))
   ""
   ("h" backward-char "left")
   ("l" forward-char "right")
@@ -856,8 +856,8 @@ T - tag prefix
   ("n" copy-rectangle-as-kill "copy-rectangle")
   ("d" delete-rectangle "delete")
   ("r" (if (region-active-p)
-           (deactivate-mark)
-         (rectangle-mark-mode 1)) nil)
+          (deactivate-mark)
+        (rectangle-mark-mode 1)) nil)
   ("y" yank-rectangle "yank")
   ("u" undo "undo")
   ("s" string-rectangle "string-rectangle")
@@ -904,20 +904,20 @@ T - tag prefix
 (use-package glsl-mode
   :straight t
   :mode (("\\.effect\\'" . glsl-mode)
-         ("\\.fsh\\'" . glsl-mode)
-         ("\\.vsh\\'" . glsl-mode)
-         ("\\.shader\\'" . glsl-mode)))
+        ("\\.fsh\\'" . glsl-mode)
+        ("\\.vsh\\'" . glsl-mode)
+        ("\\.shader\\'" . glsl-mode)))
 
 (use-package web-mode
   :straight t
   :config
   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-					;(add-to-list 'auto-mode-alist '("\\.js$" . web-mode)) ;
-					;(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-					;(add-to-list 'auto-mode-alist '("\\.ts$" . web-mode))
-					;(add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
-					;(setq web-mode-content-types-alist
-					;'(("jsx" . "\\.js[x]?\\'")))
+          ;(add-to-list 'auto-mode-alist '("\\.js$" . web-mode)) ;
+          ;(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+          ;(add-to-list 'auto-mode-alist '("\\.ts$" . web-mode))
+          ;(add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
+          ;(setq web-mode-content-types-alist
+          ;'(("jsx" . "\\.js[x]?\\'")))
   )
 
 (use-package csv-mode
@@ -937,9 +937,9 @@ T - tag prefix
 (use-package ruby-mode
   :straight t
   :mode (
-         ("\\Vagrantfile$" . ruby-mode)
+        ("\\Vagrantfile$" . ruby-mode)
 
-         ("\\.rb$" . ruby-mode))
+        ("\\.rb$" . ruby-mode))
   )
 
 (use-package smex
@@ -947,7 +947,7 @@ T - tag prefix
   :bind
   ("M-x" . smex)
   ("M-X" . smex-major-mode-commands)
-   )
+  )
 
 
 ;; json-mode
@@ -1032,10 +1032,10 @@ If there are two or more windows, it will go to another window."
   :diminish (zoom-mode)
   :config
   (custom-set-variables
-   '(zoom-mode t)
-   '(zoom-size '(0.618 . 0.618))
-   '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode magit-mode magit-status-mode))
-   ))
+  '(zoom-mode t)
+  '(zoom-size '(0.618 . 0.618))
+  '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode magit-mode magit-status-mode))
+  ))
 
 (use-package go-mode
   :straight t
@@ -1059,7 +1059,7 @@ If there are two or more windows, it will go to another window."
   :straight t
   :config
   (custom-set-variables
-   '(company-go-insert-arguments nil))
+  '(company-go-insert-arguments nil))
   :after (go-mode company)
   )
 
@@ -1076,9 +1076,9 @@ If there are two or more windows, it will go to another window."
 
 (use-package unicode-whitespace
   :requires (list-utils
-	     ucs-utils
-	     unicode-whitespace
-	     persistent-soft)
+      ucs-utils
+      unicode-whitespace
+      persistent-soft)
   :config
   (whitespace-mode 1)
   (unicode-whitespace-setup)
@@ -1091,18 +1091,18 @@ If there are two or more windows, it will go to another window."
     (add-hook 'ruby-mode-hook (lambda () (whitespace-mode 1)))
     (add-hook 'c-mode-common-hook (lambda () (whitespace-mode 1)))
     (setq whitespace-style '(face
-                             trailing
-                             tabs
-                             spaces
-                             lines-tail
-                             newline
-                             empty
-                             indentation
-                             space-after-tab
-                             space-before-tab
-                             space-mark
-                             tab-mark
-                             ))
+                            trailing
+                            tabs
+                            spaces
+                            lines-tail
+                            newline
+                            empty
+                            indentation
+                            space-after-tab
+                            space-before-tab
+                            space-mark
+                            tab-mark
+                            ))
     (set-face-background 'whitespace-newline 'nil)
     (set-face-background 'whitespace-space 'nil)
     (set-face-foreground 'whitespace-space "RGB:44/44/44")
@@ -1147,22 +1147,22 @@ Breadcrumb bookmarks:
   (setq ivy-height 30)
 
   (custom-set-faces
-   '(ivy-current-match
-     ((((class color) (background light))
+  '(ivy-current-match
+    ((((class color) (background light))
       :background "#FFF3F3" :distant-foreground "#000000")
       (((class color) (background dark))
-       :background "#404040" :distant-foreground "#abb2bf")))
-   '(ivy-minibuffer-match-face-1
-     ((((class color) (background light)) :foreground "#666666")
+      :background "#404040" :distant-foreground "#abb2bf")))
+  '(ivy-minibuffer-match-face-1
+    ((((class color) (background light)) :foreground "#666666")
       (((class color) (background dark)) :foreground "#999999")))
-   '(ivy-minibuffer-match-face-2
-     ((((class color) (background light)) :foreground "#c03333" :underline t)
+  '(ivy-minibuffer-match-face-2
+    ((((class color) (background light)) :foreground "#c03333" :underline t)
       (((class color) (background dark)) :foreground "#e04444" :underline t)))
-   '(ivy-minibuffer-match-face-3
-     ((((class color) (background light)) :foreground "#8585ff" :underline t)
+  '(ivy-minibuffer-match-face-3
+    ((((class color) (background light)) :foreground "#8585ff" :underline t)
       (((class color) (background dark)) :foreground "#7777ff" :underline t)))
-   '(ivy-minibuffer-match-face-4
-     ((((class color) (background light)) :foreground "#439943" :underline t)
+  '(ivy-minibuffer-match-face-4
+    ((((class color) (background light)) :foreground "#439943" :underline t)
       (((class color) (background dark)) :foreground "#33bb33" :underline t))))
 
   (ivy-mode 1)
@@ -1233,22 +1233,22 @@ Breadcrumb bookmarks:
   ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
   ;; allows using SPACE when in the minibuffer
   (substitute-key-definition
-   'minibuffer-complete-word
-   'self-insert-command
-   minibuffer-local-completion-map)
-   ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
-   (setq sbt:program-options '("-Dsbt.supershell=false"))
-   )
+  'minibuffer-complete-word
+  'self-insert-command
+  minibuffer-local-completion-map)
+  ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+  (setq sbt:program-options '("-Dsbt.supershell=false"))
+  )
 
 (use-package lsp-mode
   :straight t
   :init (setq lsp-keymap-prefix "C-c l")
   ;; Optional - enble lsp-mode automatically in scala files
   :hook (
-         (scala-mode . lsp)
-         (js-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration)
-         )
+        (scala-mode . lsp)
+        (js-mode . lsp)
+        (lsp-mode . lsp-enable-which-key-integration)
+        )
   :commands (lsp))
 
 (use-package company-lsp
@@ -1305,11 +1305,11 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
             (interactive)
             (save-buffer)
             (bury-buffer))
-     "Save and bury buffer" :color blue)
+    "Save and bury buffer" :color blue)
     ("q" nil "cancel" :color blue))
   :hook (magit-diff-visit-file . (lambda ()
-                                   (when smerge-mode
-                                     (unpackaged/smerge-hydra/body)))))
+                                  (when smerge-mode
+                                    (unpackaged/smerge-hydra/body)))))
 
 (defhydra hydra-vim-move nil
   "cursor move"
