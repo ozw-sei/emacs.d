@@ -1,0 +1,16 @@
+name: lint
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: editorconfig-linter
+        uses: greut/eclint-action@v0.1.1
+
+      - name: dotenv-linter
+        uses: wemake-services/dotenv-linter@0.1.5
