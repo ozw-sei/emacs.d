@@ -54,8 +54,6 @@
 (use-package magit-lfs
   :straight t)
 
-(require 'git-gutter-plus-refresh-on-magit-commit)
-
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 
@@ -168,7 +166,6 @@
 
 ;; reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 100000000)
 
 (setq garbage-collection-messages t)
 
@@ -393,7 +390,7 @@
 (display-time)
 
 ;;; GCを減らして軽くする
-(setq gc-cons-threshold (* 30 gc-cons-threshold))
+(setq gc-cons-threshold (* 10 gc-cons-threshold))
 
 ;;; ログの記録行数を増やす
 (setq message-log-max 10000)
@@ -625,11 +622,11 @@
   '(add-hook 'typescript-mode-check #'add-node-modules-path))
 
 
-(use-package git-gutter-plus
+(use-package git-gutter
   :straight t
-  :diminish (git-gutter+-mode)
+  :diminish (git-gutter-mode)
   :custom
-  (global-git-gutter+-mode +1)
+  (global-git-gutter-mode +1)
 
   :bind
   ;; hydra-git-gutter起動のキーバインド
@@ -658,21 +655,22 @@
 ;; トグルできる関数を定義
 (defun git-toggle-hunk ()
   "Toggle 'git-gutter' hunk window."
-  (git-gutter+-show-hunk)
+  (git-gutter:popup-hunk)
   (other-window 1)
   )
 
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
   "git hunk"
-  ("p" git-gutter+-previous-hunk "previous" :exit nil)
-  ("n" git-gutter+-next-hunk "next" :exit nil)
-  ("s" git-gutter+-stage-hunks "stage")
-  ("r" git-gutter+-revert-hunk "revert")
+  ("p" git-gutter:previous-hunk "previous" :exit nil)
+  ("n" git-gutter:next-hunk "next" :exit nil)
+  ("u" git-gutter:unstage-whole-buffer "unstage all in buffer" :exit nil)
+  ("s" git-gutter:stage-hunk "stage")
+  ("r" git-gutter:revert-hunk "revert")
 
   ("m" magit-status "magit-status" :exit t)
   ("d" magit-status-here "status-here" :exit t)
-  ("u" git-gutter+-unstage-whole-buffer "unstage all in buffer" :exit nil)
+
   ("c" magit-commit-create "commit" :exit t)
   ("b" magit-blame-addition "blame" :exit t)
   ("P" magit-push "push" :exit t)
@@ -786,6 +784,12 @@
   ("C-e" . 'mwim-end-of-code-or-line))
 
 
+
+;; 2画面ファイラ
+(setq dired-dwim-target t)
+
+;; wdired
+(require 'wdired)
 
 (defhydra hydra-dired (:hint nil :color pink)
   "
@@ -1332,3 +1336,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
 (use-package powershell-mode
   :straight t)
+
+(use-package forge
+  :straight t
+  :after magit)
