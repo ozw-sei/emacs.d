@@ -976,9 +976,18 @@ T - tag prefix
 (use-package ruby-electric
   :straight t)
 
-                                        ;(use-package projectile-rails
-                                        ;:straight t
-                                        ;:after projectile)
+(use-package inflections
+  :straight t)
+
+(use-package rake
+  :straight t)
+
+(use-package projectile-rails
+  :straight t
+  :config
+  (projectile-rails-global-mode)
+  (define-key projectile-rails-mode-map (kbd "C-c r") 'hydra-projectile-rails/body)
+)
 
 (require 'rbenv)
 (global-rbenv-mode)
