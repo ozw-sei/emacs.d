@@ -318,8 +318,11 @@
   (setq iflipb-ignore-buffers (list "^[*]" "^magit" "]$"))
   (setq iflipb-wrap-around t)
   :bind
-  ("M-[" . iflipb-previous-buffer)
-  ("M-]" . iflipb-next-buffer)
+
+  ;; pg up
+  ("M-<prior>" . iflipb-previous-buffer)
+  ;; pg down
+  ("M-<next>" . iflipb-next-buffer)
 )
 
 ;; common-setting
