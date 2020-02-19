@@ -439,9 +439,10 @@
 (setq set-mark-command-repeat-pop t)
 
 (use-package goto-chg
-  :straight t)
-(global-set-key (kbd "<f7>") 'goto-last-change)
-(global-set-key (kbd "<f8>") 'goto-last-change-reverse)
+  :straight t
+  :bind
+  ("<f7>" . 'goto-last-change)
+  ("<f8>" . 'goto-last-change-reverse))
 
  (use-package ido-vertical-mode
   :straight t
@@ -520,8 +521,8 @@
     "
  Line^^       Region^^        Goto
 ----------------------------------------------------------
- [_y_] yank   [_Y_] yank      [_c_] timed char  [_C_] char
- [_m_] move   [_M_] move      [_w_] word        [_W_] any word
+ [_y_] yank   [_Y_] yank      [_c_] timed char
+ [_m_] move   [_M_] move      [_w_] word
  [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
     ("c" avy-goto-char)
     ("w" avy-goto-word-1)
@@ -544,8 +545,8 @@
 (defhydra hydra-projectile nil
   "Projectile"
   ("f"   counsel-projectile-find-file         "Find File")
-  ("a"   projectile-ag                "ag" :exit t)
-  ("A"   counsel-projectile-ag                "ag in counsel" :exit t)
+  ("A"   projectile-ag                "ag" :exit t)
+  ("a"   counsel-projectile-ag                "ag in counsel" :exit t)
   ("r"   projectile-recentf                  "Recent Files" :exit t)
   ("d"   counsel-projectile-find-dir                 "Find Directory")
   ("b"   counsel-projectile-switch-to-buffer         "Switch to Buffer")
@@ -943,13 +944,6 @@ T - tag prefix
         ("\\.rb$" . ruby-mode))
   )
 
-(use-package smex
-  :straight t
-  :bind
-  ("M-x" . smex)
-  ("M-X" . smex-major-mode-commands)
-  )
-
 
 ;; json-mode
 (use-package json-mode
@@ -1042,9 +1036,8 @@ If there are two or more windows, it will go to another window."
   :diminish (zoom-mode)
   :config
   (custom-set-variables
-  '(zoom-mode t)
   '(zoom-size '(0.618 . 0.618))
-  '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode magit-mode magit-status-mode))
+  '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode magit-mode magit-status-mode shackle-mode))
   ))
 
 (use-package go-mode
@@ -1191,6 +1184,7 @@ Breadcrumb bookmarks:
   ("<f2> u" . 'counsel-unicode-char)
   ("<f2> j" . 'counsel-set-variable)
   ("C-x b" . 'ivy-switch-buffer)
+  ("C-x C-b" . 'ivy-switch-buffer)
   ("C-c v" . 'ivy-push-view)
   ("C-c V" . 'ivy-pop-view)
   )
@@ -1349,3 +1343,45 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 (use-package forge
   :straight t
   :after magit)
+
+(use-package shackle
+  :straight t
+  :config
+  (setq shackle-select-reused-windows nil) ; default nil
+  (setq shackle-default-alignment 'below) ; default below
+  (setq shackle-default-size 0.4) ; default 0.5
+  (setq shackle-rules
+        '(;; *compilation*は下部に2割の大きさで表示
+          ("*undo-tree*"                                                    :size 0.25 :align right)
+          ("*eshell*"                    :select t                          :other t               )
+          ("*Shell Command Output*"      :select nil                                               )
+          ("\\*Async Shell.*\\*" :regexp t :ignore t                                                 )
+          (occur-mode                    :select nil                                   :align t    )
+          ("*Help*"                      :select t   :inhibit-window-quit t :other t               )
+          ("*Completions*"                                                  :size 0.3  :align t    )
+          ("*info*"                      :select t   :inhibit-window-quit t                         :same t)
+          (magit-status-mode             :select t   :inhibit-window-quit t                         :same t)
+          (magit-log-mode                :select t   :inhibit-window-quit t                         :same t)
+          (compilation-mode :align below :ratio 0.2)
+          ;; ;; ヘルプバッファは右側に表示
+          ;; ("*Help*" :align right)
+          ;; ;; 補完バッファは下部に3割の大きさで表示
+          ;; ("*Completions*" :align below :ratio 0.3)
+          ;; ;; M-x helm-miniは下部に7割の大きさで表示
+          ;; ("*helm mini*" :align below :ratio 0.7)
+          ;; ;; 他のhelmコマンドは右側に表示 (バッファ名の正規表現マッチ)
+          ;; ("\*helm" :regexp t :align right)
+          ;; ;; 上部に表示
+          ;; ;;("foo" :align above)
+          ;; ;; 別フレームで表示
+          ;; ;;("bar" :frame t)
+          ;; ;; 同じウィンドウで表示
+          ;; ;;("baz" :same t)
+          ;; ;; ポップアップで表示
+          ;; ("*Occur*" :align below :ratio 0.2)
+          ;; 選択する
+          ;; ("abc" :select t)
+          ))
+  (shackle-mode 1)
+  (setq shackle-lighter "")
+  )
