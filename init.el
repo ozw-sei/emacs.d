@@ -430,8 +430,7 @@
   :config
   (global-set-key [remap goto-line] 'goto-line-preview)
 )
-                                        ; Org-captureを呼び出すキーシーケンス
-                                        ; Org-captureのテンプレート（メニュー）の設定
+
 (add-hook 'js2-mode-hook 'flow-minor-mode)
 (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
 
@@ -502,7 +501,7 @@
 (use-package origami
   :straight t
   :config
-  (origami-mode 1)
+  (global-origami-mode 1)
   (defhydra hydra-folding (:color red)
     "
   _o_pen node    _n_ext fold       toggle _f_orward
