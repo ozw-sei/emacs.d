@@ -1033,15 +1033,6 @@ If there are two or more windows, it will go to another window."
 
 (bind-key* "C-t" 'other-window-or-split)
 
-(use-package zoom
-  :straight t
-  :diminish (zoom-mode)
-  :config
-  (custom-set-variables
-  '(zoom-size '(0.618 . 0.618))
-  '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode magit-mode magit-status-mode shackle-mode))
-  ))
-
 (use-package go-mode
   :straight t
   :init
@@ -1175,8 +1166,7 @@ Breadcrumb bookmarks:
 
   :bind
   ("M-x" . 'counsel-M-x)
-  ("M-o" . 'occur)
-  ("C-M-o" . 'swiper)
+  ("M-o" . 'swiper)
   ("C-x C-r" . 'counsel-recentf)
   ("M-y" . 'counsel-yank-pop)
   ("<f1> f" . 'counsel-describe-function)
