@@ -320,8 +320,11 @@
   (setq iflipb-ignore-buffers (list "^[*]" "^magit" "]$"))
   (setq iflipb-wrap-around t)
   :bind
-  ("M-[" . iflipb-previous-buffer)
-  ("M-]" . iflipb-next-buffer)
+
+  ;; pg up
+  ("M-<prior>" . iflipb-previous-buffer)
+  ;; pg down
+  ("M-<next>" . iflipb-next-buffer)
 )
 
 ;; common-setting
@@ -429,8 +432,7 @@
   :config
   (global-set-key [remap goto-line] 'goto-line-preview)
 )
-                                        ; Org-captureを呼び出すキーシーケンス
-                                        ; Org-captureのテンプレート（メニュー）の設定
+
 (add-hook 'js2-mode-hook 'flow-minor-mode)
 (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
 
@@ -502,7 +504,7 @@
 (use-package origami
   :straight t
   :config
-  (origami-mode 1)
+  (global-origami-mode 1)
   (defhydra hydra-folding (:color red)
     "
   _o_pen node    _n_ext fold       toggle _f_orward
@@ -1033,15 +1035,6 @@ If there are two or more windows, it will go to another window."
 
 (bind-key* "C-t" 'other-window-or-split)
 
-(use-package zoom
-  :straight t
-  :diminish (zoom-mode)
-  :config
-  (custom-set-variables
-  '(zoom-size '(0.618 . 0.618))
-  '(zoom-ignored-major-modes '(dired-mode markdown-mode smerge-mode diff-mode magit-mode magit-status-mode shackle-mode))
-  ))
-
 (use-package go-mode
   :straight t
   :init
@@ -1175,8 +1168,7 @@ Breadcrumb bookmarks:
 
   :bind
   ("M-x" . 'counsel-M-x)
-  ("M-o" . 'occur)
-  ("C-M-o" . 'swiper)
+  ("M-o" . 'swiper)
   ("C-x C-r" . 'counsel-recentf)
   ("M-y" . 'counsel-yank-pop)
   ("<f1> f" . 'counsel-describe-function)
