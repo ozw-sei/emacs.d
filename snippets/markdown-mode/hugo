@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: hugo
+# key: hugo
+# --
+
+---
+
+title: ${1:title}
+date: `(concat
+ (format-time-string "%Y-%m-%dT%T")
+ ((lambda (x) (concat (substring x 0 3) ":" (substring x 3 5)))
+  (format-time-string "%z")))`
+draft: true
+categories: []
+tags: []
+---
+
+$0
