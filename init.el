@@ -306,8 +306,20 @@
   ("C-j" . company-yasnippet)
   )
 
+
+
 (use-package yasnippet-snippets
   :straight t)
+
+
+(use-package smart-jump
+  :straight t
+  :config
+
+  :bind
+  ("C-." . smart-jump-go)
+  ("C-," . smart-jump-back)
+  ("C->" . smart-jump-peek))
 
 ;; point-undo
 (require 'point-undo)
