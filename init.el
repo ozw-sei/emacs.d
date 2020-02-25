@@ -30,6 +30,7 @@
 ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-refresh-contents)
 
+
 (use-package exec-path-from-shell
   :straight t
   :if (memq window-system '(mac ns x))
@@ -374,14 +375,20 @@
 (use-package woman
   :config (setq woman-cache-filename (expand-file-name "~/.emacs.d/woman-cache")))
 
+
+(setq default-frame-alist
+      (append (list
+              '(font . "Consolas"))
+              default-frame-alist))
+
 ;; font-size　ASCII
 (set-face-attribute 'default nil :height 120)
+
 
 ; japanese-jisx0208 fonts
 (set-fontset-font nil
                   'japanese-jisx0208
                   (font-spec :family "Noto Sans Mono CJK JP Bold"))
-
 
 ;;; ファイルを開いた位置を保存する
 (require 'saveplace)
