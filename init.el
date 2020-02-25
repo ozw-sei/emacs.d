@@ -1288,5 +1288,6 @@ Breadcrumb bookmarks:
 (use-package restclient
   :straight t)
 
+;; CTRL とホイールで拡大縮小をやめたい
 (global-set-key (kbd "<C-wheel-down>") nil)
 (global-set-key (kbd "<C-wheel-up>") nil)
