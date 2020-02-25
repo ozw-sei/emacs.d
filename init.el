@@ -360,14 +360,13 @@
 (use-package woman
   :config (setq woman-cache-filename (expand-file-name "~/.emacs.d/woman-cache")))
 
-;; font-size
-(set-face-attribute 'default nil :height 140)
-;(set-default-font "Consolas")
+;; font-size　ASCII
+(set-face-attribute 'default nil :height 120)
 
-(setq default-frame-alist
-      (append (list
-              '(font . "Consolas"))
-              default-frame-alist))
+; japanese-jisx0208 fonts
+(set-fontset-font nil
+                  'japanese-jisx0208
+                  (font-spec :family "Noto Sans Mono CJK JP Bold"))
 
 
 ;;; ファイルを開いた位置を保存する
@@ -589,10 +588,11 @@
 (use-package flyspell
   :straight t
   :config
-
+  (when (string-equal system-type "darwin") ; There is no problem on Linux
+    ;; Dictionary file name
+    (setenv "DICTIONARY" "en_US"))
   (when (eq system-type 'windows-nt) ; Windows
-    (add-to-list 'exec-path "~/.emacs.d/hunspell/bin")
-    )
+    (add-to-list 'exec-path "~/.emacs.d/hunspell/bin"))
   (setq ispell-program-name "hunspell")
   (setq exec-path (parse-colon-path (getenv "PATH")))
   (setq exec-path (parse-colon-path (getenv "DICTIONARY")))
@@ -601,10 +601,7 @@
   (setq exec-path (parse-colon-path (getenv "PATH")))
   (setq eshell-path-env (getenv "DICTIONARY"))
   (setq eshell-path-env (getenv "DICPATH"))
-  (setq flyspell-mode 1)
-  )
-
-
+  (setq flyspell-mode 1))
 
 (use-package flyspell-correct
   :straight t)
@@ -710,7 +707,7 @@
   (bind-key* "C-q" nil)
 )
 
-;; hydra flycheck 操作
+;; hydra flcheck 操作
 (defhydra hydra-flycheck nil
   "hydra-flycheck"
   ("j" flycheck-next-error     "next-error")
@@ -1239,141 +1236,40 @@ Breadcrumb bookmarks:
 (use-package lsp-mode
   :straight t
   :init (setq lsp-keymap-prefix "C-c l")
-  ;; Optional - enble lsp-mode automatically in scala files
-  :hook (
-        (scala-mode . lsp)
-        (js-mode . lsp)
-        (lsp-mode . lsp-enable-which-key-integration)
-        )
+  :custom
+  (lsp-auto-guess-root t)
+  (lsp-response-timeout 5)
+  (lsp-document-sync-method 'incremental)
+  ;; document
+  (lsp-ui-doc-use-childframe t)
+
+  (lsp-ui-flycheck-enable 1)
+
+  (lsp-ui-sideline-enable 1)
+
+  :config
+  (require 'lsp-clients)
+
   :commands (lsp))
 
-(use-package company-lsp
-  :straight t)
 
 (use-package lsp-ui
-
-
-  :straight t)
-
-(use-package lsp-ivy
-  :straight t)
-
-(use-package smart-jump
+  :after lsp-mode
   :straight t
-  :config
-  (smart-jump-setup-default-registers)
-  :bind
-  ("C-." . smart-jump-go)
-  ("C-," . smart-jump-back))
+  :custom
+  (scroll-margin 0)
+  (lsp-ui-doc-position 'top)
+  :hook   (lsp-mode . lsp-ui-mode))
 
-;smerge-mode
-(use-package smerge-mode
-  :after hydra
-  :config
-  (defhydra unpackaged/smerge-hydra
-    (:color pink :hint nil :post (smerge-auto-leave))
-    "
-^Move^       ^Keep^               ^Diff^                 ^Other^
-^^-----------^^-------------------^^---------------------^^-------
-_n_ext       _b_ase               _<_: upper/base        _C_ombine
-_p_rev       _u_pper              _=_: upper/lower       _r_esolve
-^^           _l_ower              _>_: base/lower        _k_ill current
-^^           _a_ll                _R_efine
-^^           _RET_: current       _E_diff
-"
-    ("n" smerge-next)
-    ("p" smerge-prev)
-    ("b" smerge-keep-base)
-    ("u" smerge-keep-upper)
-    ("l" smerge-keep-lower)
-    ("a" smerge-keep-all)
-    ("RET" smerge-keep-current)
-    ("\C-m" smerge-keep-current)
-    ("<" smerge-diff-base-upper)
-    ("=" smerge-diff-upper-lower)
-    (">" smerge-diff-base-lower)
-    ("R" smerge-refine)
-    ("E" smerge-ediff)
-    ("C" smerge-combine-with-next)
-    ("r" smerge-resolve)
-    ("k" smerge-kill-current)
-    ("ZZ" (lambda ()
-            (interactive)
-            (save-buffer)
-            (bury-buffer))
-    "Save and bury buffer" :color blue)
-    ("q" nil "cancel" :color blue))
-  :hook (magit-diff-visit-file . (lambda ()
-                                  (when smerge-mode
-                                    (unpackaged/smerge-hydra/body)))))
-
-(defhydra hydra-vim-move nil
-  "cursor move"
-  ("[" forward-paragraph "forward-paragraph" :exit nil)
-  ("]" backward-paragraph "backward-paragraph" :exit nil)
-  ("w" forward-word "forward-word" :exit nil)
-  ("b" backward-word "backward-word" :exit nil)
-  ("C-f" scroll-up-command "scroll-up" :exit nil)
-  ("C-b" scroll-down-command "scroll-down" :exit nil)
-  ("h" backward-char "backward-char" :exit nil)
-  ("j" next-line "next-line" :exit nil)
-  ("k" previous-line "previous-line" :exit nil)
-  ("l" forward-char "forward-char" :exit nil)
-  ("SPC" er/expand-region "expand-region" :exit nil)
-  ("H" mark-paragraph "mark-paragraph")
-  ("C-h" consel-selected "region-command"))
-
-(bind-key  "C-o" 'hydra-vim-move/body)
-
+;; (use-package ddskk
+;;   :straight t)
+;; (setq skk-jisyo-code 'utf-8)
+;; (global-set-key (kbd "C-x C-j") 'skk-mode)
+;; (setq skk-server-prog "google-ime-skk") ; google-ime-skkの場所
+;; (setq skk-server-inhibit-startup-server nil) ; 辞書サーバが起動していなかったときに Emacs からプロセスを立ち上げる
+;; (setq skk-server-host "localhost") ; サーバー機能を利用
+;; (setq skk-server-portnum 55100)     ; ポートはgoogle-ime-skk
+;; (setq skk-share-private-jisyo t)   ; 複数 skk 辞書を共有
 
 (use-package restclient
   :straight t)
-
-(use-package powershell-mode
-  :straight t)
-
-(use-package forge
-  :straight t
-  :after magit)
-
-(use-package shackle
-  :straight t
-  :config
-  (setq shackle-select-reused-windows nil) ; default nil
-  (setq shackle-default-alignment 'below) ; default below
-  (setq shackle-default-size 0.4) ; default 0.5
-  (setq shackle-rules
-        '(;; *compilation*は下部に2割の大きさで表示
-          ("*undo-tree*"                                                    :size 0.25 :align right)
-          ("*eshell*"                    :select t                          :other t               )
-          ("*Shell Command Output*"      :select nil                                               )
-          ("\\*Async Shell.*\\*" :regexp t :ignore t                                                 )
-          (occur-mode                    :select nil                                   :align t    )
-          ("*Help*"                      :select t   :inhibit-window-quit t :other t               )
-          ("*Completions*"                                                  :size 0.3  :align t    )
-          ("*info*"                      :select t   :inhibit-window-quit t                         :same t)
-          (magit-status-mode             :select t   :inhibit-window-quit t                         :same t)
-          (magit-log-mode                :select t   :inhibit-window-quit t                         :same t)
-          (compilation-mode :align below :ratio 0.2)
-          ;; ;; ヘルプバッファは右側に表示
-          ;; ("*Help*" :align right)
-          ;; ;; 補完バッファは下部に3割の大きさで表示
-          ;; ("*Completions*" :align below :ratio 0.3)
-          ;; ;; M-x helm-miniは下部に7割の大きさで表示
-          ;; ("*helm mini*" :align below :ratio 0.7)
-          ;; ;; 他のhelmコマンドは右側に表示 (バッファ名の正規表現マッチ)
-          ;; ("\*helm" :regexp t :align right)
-          ;; ;; 上部に表示
-          ;; ;;("foo" :align above)
-          ;; ;; 別フレームで表示
-          ;; ;;("bar" :frame t)
-          ;; ;; 同じウィンドウで表示
-          ;; ;;("baz" :same t)
-          ;; ;; ポップアップで表示
-          ;; ("*Occur*" :align below :ratio 0.2)
-          ;; 選択する
-          ;; ("abc" :select t)
-          ))
-  (shackle-mode 1)
-  (setq shackle-lighter "")
-  )
