@@ -1301,3 +1301,6 @@ Breadcrumb bookmarks:
 
 ;; *scratch* バッファの初期メッセージを消す
 (setq initial-scratch-message "")
+
+;; 行頭の kill-line (C-k) で行ごと削除
+(setq kill-whole-line t)
