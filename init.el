@@ -1298,3 +1298,6 @@ Breadcrumb bookmarks:
 ;; CTRL とホイールで拡大縮小をやめたい
 (global-set-key (kbd "<C-wheel-down>") nil)
 (global-set-key (kbd "<C-wheel-up>") nil)
+
+;; *scratch* バッファの初期メッセージを消す
+(setq initial-scratch-message "")
