@@ -26,4 +26,8 @@ Personal Emacs
 
 
 *** font
+**** ASCII
 - https://qiita.com/ozw_sei/items/8cd7f96f056a7efc65cf
+
+**** 日本語
+- https://www.google.com/get/noto/
