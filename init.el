@@ -295,6 +295,8 @@
 ;; yasnippet
 (use-package yasnippet
   :straight t
+  :init
+  (yas-global-mode 1)
   :commands yas-reload-all
   :delight yas-minor-mode
   :hook ((prog-mode). yas-minor-mode)
