@@ -20,6 +20,10 @@ projectile-bookmarks.eld
 migemo-pattern
 *.sqlite
 bookmarks
+*.cache
+.yas-compiled-snippets.el
+var/
+.lsp-session-v1
 !.gitignore
 !.gitkeep
 eshell/
