@@ -1304,3 +1304,48 @@ Breadcrumb bookmarks:
 
 ;; 行頭の kill-line (C-k) で行ごと削除
 (setq kill-whole-line t)
+
+
+;;;--------------- org-mode ---------------------
+(setq system-time-locale "C")
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-agenda-files
+      '("~/org/notes.org" "~/org/calendar.org"))
+
+(setq org-refile-targets
+      '(("~/org/notes.org" :level . 2 )
+        ("~/org/calendar.org" :level . 2 )))
+
+(use-package org-journal
+  :straight t
+  :custom
+  (org-journal-date-format "%x")
+  (org-journal-time-format "<%Y-%m-%d %R> ")
+  (org-journal-file-format "journal.org")
+  (org-journal-dir "~/org/journal/"))
+
+(setq org-capture-templates
+      `(
+        ("t"
+         "task"
+         entry
+         (file+headline "~/org/tasks.org" "TASK")
+         "** TODO %?\n   Entered on %U    %i\n"
+         :empty-lines 1)
+        ("d"
+         "diary"
+         entry
+         (file+headline "~/org/diaries.org" "DIARY")
+         "* %? :@diary: \n Entered on %U"
+         :empty-lines 1)
+        ("l"
+         "log"
+         entry
+         (file+headline "~/org/logs.org" "LOG")
+         "* %? :@log: \n Entered on %U"
+         :empty-lines 1
+         :jump-to-captured 1)))
+(setq org-agenda-files (list "~/org/"))
+(setq org-default-notes-file "~/org/notes.org")
+(setq org-return-follows-link t)
+(define-key global-map "\C-cc" 'org-capture)
