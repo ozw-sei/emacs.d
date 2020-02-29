@@ -138,10 +138,10 @@
   :hook ((js-mode typescript-mode))
   )
 
-(use-package direnv
- :straight t
- :config
- (direnv-mode))
+;; (use-package direnv
+;;  :straight t
+;;  :config
+;;  (direnv-mode))
 
 ;; 単語にカーソルを置くと同じ単語をハイライトしてくれる
 (use-package highlight-symbol
@@ -1136,12 +1136,9 @@ Breadcrumb bookmarks:
 
 (bind-key "C-x o" 'hydra-breadcrumb/body)
 
-(bind-key* "C-x d" 'dired-jump)
-
-
 (use-package counsel
   :straight t
-  :diminish (ivy-mode counsel-mode)
+  :diminish (ivy counsel-mode)
   :config
   (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../" ".DS_Store" ".git" ".meta" )))
 
@@ -1175,23 +1172,20 @@ Breadcrumb bookmarks:
 
   (ivy-mode 1)
   (counsel-mode 1)
+  ;; counsel-switch-to-buffer を読んでほしくない.
+  (define-key counsel-mode-map [remap switch-to-buffer]  nil)
+  (define-key ivy-mode-map [remap switch-to-buffer]  nil)
+
+  (define-key counsel-mode-map [remap recentf]  nil)
+  (define-key ivy-mode-map [remap recentf]  nil)
 
   :bind
   ("M-x" . 'counsel-M-x)
-  ("M-o" . 'swiper)
-  ("C-x C-r" . 'counsel-recentf)
-  ("M-y" . 'counsel-yank-pop)
-  ("<f1> f" . 'counsel-describe-function)
-  ("<f1> v" . 'counsel-describe-variable)
-  ("<f1> l" . 'counsel-find-library)
-  ("<f2> i" . 'counsel-info-lookup-symbol)
-  ("<f2> u" . 'counsel-unicode-char)
-  ("<f2> j" . 'counsel-set-variable)
-  ("C-x b" . 'ivy-switch-buffer)
-  ("C-x C-b" . 'ivy-switch-buffer)
-  ("C-c v" . 'ivy-push-view)
-  ("C-c V" . 'ivy-pop-view)
-  )
+  ("M-o" . 'swiper-thing-at-point)
+  ("M-O" . 'swiper)
+
+  ;;("C-x C-r" . 'counsel-recentf)
+  ("M-y" . 'counsel-yank-pop))
 
 (use-package selected
   :straight t
@@ -1294,7 +1288,7 @@ Breadcrumb bookmarks:
 (global-set-key (kbd "<C-wheel-up>") nil)
 
 ;; *scratch* バッファの初期メッセージを消す
-(setq initial-scratch-message "")
+;(setq initial-scratch-message "")
 
 ;; 行頭の kill-line (C-k) で行ごと削除
 (setq kill-whole-line t)
@@ -1325,21 +1319,13 @@ Breadcrumb bookmarks:
          entry
          (file+headline "~/org/tasks.org" "TASK")
          "** TODO %?\n   Entered on %U    %i\n"
-         :empty-lines 1)
-        ("d"
-         "diary"
-         entry
-         (file+headline "~/org/diaries.org" "DIARY")
-         "* %? :@diary: \n Entered on %U"
-         :empty-lines 1)
-        ("l"
-         "log"
-         entry
-         (file+headline "~/org/logs.org" "LOG")
-         "* %? :@log: \n Entered on %U"
-         :empty-lines 1
-         :jump-to-captured 1)))
+         :empty-lines 1)))
 (setq org-agenda-files (list "~/org/"))
 (setq org-default-notes-file "~/org/notes.org")
 (setq org-return-follows-link t)
 (define-key global-map "\C-cc" 'org-capture)
+
+(bind-key* "C-x d" 'dired-jump)
+
+(bind-key* "C-x b" 'switch-to-buffer)
+(bind-key* "C-x C-b" 'switch-to-buffer)
