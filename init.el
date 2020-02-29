@@ -498,13 +498,7 @@
   :config
   (projectile-mode +1)
   (setq projectile-completion-system 'ivy)
-  (setq projectile-indexing-method 'hybrid)
-
-
-  :bind
-  ("C-c C-f" . 'projectile-find-file)
-  ("C-c f" . 'projectile-find-file)
-  )
+  (setq projectile-indexing-method 'hybrid))
 
 
 (use-package counsel-projectile
