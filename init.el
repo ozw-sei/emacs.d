@@ -1326,6 +1326,5 @@ Breadcrumb bookmarks:
 (define-key global-map "\C-cc" 'org-capture)
 
 (bind-key* "C-x d" 'dired-jump)
-
 (bind-key* "C-x b" 'switch-to-buffer)
 (bind-key* "C-x C-b" 'switch-to-buffer)
