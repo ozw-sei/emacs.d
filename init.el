@@ -451,11 +451,11 @@
   (global-set-key [remap goto-line] 'goto-line-preview)
 )
 
-(add-hook 'js2-mode-hook 'flow-minor-mode)
-(add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
-
+(use-package flow-minor-mode
+  :straight t)
 (with-eval-after-load 'company
   (add-to-list 'company-backends 'company-flow))
+(add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
 
 
 (setq set-mark-command-repeat-pop t)
