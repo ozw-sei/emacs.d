@@ -87,7 +87,7 @@
 ;;   ("<f9>" . 'open-dashboard)
 ;;   )
 
-(setq initail-buffer-choice (lambda () (get-buffer "*dashboard*")))
+;(setq initail-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 ;; ido-uniquitous
 ;; https://www.emacswiki.org/emacs/InteractivelyDoThings
@@ -156,8 +156,6 @@
   :straight t
   :config
   (save-place-mode 1))
-
-
 
  ;; ビープ音禁止
  (setq ring-bell-function 'ignore)
