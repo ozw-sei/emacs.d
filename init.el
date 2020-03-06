@@ -1042,15 +1042,15 @@ If there are two or more windows, it will go to another window."
   :straight t
   :init
   (add-hook 'before-save-hook 'gofmt-before-save)
-  :config
 
+  :config
   (setq exec-path (parse-colon-path (getenv "GOROOT")))
   (setq exec-path (parse-colon-path (getenv "GOPATH")))
   (setq exec-path (parse-colon-path (getenv "PATH")))
-
   (setq eshell-path-env (getenv "GOPATH"))
   (setq eshell-path-env (getenv "PATH"))
   (setq eshell-path-env (getenv "GOROOT"))
+
   :bind
   ("M-." . 'godef-jump)
   ("M-," . 'pop-tag-mark)
@@ -1263,6 +1263,33 @@ Breadcrumb bookmarks:
   (lsp-ui-doc-position 'top)
   :hook   (lsp-mode . lsp-ui-mode))
 
+(defhydra hydra-lsp (:exit t :hint nil)
+  "
+ Buffer^^               Server^^                   Symbol
+-------------------------------------------------------------------------------------
+ [_f_] format           [_M-r_] restart            [_d_] declaration  [_i_] implementation  [_o_] documentation
+ [_m_] imenu            [_S_]   shutdown           [_D_] definition   [_t_] type            [_r_] rename
+ [_x_] execute action   [_M-s_] describe session   [_R_] references   [_s_] signature"
+  ("d" lsp-find-declaration)
+  ("D" lsp-ui-peek-find-definitions)
+  ("R" lsp-ui-peek-find-references)
+  ("i" lsp-ui-peek-find-implementation)
+  ("t" lsp-find-type-definition)
+  ("s" lsp-signature-help)
+  ("o" lsp-describe-thing-at-point)
+  ("r" lsp-rename)
+
+  ("f" lsp-format-buffer)
+  ("m" lsp-ui-imenu)
+  ("x" lsp-execute-code-action)
+
+  ("M-s" lsp-describe-session)
+  ("M-r" lsp-restart-workspace)
+  ("S" lsp-shutdown-workspace))
+
+(bind-key "C-c l" 'hydra-lsp/body lsp-mode-map)
+
+
 ;; (use-package ddskk
 ;;   :straight t)
 ;; (setq skk-jisyo-code 'utf-8)
@@ -1421,3 +1448,12 @@ Breadcrumb bookmarks:
 (winner-mode)
 (bind-key "C-z" 'winner-undo)
 (bind-key "C-Z" 'winner-redo)
+
+(use-package git-modes
+  :straight t)
+
+(add-to-list 'auto-mode-alist
+             (cons "/.dockerignore\\'" 'gitignore-mode))
+
+(use-package git-commit
+  :straight t)
