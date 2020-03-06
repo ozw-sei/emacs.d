@@ -677,6 +677,7 @@
   ("d" magit-status-here "status-here" :exit t)
   ("b" magit-blame-addition "blame" :exit t)
   ("P" magit-push "push" :exit t)
+  ("c" magit-commit-create "commit" :exit t)
   ("x" magit-dispatch "dispatch" :exit t)
   ("t" git-timemachine "time-machine" :exit t)
   ; このタイミングでpopup-hunkをクリアしたい
