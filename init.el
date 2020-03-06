@@ -64,30 +64,30 @@
 
 
 ;; Or if you use use-package
-(use-package dashboard
-  :straight t
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-items '((projects . 5)
-                          (recents  . 20)))
-  (defun open-dashboard ()
-    "Open the *dashboard* buffer and jump to the first widget."
-    (interactive)
-    (delete-other-windows)
-    ;; Refresh dashboard buffer
-    (if (get-buffer dashboard-buffer-name)
-        (kill-buffer dashboard-buffer-name))
-    (dashboard-insert-startupify-lists)
-    (switch-to-buffer dashboard-buffer-name)
-    ;; Jump to the first section
-    (goto-char (point-min))
-    (dashboard-goto-recent-files))
+;; (use-package dashboard
+;;   :straight t
+;;   :config
+;;   (dashboard-setup-startup-hook)
+;;   (setq dashboard-items '((projects . 5)
+;;                           (recents  . 20)))
+;;   (defun open-dashboard ()
+;;     "Open the *dashboard* buffer and jump to the first widget."
+;;     (interactive)
+;;     (delete-other-windows)
+;;     ;; Refresh dashboard buffer
+;;     (if (get-buffer dashboard-buffer-name)
+;;         (kill-buffer dashboard-buffer-name))
+;;     (dashboard-insert-startupify-lists)
+;;     (switch-to-buffer dashboard-buffer-name)
+;;     ;; Jump to the first section
+;;     (goto-char (point-min))
+;;     (dashboard-goto-recent-files))
 
-  :bind
-  ("<f9>" . 'open-dashboard)
-  )
+;;   :bind
+;;   ("<f9>" . 'open-dashboard)
+;;   )
 
-(setq initail-buffer-choice (lambda () (get-buffer "*dashboard*")))
+;(setq initail-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 ;; ido-uniquitous
 ;; https://www.emacswiki.org/emacs/InteractivelyDoThings
@@ -156,8 +156,6 @@
   :straight t
   :config
   (save-place-mode 1))
-
-
 
  ;; ビープ音禁止
  (setq ring-bell-function 'ignore)
