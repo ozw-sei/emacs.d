@@ -668,8 +668,8 @@
 
   ("h" (progn (goto-char (point-min))
               (git-gutter:next-hunk 1)))
-  ("l" (progn (goto-char (point-min))
-              (git-gutter:previous-hunk 1)))
+  ("l" magit-log-buffer-file "log")
+  ("L" magit-log "log")
   ("r" git-gutter:revert-hunk "revert")
 
   ("m" magit-status "magit-status" :exit t)
