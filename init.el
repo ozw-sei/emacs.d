@@ -554,8 +554,6 @@
   ("C-l" . avy-goto-line)
   :straight t)
 
-
-
 (defhydra hydra-projectile nil
   "Projectile"
   ("f"   counsel-projectile-find-file         "Find File" :exit t)
@@ -565,10 +563,8 @@
   ("d"   counsel-projectile-find-dir                 "Find Directory" :exit t)
   ("b"   counsel-projectile-switch-to-buffer         "Switch to Buffer")
   ("c" counsel-compile "compile-project" :exit t)
-  ("s"   counsel-projectile-switch-project           "Switch Project")
+  ("s"   persp-switch           "Switch Project" :exit t)
   ("k"   projectile-kill-buffers             "Kill Buffers" :exit t))
-
-
 
 ;; elscreen
 (use-package elscreen
@@ -1331,6 +1327,8 @@ Breadcrumb bookmarks:
   :config
   (persp-mode))
 
+(setq persp-add-on-switch-or-display t)
+
 (with-eval-after-load "persp-mode"
     (defvar persp-mode-projectile-bridge-before-switch-selected-window-buffer nil)
 
@@ -1416,18 +1414,10 @@ Breadcrumb bookmarks:
     ;;           #'(lambda (&rest args) (persp-auto-persps-pickup-buffers)) t)
     )
 
-(use-package persp-mode-projectile-bridge
-  :straight t)
-
-(with-eval-after-load "persp-mode-projectile-bridge-autoloads"
-  (add-hook 'persp-mode-projectile-bridge-mode-hook
-            #'(lambda ()
-                (if persp-mode-projectile-bridge-mode
-                    (persp-mode-projectile-bridge-find-perspectives-for-all-buffers)
-                  (persp-mode-projectile-bridge-kill-perspectives))))
-  (add-hook 'after-init-hook
-            #'(lambda ()
-                (persp-mode-projectile-bridge-mode 1))
-            t))
-
 (bind-key* "C-c p" 'hydra-projectile/body)
+
+(projectile-relevant-known-projects)
+
+(winner-mode)
+(bind-key "C-z" 'winner-undo)
+(bind-key "C-Z" 'winner-redo)
