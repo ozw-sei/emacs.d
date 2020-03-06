@@ -558,6 +558,14 @@
 
 
 
+(use-package persp-mode
+  :straight t
+  :config
+  (persp-mode))
+
+(use-package persp-projectile
+  :straight t)
+
 (defhydra hydra-projectile nil
   "Projectile"
   ("f"   counsel-projectile-find-file         "Find File" :exit t)
@@ -567,7 +575,7 @@
   ("d"   counsel-projectile-find-dir                 "Find Directory" :exit t)
   ("b"   counsel-projectile-switch-to-buffer         "Switch to Buffer")
   ("c" counsel-compile "compile-project" :exit t)
-  ("s"   counsel-projectile-switch-project           "Switch Project")
+  ("s"   projectile-persp-switch-project           "Switch Project" :exit t)
   ("k"   projectile-kill-buffers             "Kill Buffers" :exit t))
 
 (bind-key "C-c p" 'hydra-projectile/body)
@@ -1184,7 +1192,7 @@ Breadcrumb bookmarks:
   ("M-o" . 'swiper-thing-at-point)
   ("M-O" . 'swiper)
 
-  ;;("C-x C-r" . 'counsel-recentf)
+  ("C-x C-r" . 'counsel-recentf)
   ("M-y" . 'counsel-yank-pop))
 
 (use-package selected
@@ -1211,7 +1219,21 @@ Breadcrumb bookmarks:
 (bind-key* "M-s" 'emacs-surround)
 
 (use-package prescient
-  :straight t)
+  :straight t
+  :config
+  (setq prescient-aggressive-file-save t)
+  (setq prescient-save-file
+        (expand-file-name "~/.emacs.d/prescient-save.el"))
+   (setq counsel-projectile-sort-files t)
+  )
+
+(use-package counsel-osx-app
+  :straight t
+  :config
+  (custom-set-variables
+   '(counsel-osx-app-location
+     '("/Applications"))))
+
 
 (use-package ivy-prescient
   :straight t
@@ -1328,3 +1350,5 @@ Breadcrumb bookmarks:
 (bind-key* "C-x d" 'dired-jump)
 (bind-key* "C-x b" 'switch-to-buffer)
 (bind-key* "C-x C-b" 'switch-to-buffer)
+
+(recentf-mode 1)
