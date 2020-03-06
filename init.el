@@ -659,32 +659,28 @@
 (add-hook 'js2-mode-hook 'prettier-js-mode)
 (add-hook 'web-mode-hook 'prettier-js-mode)
 
-;; git-gutter:popup-hunkをそのまま割り当てるとdiffウィンドウを閉じれないので
-;; トグルできる関数を定義
-(defun git-toggle-hunk ()
-  "Toggle 'git-gutter' hunk window."
-  (git-gutter:popup-hunk)
-  (other-window 1)
-  )
-
 ;; git-gutterのhydra定義
 (defhydra hydra-git-gutter nil
   "git hunk"
   ("p" git-gutter:previous-hunk "previous" :exit nil)
   ("n" git-gutter:next-hunk "next" :exit nil)
-  ("u" git-gutter:unstage-whole-buffer "unstage all in buffer" :exit nil)
   ("s" git-gutter:stage-hunk "stage")
+
+  ("h" (progn (goto-char (point-min))
+              (git-gutter:next-hunk 1)))
+  ("l" (progn (goto-char (point-min))
+              (git-gutter:previous-hunk 1)))
   ("r" git-gutter:revert-hunk "revert")
 
   ("m" magit-status "magit-status" :exit t)
+  ("i" git-gutter:popup-hunk)
   ("d" magit-status-here "status-here" :exit t)
-
-  ("c" magit-commit-create "commit" :exit t)
   ("b" magit-blame-addition "blame" :exit t)
   ("P" magit-push "push" :exit t)
   ("x" magit-dispatch "dispatch" :exit t)
   ("t" git-timemachine "time-machine" :exit t)
-  )
+  ; このタイミングでpopup-hunkをクリアしたい
+  ("q" nil :color blue))
 
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
