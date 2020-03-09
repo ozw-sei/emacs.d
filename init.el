@@ -1248,6 +1248,8 @@ Breadcrumb bookmarks:
 
   :config
   (require 'lsp-clients)
+  :bind
+  ("C-c l" . 'hydra-lsp/body)
 
   :commands (lsp))
 
