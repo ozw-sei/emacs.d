@@ -30,6 +30,13 @@
 ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-refresh-contents)
 
+;;; symlinkは必ず追いかける
+(setq vc-follow-symlinks t)
+
+(use-package init-loader
+  :straight t
+  :config
+  (init-loader-load "~/.emacs.d/inits"))
 
 (use-package exec-path-from-shell
   :straight t
