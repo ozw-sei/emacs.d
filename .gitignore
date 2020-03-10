@@ -12,7 +12,6 @@ places
 network-security.data
 smex-items
 transient/
-straight/
 server/
 persp-confs/
 projectile.cache
@@ -27,6 +26,5 @@ var/
 !.gitignore
 !.gitkeep
 eshell/
-.dir-locals.el
 woman-cache
 prescient-save.el
