@@ -141,3 +141,8 @@ _vr_ reset      ^^                       ^^                 ^^
 
 (add-to-list 'org-src-lang-modes '("js" . js2))
 (add-to-list 'org-src-lang-modes '("json" . json))
+
+(use-package org-bullets
+  :straight t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
