@@ -73,10 +73,6 @@
 ;; (defvar ido-default-item nil)
 ;; (defvar ido-cur-list nil)
 
-;; (use-package direnv
-;;  :straight t
-;;  :config
-;;  (direnv-mode))
 
 
 (custom-set-variables

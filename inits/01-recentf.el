@@ -35,3 +35,5 @@
 
 ;; 最近のファイル500個を保存する
 (setq recentf-max-saved-items 500)
+
+(recentf-mode 1)
