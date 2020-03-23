@@ -1,5 +1,8 @@
 (use-package flyspell
   :straight t
+  :custom-face
+  (flyspell-incorrect ((t (:underline (:color "#653fb5" :style wave)))))
+  (flyspell-duplicate ((t (:underline (:color "#50fa7b" :style wave)))))
   :config
 
   (when (eq system-type 'windows-nt) ; Windows
