@@ -8,7 +8,8 @@
 (set-face-attribute 'default nil :height 120)
 
 
+; 半角ｶﾅ設定
 ; japanese-jisx0208 fonts
 (set-fontset-font nil
                   'japanese-jisx0208
-                  (font-spec :family "Noto Sans Mono CJK JP Bold"))
+                  (font-spec :family "Noto Sans Mono CJK JP"))
