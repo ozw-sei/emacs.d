@@ -3,7 +3,7 @@
   :custom-face
   (flyspell-incorrect ((t (:underline (:color "#653fb5" :style wave)))))
   (flyspell-duplicate ((t (:underline (:color "#50fa7b" :style wave)))))
-  :config
+;  :config
 
   (when (eq system-type 'windows-nt) ; Windows
     (setq ispell-program-name "hunspell")
