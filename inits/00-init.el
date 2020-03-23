@@ -142,3 +142,9 @@
 
 ;; *scratch* バッファの初期メッセージを消す
 (setq initial-scratch-message "")
+
+(setq kill-buffer-query-functions
+  (remq 'process-kill-buffer-query-function
+        kill-buffer-query-functions))
+
+(setq ring-bell-function 'ignore)
