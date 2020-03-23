@@ -11,6 +11,7 @@
         ".breadcrumb"
         "*.sqlite"
         "./server/"
+        "^/sudo:"
         )
       )
 
@@ -20,6 +21,9 @@
 (add-to-list 'recentf-exclude "woman-cache")
 ;; 正規表現で指定する
 (add-to-list 'recentf-exclude "COMMIT_EDITMSG")
+(add-to-list 'recentf-exclude "^/docker:")
+(add-to-list 'recentf-exclude "^/sudo:")
+
 
 (add-to-list 'recentf-exclude
             (expand-file-name "~/.emacs.d/elsp/*"))
