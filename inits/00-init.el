@@ -148,3 +148,5 @@
         kill-buffer-query-functions))
 
 (setq ring-bell-function 'ignore)
+
+(setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
