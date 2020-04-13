@@ -12,8 +12,21 @@
 
   (lsp-ui-sideline-enable 1)
 
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (js-mode . lsp)
+         (typescript-mode . lsp)
+         (elixir-mode . lsp)
+         (scala-mode . lsp)
+         (terraform-mode . lsp)
+         (ruby-mode . lsp)
+         )
   :config
-  (require 'lsp-clients)
+   (require 'lsp-clients)
+   (with-eval-after-load 'lsp-mode
+     ;; :project/:workspace/:file
+     (setq lsp-diagnostics-modeline-scope :project)
+     (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode))
+
   :bind
   ("C-c l" . 'hydra-lsp/body)
 
