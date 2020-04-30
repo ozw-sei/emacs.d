@@ -17,8 +17,6 @@
          (typescript-mode . lsp)
          (elixir-mode . lsp)
          (scala-mode . lsp)
-         (terraform-mode . lsp)
-         (ruby-mode . lsp)
          )
   :config
    (require 'lsp-clients)

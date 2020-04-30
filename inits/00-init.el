@@ -61,7 +61,7 @@
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; スクリーンの最大化
-(set-frame-parameter nil 'fullscreen 'maximized)
+;(set-frame-parameter nil 'fullscreen 'maximized)
 
 (global-auto-revert-mode 1)
 
