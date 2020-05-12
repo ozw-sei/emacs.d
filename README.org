@@ -27,7 +27,7 @@ Personal Emacs
 
 *** font
 **** ASCII
-- https://qiita.com/ozw_sei/items/8cd7f96f056a7efc65cf
+- https://www.microsoft.com/en-us/download/details.aspx?id=17879
 
 **** 日本語
 - https://www.google.com/get/noto/#sans-jpan
