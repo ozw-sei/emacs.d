@@ -30,11 +30,6 @@
 (setq org-return-follows-link t)
 
 (define-key global-map "\C-cc" 'org-capture)
-(use-package org-pomodoro
-  :straight t
-  :custom
-  (org-pomodoro-length 20)
-  (org-pomodoro-manual-break 1))
 
 (bind-key "C-c w" 'hydra-org-clock/body)
 (defhydra hydra-org-clock (:color blue :hint nil)
