@@ -35,9 +35,14 @@
 (add-to-list 'recentf-exclude
             (expand-file-name "/usr/local/Cellar/*"))
 
-(setq recentf-max-saved-items 2000)
 
-;; 最近のファイル500個を保存する
-(setq recentf-max-saved-items 500)
+(use-package recentf-ext
+  :straight t
+  :custom
+  ;; 最近のファイル500個を保存する
+  (recentf-max-saved-items 500)
 
-(recentf-mode 1)
+  :config
+  (recentf-mode 1)
+  (global-set-key (kbd "C-x C-r") 'recentf-open-files)
+  )

@@ -4,9 +4,7 @@
   :diminish (projectile-mode)
   :config
   (projectile-mode +1)
-  (setq projectile-completion-system 'ivy)
   (setq projectile-indexing-method 'hybrid))
-
 
 (defhydra hydra-projectile nil
   "Projectile"
