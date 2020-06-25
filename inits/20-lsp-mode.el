@@ -7,9 +7,7 @@
   (lsp-document-sync-method 'incremental)
   ;; document
   (lsp-ui-doc-use-childframe t)
-
   (lsp-ui-flycheck-enable 1)
-
   (lsp-ui-sideline-enable 1)
 
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)

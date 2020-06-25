@@ -1,14 +1,16 @@
 (use-package company
   :diminish (company-mode)
   :straight t
-  :config
+  :custom
+  (company-transformers '(company-sort-by-backend-importance)) ;; ソート順
+  (company-minimum-prefix-length 2) ; デフォルトは4
+  (company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+  (completion-ignore-case t)
+  (company-dabbrev-downcase nil)
+  (company-idle-delay 0.5)
 
+  :config
   (global-company-mode) ; 全バッファで有効にする
-  (setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
-  (setq company-minimum-prefix-length 2) ; デフォルトは4
-  (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
-  (setq completion-ignore-case t)
-  (setq company-dabbrev-downcase nil)
 
   (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
   (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)

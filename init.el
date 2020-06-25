@@ -33,7 +33,7 @@
 (use-package init-loader
   :straight t
   :config
-  (init-loader-load "~/.emacs.d/inits"))
+(init-loader-load "~/.emacs.d/inits"))
 
 
 ;; (use-package aggressive-indent
@@ -101,3 +101,4 @@
 ;; (setq skk-server-host "localhost") ; サーバー機能を利用
 ;; (setq skk-server-portnum 55100)     ; ポートはgoogle-ime-skk
 ;; (setq skk-share-private-jisyo t)   ; 複数 skk 辞書を共有
+(put 'set-goal-column 'disabled nil)

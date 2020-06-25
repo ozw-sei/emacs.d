@@ -14,7 +14,42 @@
    :straight t
    :after prescient
    :config
-   (selectrum-prescient-mode +1))
+   (selectrum-prescient-mode +1)
+   (prescient-persist-mode +1))
+
+(defun recentf-open-files+ ()
+  "Use `completing-read' to open a recent file."
+  (interactive)
+  (let ((files (mapcar 'abbreviate-file-name recentf-list)))
+    (find-file (completing-read "Find recent file: " files nil t))))
+
+(global-set-key (kbd "C-x C-r") 'recentf-open-files+)
+
+(defun yank-pop+ (&optional arg)
+ "Call `yank-pop' with ARG when appropriate, or offer completion."
+ (interactive "*P")
+ (if arg (yank-pop arg)
+   (let* ((old-last-command last-command)
+          (selectrum-should-sort-p nil)
+          (enable-recursive-minibuffers t)
+          (text (completing-read
+                 "Yank: "
+                 (cl-remove-duplicates
+                  kill-ring :test #'string= :from-end t)
+                 nil t nil nil))
+          ;; Find `text' in `kill-ring'.
+          (pos (cl-position text kill-ring :test #'string=))
+          ;; Translate relative to `kill-ring-yank-pointer'.
+          (n (+ pos (length kill-ring-yank-pointer))))
+     (unless (string= text (current-kill n t))
+       (error "Could not setup for `current-kill'"))
+     ;; Restore `last-command' over Selectrum commands.
+     (setq last-command old-last-command)
+     ;; Delegate to `yank-pop' if appropriate or just insert.
+     (if (eq last-command 'yank)
+         (yank-pop n) (insert-for-yank text)))))
+
+(bind-key* "M-y" 'yank-pop+)
 
 (use-package ctrlf
   :straight t

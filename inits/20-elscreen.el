@@ -27,3 +27,14 @@
   ("p" elscreen-previous "screen-prev")
   ("x" elscreen-kill "screen-kill")
   )
+
+
+
+(use-package zoom-window
+  :straight t
+  :custom
+  (zoom-window-use-elscreen t)
+  :config
+  (zoom-window-setup)
+  )
+(global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
