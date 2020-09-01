@@ -5,7 +5,8 @@
   :diminish (projectile-mode)
   :config
   (projectile-mode +1)
-  (setq projectile-indexing-method 'hybrid))
+  (setq projectile-git-submodule-command nil)
+  (setq projectile-indexing-method 'alien))
 
 (defhydra hydra-projectile nil
   "Projectile"
