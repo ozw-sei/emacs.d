@@ -14,3 +14,8 @@
 
 (use-package yasnippet-snippets
   :straight t)
+
+(use-package helm-c-yasnippet
+  :straight t
+  :config
+  (global-set-key (kbd "C-c y") 'helm-yas-complete))

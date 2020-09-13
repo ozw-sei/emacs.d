@@ -25,11 +25,3 @@
   :straight t
   :diminish company-box-mode
   :hook (company-mode . company-box-mode))
-
-(with-eval-after-load 'company
-  (add-to-list 'company-backends 'company-flow))
-
-(use-package company-prescient
-  :straight t
-  :config
-  (company-prescient-mode 1))

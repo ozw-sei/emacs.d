@@ -47,7 +47,7 @@
 (display-time)
 
 ;;; GCを減らして軽くする
-(setq gc-cons-threshold (* 10 gc-cons-threshold))
+(setq gc-cons-threshold 12800000)
 
 ;;; ログの記録行数を増やす
 (setq message-log-max 10000)

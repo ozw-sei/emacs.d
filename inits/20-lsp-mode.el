@@ -15,6 +15,7 @@
          (typescript-mode . lsp)
          (elixir-mode . lsp)
          (scala-mode . lsp)
+         (lsp-managed-mode . (lambda () (setq-local company-backends '(company-capf))))
          )
   :config
    (require 'lsp-clients)
@@ -28,10 +29,10 @@
 
   :commands (lsp))
 
-
 (use-package lsp-ui
   :after lsp-mode
   :straight t
+  :if (eq system-type 'darwin)
   :custom
   (scroll-margin 0)
   (lsp-ui-doc-position 'top)
