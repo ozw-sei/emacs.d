@@ -25,7 +25,7 @@
                     (menu-bar-mode -1)
                     (tool-bar-mode -1)
                     (scroll-bar-mode -1)
-                    (bind-key "C-x C-c" 'counsel-M-x)
+                    (bind-key "C-x C-c" 'helm-smex)
                     )
   )
 
@@ -47,7 +47,8 @@
 (display-time)
 
 ;;; GCを減らして軽くする
-(setq gc-cons-threshold (* 10 gc-cons-threshold))
+(setq gc-cons-threshold-original gc-cons-threshold)
+(setq gc-cons-threshold (* 1024 1024 10))
 
 ;;; ログの記録行数を増やす
 (setq message-log-max 10000)
@@ -67,7 +68,6 @@
 
 ;; 大文字小文字を区別しない
 (setq completion-ignore-case t)
-
 
 ;; common-setting
 ;;; 右から左に読む言語に対応させないことで描画高速化
