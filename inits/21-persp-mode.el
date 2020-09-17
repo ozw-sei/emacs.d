@@ -11,7 +11,16 @@
    (even-window-sizes 1)
 
    :config
-   (persp-mode 1))
+   (persp-mode 1)
+
+
+   )
+
+(use-package persp-projectile
+  :straight t
+  :config
+  (define-key projectile-mode-map (kbd "s-s") 'projectile-persp-switch-project)
+)
 
 (add-hook 'kill-emacs-hook #'persp-state-save)
 
