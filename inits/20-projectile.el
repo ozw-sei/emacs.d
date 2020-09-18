@@ -54,14 +54,17 @@
 
 (defhydra hydra-projectile nil
   "Projectile"
-  ("f"   projectile-find-file         "Find File" :exit t)
-  ("a"   projectile-ag                "ag" :exit t)
-  ("r"   projectile-recentf                  "Recent Files" :exit t)
-  ("d"   projectile-find-dir                 "Find Directory" :exit t)
-  ("b"   projectile-switch-to-buffer         "Switch to Buffer")
+  ("f"   helm-projectile-find-file         "Find File" :exit t)
+  ("a"   helm-projectile-ag                "ag" :exit t)
+  ("r"   helm-projectile-recentf                  "Recent Files" :exit t)
+  ("d"   helm-projectile-find-dir                 "Find Directory" :exit t)
+  ("b"   helm-projectile-switch-to-buffer         "Switch to Buffer")
   ("s"   projectile-switch-project           "Switch Project" :exit t)
   ("l"   persp-switch           "Switch Project" :exit t)
-  ("k"   projectile-kill-buffers             "Kill Buffers" :exit t))
+  ("c"   projectile-invalidate-cache           "invalidate" :exit t)
+  ("n"   persp-next           "next")
+  ("p"   persp-prev           "prev")
+  ("k"   projectile-kill-buffers             "Kill Buffers" :exit t))p
 
 
 (use-package helm-ag
