@@ -1,9 +1,9 @@
 
 ;; elscreen
-(use-package elscreen
-  :straight t
-  :init
-  (elscreen-start))
+;; (use-package elscreen
+;;   :straight t
+;;   :init
+;;   (elscreen-start))
 
 ;; hydra window 操作
 (defhydra hydra-buffer-split nil
@@ -22,19 +22,19 @@
   ("l" windmove-right "move-right")
   ("k" windmove-up "move-up")
   ("j" windmove-down "move-down")
-  ("c" elscreen-create "screen-create")
-  ("n" elscreen-next "screen-next")
-  ("p" elscreen-previous "screen-prev")
-  ("x" elscreen-kill "screen-kill")
+  ;; ("c" elscreen-create "screen-create")
+  ;; ("n" elscreen-next "screen-next")
+  ;; ("p" elscreen-previous "screen-prev")
+  ;; ("x" elscreen-kill "screen-kill")
   )
 
 
 
-(use-package zoom-window
-  :straight t
-  :custom
-  (zoom-window-use-elscreen t)
-  :config
-  (zoom-window-setup)
-  )
-(global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
+;; (use-package zoom-window
+;;   :straight t
+;;   :custom
+;;   (zoom-window-use-elscreen t)
+;;   :config
+;;   (zoom-window-setup)
+;;   )
+;; (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
