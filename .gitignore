@@ -1,6 +1,7 @@
 *~
 cache/*
 .cache/*
+straight/
 auto-save-list/
 undohist/
 session.*
