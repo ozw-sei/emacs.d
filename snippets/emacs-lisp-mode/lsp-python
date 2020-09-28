@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: lsp-python
+# key: lsp
+# --
+((python-mode . ((lsp-python-ms-python-executable . ".venv/bin/python"))))

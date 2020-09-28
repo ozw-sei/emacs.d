@@ -1,7 +1,11 @@
-(use-package pipenv
+(use-package lsp-python-ms
   :straight t
-  :hook (python-mode . pipenv-mode)
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (lsp)))
   :init
-  (setq
-   pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended))
+  (add-hook 'hack-local-variables-hook
+	    (lambda ()
+	      (when (derived-mode-p 'python-mode)
+		(require 'lsp-python-ms)
+		(lsp)))))
