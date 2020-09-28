@@ -3,6 +3,7 @@ cache/*
 .cache/*
 straight/
 auto-save-list/
+persp-state-file
 undohist/
 session.*
 elpa/
