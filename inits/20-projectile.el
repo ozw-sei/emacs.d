@@ -59,13 +59,14 @@
   ("r"   helm-projectile-recentf                  "Recent Files" :exit t)
   ("d"   helm-projectile-find-dir                 "Find Directory" :exit t)
   ("b"   helm-projectile-switch-to-buffer         "Switch to Buffer")
+  ("k"   projectile-kill-buffers             "Kill Buffers" :exit t)
   ("s"   projectile-switch-project           "Switch Project" :exit t)
-  ("l"   persp-switch           "Switch Project" :exit t)
   ("c"   projectile-invalidate-cache           "invalidate" :exit t)
+  ("l"   persp-switch           "Switch Project" :exit t)
+  ("i"   persp-state-restore           "import" :exit t)
+  ("x"   persp-kill           "kill" :exit t)
   ("n"   persp-next           "next")
-  ("p"   persp-prev           "prev")
-  ("k"   projectile-kill-buffers             "Kill Buffers" :exit t))p
-
+  ("p"   persp-prev           "prev"))
 
 (use-package helm-ag
   :straight t)
