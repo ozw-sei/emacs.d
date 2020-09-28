@@ -12,10 +12,7 @@
    (even-window-sizes 1)
 
    :config
-   (persp-mode 1)
-
-
-   )
+   (persp-mode 1))
 
 (use-package persp-projectile
   :straight t
@@ -66,7 +63,8 @@
   ("i"   persp-state-restore           "import" :exit t)
   ("x"   persp-kill           "kill" :exit t)
   ("n"   persp-next           "next")
-  ("p"   persp-prev           "prev"))
+  ("p"   persp-prev           "prev")
+  ("k"   projectile-kill-buffers             "Kill Buffers" :exit t))
 
 (use-package helm-ag
   :straight t)
