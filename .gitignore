@@ -7,6 +7,7 @@ persp-state-file
 undohist/
 session.*
 elpa/
+.logs/
 history
 ido.last
 recentf
