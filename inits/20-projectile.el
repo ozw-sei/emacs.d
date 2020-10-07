@@ -1,5 +1,4 @@
-
- (use-package perspective
+(use-package perspective
    :straight t
    :bind (("C-x b" . persp-switch-to-buffer*)
           ("C-x k" . persp-kill-buffer*))
