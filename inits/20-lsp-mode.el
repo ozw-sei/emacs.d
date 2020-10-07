@@ -18,14 +18,12 @@
          (lsp-managed-mode . (lambda () (setq-local company-backends '(company-capf))))
          )
   :config
-   (require 'lsp-clients)
-   (with-eval-after-load 'lsp-mode
-     ;; :project/:workspace/:file
-     (setq lsp-diagnostics-modeline-scope :project)
-     (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode))
+  (setq lsp-diagnostics-modeline-scope :project)
+  (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode)
 
   :bind
   ("C-c l" . 'hydra-lsp/body)
+  ("C-<return>" . 'lsp-execute-code-action)
 
   :commands (lsp))
 
