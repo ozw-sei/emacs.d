@@ -2,10 +2,15 @@
 (use-package lsp-mode
   :straight t
   :custom
+  (lsp-auto-configure t)
   (lsp-auto-guess-root t)
   (lsp-response-timeout 5)
   (lsp-document-sync-method 'incremental)
-  (lsp-enable-file-watchers 1)
+  (lsp-enable-file-watchers t)
+  (lsp-enable-imenu nil)
+  (lsp-diagnostics-provider :flycheck)
+  (lsp-headerline-breadcrumb-enable t)
+  (lsp-headerline-breadcrumb-segments '(project file symbols))
 
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (js-mode . lsp)
@@ -21,7 +26,7 @@
   ("C-c l" . 'hydra-lsp/body)
   ("C-<return>" . 'lsp-execute-code-action)
 
-  :commands (lsp))
+  :commands (lsp lsp-deferred))
 
 (use-package helm-lsp
   :straight t
