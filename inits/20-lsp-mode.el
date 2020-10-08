@@ -54,8 +54,8 @@
   ("u" lsp-ui-peek-find-references)
   ("i" lsp-ui-peek-find-implementation)
   ("t" lsp-find-type-definition)
-  ("s" lsp-signature-help)
   ("o" lsp-describe-thing-at-point)
+  ("s" helm-lsp-workspace-symbol)
   ("r" lsp-rename)
 
   ;; ("f" lsp-format-buffer)

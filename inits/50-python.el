@@ -9,3 +9,7 @@
 	      (when (derived-mode-p 'python-mode)
 		(require 'lsp-python-ms)
 		(lsp)))))
+
+(add-hook 'python-mode-hook
+          (lambda()
+            (local-unset-key (kbd "C-c C-p"))))

@@ -77,3 +77,10 @@
   :config
   (global-set-key [remap execute-extended-command] #'helm-smex)
   (global-set-key (kbd "M-X") #'helm-smex-major-mode-commands))
+
+
+(use-package helm-descbinds
+  :straight t
+  :config
+  (helm-descbinds-mode)
+  :bind ("C-c h" . 'helm-descbinds))

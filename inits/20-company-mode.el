@@ -18,8 +18,8 @@
   (define-key company-active-map (kbd "C-i") 'company-complete-selection)
   (define-key company-active-map [tab] 'company-complete-selection)
   (define-key company-active-map (kbd "C-f") 'company-complete-selection)
-  (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete)
-  (define-key emacs-lisp-mode-map (kbd "C-<tab>") 'completion-at-point))
+  (define-key emacs-lisp-mode-map (kbd "M-/") 'company-capf)
+  (define-key emacs-lisp-mode-map (kbd "C-<tab>") 'comany-capf))
 
 (use-package company-box
   :straight t
