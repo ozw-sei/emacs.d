@@ -11,6 +11,7 @@ elpa/
 history
 ido.last
 recentf
+.log/
 places
 network-security.data
 smex-items

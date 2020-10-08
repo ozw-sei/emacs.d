@@ -48,7 +48,7 @@
 -------------------------------------------------------------------------------------
                         [_M-r_] restart            [_D_] declaration  [_i_] implementation  [_o_] documentation
  [_m_] imenu            [_S_]   shutdown           [_d_] definition   [_t_] type            [_r_] rename
- [_x_] execute action   [_M-s_] describe session   [_R_] references   [_s_] signature"
+ [_x_] execute action   [_M-s_] describe session   [_u_] references   [_s_] signature"
   ("D" lsp-find-declaration)
   ("d" lsp-ui-peek-find-definitions)
   ("u" lsp-ui-peek-find-references)

@@ -14,12 +14,12 @@
 
   (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
   (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
-  (define-key company-active-map (kbd "C-s") 'company-filter-candidates) ;; C-sで絞り込む
-  (define-key company-active-map (kbd "C-i") 'company-complete-selection) ;; TABで候補を設定
-  (define-key company-active-map [tab] 'company-complete-selection) ;; TABで候補を設定
-  (define-key company-active-map (kbd "C-f") 'company-complete-selection) ;; C-fで候補を設定
-  (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
-  )
+  (define-key company-active-map (kbd "C-s") 'company-filter-candidates)
+  (define-key company-active-map (kbd "C-i") 'company-complete-selection)
+  (define-key company-active-map [tab] 'company-complete-selection)
+  (define-key company-active-map (kbd "C-f") 'company-complete-selection)
+  (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete)
+  (define-key emacs-lisp-mode-map (kbd "C-<tab>") 'completion-at-point))
 
 (use-package company-box
   :straight t
