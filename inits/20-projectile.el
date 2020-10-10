@@ -1,5 +1,4 @@
-
- (use-package perspective
+(use-package perspective
    :straight t
    :bind (("C-x b" . persp-switch-to-buffer*)
           ("C-x k" . persp-kill-buffer*))
@@ -26,10 +25,12 @@
 (use-package projectile
   :straight t
   :diminish (projectile-mode)
+  :custom
+  (projectile-git-submodule-command nil)
+  (projectile-indexing-method 'alien)
   :config
-  (projectile-mode +1)
-  (setq projectile-git-submodule-command nil)
-  (setq projectile-indexing-method 'alien))
+  (projectile-mode +1))
+
 
 
 (use-package helm-projectile
@@ -52,11 +53,13 @@
 (defhydra hydra-projectile nil
   "Projectile"
   ("f"   helm-projectile-find-file         "Find File" :exit t)
+  ("h"   helm-projectile         "helm" :exit t)
   ("a"   helm-projectile-ag                "ag" :exit t)
   ("r"   helm-projectile-recentf                  "Recent Files" :exit t)
   ("d"   helm-projectile-find-dir                 "Find Directory" :exit t)
   ("b"   helm-projectile-switch-to-buffer         "Switch to Buffer")
   ("k"   projectile-kill-buffers             "Kill Buffers" :exit t)
+  ("R"   projectile-replace             "Replace" :exit t)
   ("s"   projectile-switch-project           "Switch Project" :exit t)
   ("c"   projectile-invalidate-cache           "invalidate" :exit t)
   ("l"   persp-switch           "Switch Project" :exit t)

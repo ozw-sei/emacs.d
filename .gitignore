@@ -7,9 +7,11 @@ persp-state-file
 undohist/
 session.*
 elpa/
+.logs/
 history
 ido.last
 recentf
+.log/
 places
 network-security.data
 smex-items
@@ -26,7 +28,6 @@ bookmarks
 .yas-compiled-snippets.el
 var/
 .lsp-session-v1
-!.gitignore
 !.gitkeep
 eshell/
 woman-cache

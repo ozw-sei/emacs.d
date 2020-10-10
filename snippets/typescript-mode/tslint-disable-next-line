@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tslint-disable-next-line
+# key: tslint
+# --
+// tslint:disable-next-line:$1

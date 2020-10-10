@@ -6,8 +6,7 @@
     ;; (interactive "P") ;; 大文字のPだと，C-u C-sでないと効かない
     (let (current-prefix-arg)
       (call-interactively (if use-swiper 'swiper 'isearch-forward))))
-  (global-set-key (kbd "C-s") 'isearch-forward-or-swiper)
-  )
+  (global-set-key (kbd "C-s") 'isearch-forward-or-swiper))
 
 (use-package selected
   :straight t
@@ -30,13 +29,14 @@
 
 (use-package helm
   :straight t
+  :diminish (helm-mode)
   :config
   (helm-mode 1)
-  (find-file-read-only . ido)
-
-  (global-set-key (kbd "C-x f") 'helm-find-files)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-)
+  :bind (
+         ("C-x f" . 'helm-find-files)
+         ("C-x C-f" . 'helm-find-files)
+         ("M-y" . 'helm-show-kill-ring))
+  )
 
 (use-package shackle
   :straight t
@@ -71,8 +71,16 @@
   :straight t
   :bind (:map selected-keymap ("h" . helm-selected)))
 
+
 (use-package helm-smex
   :straight t
   :config
   (global-set-key [remap execute-extended-command] #'helm-smex)
   (global-set-key (kbd "M-X") #'helm-smex-major-mode-commands))
+
+
+(use-package helm-descbinds
+  :straight t
+  :config
+  (helm-descbinds-mode)
+  :bind ("C-c h" . 'helm-descbinds))
