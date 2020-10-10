@@ -28,7 +28,6 @@ bookmarks
 .yas-compiled-snippets.el
 var/
 .lsp-session-v1
-!.gitignore
 !.gitkeep
 eshell/
 woman-cache
