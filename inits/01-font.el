@@ -1,3 +1,9 @@
+
+(setq default-frame-alist
+      (append (list
+              '(font . "Consolas"))
+              default-frame-alist))
+
 ;; font-size　ASCII
 (set-face-attribute 'default nil
                     :family "Consolas"
