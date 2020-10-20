@@ -1,13 +1,15 @@
+
+(setq default-frame-alist
+      (append (list
+              '(font . "Consolas"))
+              default-frame-alist))
+
 ;; font-size　ASCII
-(set-face-attribute 'default nil
-                    :family "Consolas"
-                    :height 120
-                    :weight 'normal
-                    :width 'normal)
+(set-face-attribute 'default nil :height 120)
 
 
 ; 半角ｶﾅ設定
 ; japanese-jisx0208 fonts
 (set-fontset-font nil
                   'japanese-jisx0208
-                  (font-spec :family "Noto Sans Mono CJK JP Regular"))
+                  (font-spec :family "Noto Sans Mono CJK JP"))
