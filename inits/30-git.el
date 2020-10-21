@@ -18,7 +18,30 @@
   :after magit)
 
 (use-package git-timemachine
-  :straight t)
+  :straight t
+  :config
+  (defhydra hydra-git-timemachine (:hint nil :color pink)
+"
+_p_ previous commit          _n_ next commit
+_b_ magit-blame              _c_ Show current commit
+_w_ Copy the abbreviated hash of the current historic version  _W_  Copy the full hash of the current historic version
+_g_ Goto nth revision  _t_ Goto revision by selected commit message
+_?_ help
+_._ Exit the time machine.
+_q_ close
+"
+    ("p" git-timemachine-show-previous-revision :exit t)
+    ("n" git-timemachine-show-next-revision :exit t)
+    ("b" git-timemachine-blame :exit t)
+    ("c" git-timemachine-show-commit :exit t)
+    ("t" git-timemachine-show-revision-fuzzy :exit t)
+    ("w" git-timemachine-kill-abbreviated-revision :exit t)
+    ("W" git-timemachine-kill-revision :exit t)
+    ("?" git-timemachine-help :exit t)
+    ("." git-timemachine-quit :exit t)
+    ("q" nil :color blue))
+  (define-key git-timemachine-mode-map "." 'hydra-git-timemachine/body))
+
 
 (use-package git-gutter
   :straight t
