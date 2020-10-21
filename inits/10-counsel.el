@@ -84,3 +84,6 @@
   :config
   (helm-descbinds-mode)
   :bind ("C-c h" . 'helm-descbinds))
+
+(use-package helm-make
+  :straight t)
