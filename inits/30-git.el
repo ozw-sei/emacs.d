@@ -24,7 +24,7 @@
   :straight t
   :diminish (git-gutter-mode)
   :custom
-  (global-git-gutter-mode 1)
+  (global-git-gutter-mode t)
   :bind
   ("C-c g" . hydra-git-gutter/body))
 

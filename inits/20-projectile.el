@@ -73,6 +73,7 @@
   :straight t)
 
 (bind-key* "C-c p" 'hydra-projectile/body)
+(bind-key* "C-c C-p" 'hydra-projectile/body)
 
 (projectile-relevant-known-projects)
 
