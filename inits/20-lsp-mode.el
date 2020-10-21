@@ -6,6 +6,12 @@
   (lsp-auto-guess-root t)
   (lsp-response-timeout 5)
   (lsp-document-sync-method 'incremental)
+
+  ;; document
+  (lsp-ui-doc-use-childframe t)
+  (lsp-ui-flycheck-enable 1)
+  (lsp-ui-sideline-enable 1)
+
   (lsp-enable-file-watchers t)
   (lsp-enable-imenu nil)
   (lsp-diagnostics-provider :flycheck)
