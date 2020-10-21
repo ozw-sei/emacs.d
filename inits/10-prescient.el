@@ -1,2 +1,2 @@
-(use-package prescient
-  :straight t)
+;; (use-package prescient
+;;   :straight t)
