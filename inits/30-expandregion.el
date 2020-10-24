@@ -1,3 +1,3 @@
 (use-package expand-region
   :straight t
-  :bind* ("M-SPC" . er/expand-region))
+  :bind* ("C-M-SPC" . er/expand-region))

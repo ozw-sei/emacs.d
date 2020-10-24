@@ -3,7 +3,6 @@
   (let ((minver "26.0"))
     (when (version< emacs-version minver)
       (error "Your Emacs don't support this config, use Emacs %s or above" minver))))
-
 ;; straight.el setting by myself
 (let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
       (bootstrap-version 3))
