@@ -11,12 +11,6 @@
   (company-dabbrev-downcase nil)
   (company-idle-delay 0.3)
 
-  :bind
-  (
-   ("M-/" . company-complete)
-   ("C-<tab>" . company-capf)
-   )
-
   :config
   (global-company-mode) ; 全バッファで有効にする
   (company-mode 1)
@@ -26,7 +20,9 @@
   (define-key company-active-map (kbd "C-s") 'company-filter-candidates)
   (define-key company-active-map (kbd "C-i") 'company-complete-selection)
   (define-key company-active-map [tab] 'company-complete-selection)
-  (define-key company-active-map (kbd "C-f") 'company-complete-selection))
+  (define-key company-active-map (kbd "C-f") 'company-complete-selection)
+  (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete)
+  (define-key emacs-lisp-mode-map (kbd "C-<tab>") 'company-capf))
 
 
 
