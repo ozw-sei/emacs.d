@@ -1,7 +1,9 @@
 ;; ido-ghq
 (require 'ido-ghq)
 (setq ido-ghq-short-list t)
-(bind-key "M-p" 'ido-ghq-open)
+
+(global-set-key "\M-p" 'backward-paragraph)
+(global-set-key "\M-n" 'forward-paragraph)
 
 (use-package ido-vertical-mode
   :straight t
