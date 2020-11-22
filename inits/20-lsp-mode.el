@@ -5,7 +5,9 @@
   (lsp-auto-configure t)
   (lsp-auto-guess-root t)
   (lsp-response-timeout 5)
-  (lsp-document-sync-method 'incremental)
+  ; https://blog.medalotte.net/archives/1162
+  (lsp-document-sync-method nil)
+  (lsp-prefer-capf t)
 
   ;; document
   (lsp-ui-doc-use-childframe t)
@@ -14,23 +16,23 @@
 
   (lsp-enable-file-watchers t)
   (lsp-enable-imenu nil)
-  (lsp-diagnostics-provider :flycheck)
-  (lsp-headerline-breadcrumb-enable t)
-  (lsp-headerline-breadcrumb-segments '(project file symbols))
 
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (js-mode . lsp)
+  (lsp-headerline-breadcrumb-enable t)
+
+  :hook ((js-mode . lsp)
          (typescript-mode . lsp)
          (elixir-mode . lsp)
-         (scala-mode . lsp)
-         (lsp-managed-mode . (lambda () (setq-local company-backends '(company-capf)))))
+         (scala-mode . lsp))
+
   :config
+  (setq lsp-diagnostics-provider :flycheck)
+  (setq lsp-headerline-breadcrumb-segments '(project file symbols))
   (setq lsp-diagnostics-modeline-scope :project)
   (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode)
 
   :bind
   ("C-c l" . 'hydra-lsp/body)
-  ("C-<return>" . 'lsp-execute-code-action)
+  ("M-<return>" . 'lsp-execute-code-action)
 
   :commands (lsp lsp-deferred))
 
@@ -84,3 +86,8 @@
   :hook (python-mode . (lambda ()
                           (require 'lsp-python-ms)
                           (lsp))))
+
+(use-package dap-mode
+  :straight t
+  :config
+  (require 'dap-node))
