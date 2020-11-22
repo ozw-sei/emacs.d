@@ -60,3 +60,18 @@ _h_tml    ^ ^        _A_SCII:
      (if (looking-back "^")
          (hydra-org-template/body)
        (self-insert-command 1))))
+
+(use-package org-journal
+  :straight t
+  :defer t
+  :custom
+  (org-journal-dir "$HOME/org/journal")
+  (org-journal-file-format "%Y-%m-%d.org")
+  (org-journal-date-format "%A, %d %B %Y"))
+
+(use-package org-download
+  :straight t
+  :config
+  (setq-default org-download-image-dir "$HOME/org/statics/")
+  (add-hook 'dired-mode-hook 'org-download-enable)
+  )
