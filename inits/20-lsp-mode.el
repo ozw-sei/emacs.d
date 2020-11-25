@@ -30,7 +30,7 @@
   (setq lsp-diagnostics-modeline-scope :project)
   (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode)
 
-  :bind
+  :bind*
   ("C-c l" . 'hydra-lsp/body)
   ("M-<return>" . 'lsp-execute-code-action)
 
