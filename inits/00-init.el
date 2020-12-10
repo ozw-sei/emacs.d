@@ -136,6 +136,9 @@
   (bind-key* "C-q" nil)
 )
 
+ ; Mac OS X のときはMetaを
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'meta))
 
 ;; 行頭の kill-line (C-k) で行ごと削除
 (setq kill-whole-line t)
