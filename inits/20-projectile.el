@@ -60,7 +60,7 @@
   ("b"   helm-projectile-switch-to-buffer         "Switch to Buffer")
   ("k"   projectile-kill-buffers             "Kill Buffers" :exit t)
   ("R"   projectile-replace             "Replace" :exit t)
-  ("s"   projectile-switch-project           "Switch Project" :exit t)
+  ("s"   helm-projectile-switch-project           "Switch Project" :exit t)
   ("c"   projectile-invalidate-cache           "invalidate" :exit t)
   ("l"   persp-switch           "Switch Project" :exit t)
   ("i"   persp-state-restore           "import" :exit t)
@@ -76,12 +76,3 @@
 (bind-key* "C-c C-p" 'hydra-projectile/body)
 
 (projectile-relevant-known-projects)
-
-
-(use-package ace-window
-  :straight t
-  :config
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  (global-set-key (kbd "C-o") 'ace-window)
-  (global-set-key (kbd "C--") 'ace-swap-window)
-  )
