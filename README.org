@@ -13,6 +13,7 @@ Personal Emacs
 - git
 - cmigemo
 - direnv
+- cmake
 
 *** language-server-protocol
 - python-language-server
