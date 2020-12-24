@@ -1,7 +1,7 @@
 Personal Emacs
 
 *** Target
-- required emacs26
+- required emacs27
 - windows/ linux/ mac
 
 *** middleware
@@ -14,10 +14,6 @@ Personal Emacs
 - cmigemo
 - direnv
 - cmake
-
-*** language-server-protocol
-- python-language-server
-- javascript-typescript-studio
 
 *** environment variables
 - DICPATH

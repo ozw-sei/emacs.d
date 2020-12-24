@@ -153,3 +153,5 @@
 (setq ring-bell-function 'ignore)
 
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
+
+(setq byte-compile-warnings '(not cl-functions obsolete))
