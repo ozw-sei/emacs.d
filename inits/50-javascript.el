@@ -13,3 +13,6 @@
 (use-package npm-mode
   :straight t
   :hook (javascript-mode typescript-mode))
+
+(use-package vue-mode
+  :straight t)
