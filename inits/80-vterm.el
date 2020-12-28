@@ -1,2 +1,3 @@
-(use-package vterm
-  :straight t)
+;; (use-package vterm
+;;   :straight t
+;;   :if (window-system))
