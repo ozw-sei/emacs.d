@@ -3,5 +3,6 @@
 
 (global-set-key "\M-p" 'backward-paragraph)
 (global-set-key "\M-n" 'forward-paragraph)
+(global-set-key [f11] 'toggle-frame-maximized)
 
 (global-set-key [zenkaku-hankaku] #'toggle-input-method)

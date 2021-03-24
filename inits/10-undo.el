@@ -1,8 +1,12 @@
 (use-package undohist
   :straight t
   :config
-  (undohist-initialize))
+  (setq undohist-ignored-files
+      '("/tmp/" "COMMIT_EDITMSG"))
+  (undohist-initialize)
+  )
 ;; undo-treeモードの設定
+
 (use-package undo-tree
   :config
   (global-undo-tree-mode t)

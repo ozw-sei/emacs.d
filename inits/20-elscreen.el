@@ -1,4 +1,3 @@
-
 ;; elscreen
 ;; (use-package elscreen
 ;;   :straight t
@@ -22,6 +21,8 @@
   ("l" windmove-right "move-right")
   ("k" windmove-up "move-up")
   ("j" windmove-down "move-down")
+  ("u" winner-undo "winner-undo")
+  ("r" winner-redo "winner-redo")
   ;; ("c" elscreen-create "screen-create")
   ;; ("n" elscreen-next "screen-next")
   ;; ("p" elscreen-previous "screen-prev")
