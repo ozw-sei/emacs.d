@@ -63,6 +63,7 @@
   ("s"   helm-projectile-switch-project           "Switch Project" :exit t)
   ("c"   projectile-invalidate-cache           "invalidate" :exit t)
   ("l"   persp-switch           "Switch Project" :exit t)
+  ("m" helm-make "make" :exit t)
   ("i"   persp-state-restore           "import" :exit t)
   ("x"   persp-kill           "kill" :exit t)
   ("n"   persp-next           "next")

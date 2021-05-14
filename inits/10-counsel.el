@@ -32,6 +32,9 @@
   :diminish (helm-mode)
   :config
   (helm-mode 1)
+  (set-face-attribute 'helm-selection nil
+                      :background "purple"
+                      :foreground "black")
   :bind (
          ("C-x f" . 'helm-find-files)
          ("C-x C-f" . 'helm-find-files)
