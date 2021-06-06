@@ -22,7 +22,9 @@
   :hook ((js-mode . lsp)
          (typescript-mode . lsp)
          (elixir-mode . lsp)
-         (scala-mode . lsp))
+         (scala-mode . lsp)
+         (dart-mode . lsp)
+         )
 
   :config
   (setq lsp-diagnostics-provider :flycheck)
