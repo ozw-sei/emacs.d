@@ -1,9 +1,10 @@
 
 ; terminal にはtmuxがあるので使わない
-(if window-system
+;; (if window-system
+;; 最近、Ternimalで使うようになった
   (progn (bind-key* "C-q" 'hydra-buffer-split/body))
-  (bind-key* "C-q" nil)
-)
+  ;; (bind-key* "C-q" nil)
+;; )
 ;; Emacs 本体の設定
 ;;; ログはエラーが出た時のみ
 (defvar display-warning-minimum-level :error)
