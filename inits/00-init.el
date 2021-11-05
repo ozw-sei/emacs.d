@@ -2,7 +2,7 @@
 ; terminal にはtmuxがあるので使わない
 ;; (if window-system
 ;; 最近、Ternimalで使うようになった
-  (progn (bind-key* "C-q" 'hydra-buffer-split/body))
+(bind-key* "C-q" 'hydra-buffer-split/body)
   ;; (bind-key* "C-q" nil)
 ;; )
 ;; Emacs 本体の設定
@@ -21,14 +21,14 @@
 (setq ns-pop-up-frames nil)
 
 ;;; メニューバーとツールバーとスクロールバーを消す
-(if window-system (progn
+;; (if window-system (progn
                     ;; ←GUI用設定を、ここに記述
                     (menu-bar-mode -1)
                     (tool-bar-mode -1)
                     (scroll-bar-mode -1)
                     (bind-key "C-x C-c" 'helm-smex)
-                    )
-  )
+                    ;; )
+  ;; )
 
 ;;; インデントにTABを使わないようにする
 (setq-default indent-tabs-mode nil)
