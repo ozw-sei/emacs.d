@@ -132,10 +132,7 @@
 
 
 ; terminal にはtmuxがあるので使わない
-(if window-system
-  (progn (bind-key* "C-q" 'hydra-buffer-split/body))
-  (bind-key* "C-q" nil)
-)
+(progn (bind-key* "C-q" 'hydra-buffer-split/body))
 
  ; Mac OS X のときはMetaを
 (when (eq system-type 'darwin)
