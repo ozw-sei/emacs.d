@@ -1,14 +1,8 @@
-(use-package lsp-python-ms
+(use-package lsp-pyright
   :straight t
   :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp)))
-  :init
-  (add-hook 'hack-local-variables-hook
-	    (lambda ()
-	      (when (derived-mode-p 'python-mode)
-		(require 'lsp-python-ms)
-		(lsp)))))
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
 
 (add-hook 'python-mode-hook
           (lambda()
