@@ -5,5 +5,9 @@
                           (lsp))))  ; or lsp-deferred
 
 (add-hook 'python-mode-hook
+  :init
+  (add-hook 'python-mode-hook
           (lambda()
             (local-unset-key (kbd "C-c C-p"))))
+
+  )
