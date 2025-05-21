@@ -26,6 +26,10 @@
   :after (go-mode company)
   )
 
+(use-package direx
+  :straight t
+  :ensure t)
+
 (use-package go-direx
   :straight t
-  :after go-mode)
+  :after (go-mode direx))

@@ -7,7 +7,8 @@
          (python-mode . eglot-ensure)
          (elixir-mode . eglot-ensure)
          (scala-mode . eglot-ensure)
-         (dart-mode . eglot-ensure))
+         (dart-mode . eglot-ensure)
+         (csharp-mode . eglot-ensure)) ;; Added line
   :config
   (setq eglot-events-buffer-size 0) ; Disable event logging buffer
   (setq eglot-confirm-server-initiated-edits nil) ; Don't ask for confirmation for server edits

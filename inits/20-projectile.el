@@ -9,6 +9,7 @@
    (persp-top-perspective "0")
    (persp-bottom-perspective "5")
    (even-window-sizes 1)
+   (persp-mode-prefix-key "C-c M-p") ;; Added line
 
    :config
    (persp-mode 1))

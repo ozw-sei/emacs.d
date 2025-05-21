@@ -48,6 +48,33 @@
   ;; specific bindings will be handled in later steps or by user preference.
 )
 
+(use-package consult-migemo
+  :straight t
+  :ensure t
+  :after consult
+  :config
+  ;; Path to Migemo dictionary - USER NEEDS TO VERIFY/ADJUST THIS PATH
+  (setq consult-migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict") 
+
+  (when (and (executable-find "cmigemo") (file-exists-p consult-migemo-dictionary))
+    (require 'migemo)
+    (setq migemo-command "cmigemo")
+    (setq migemo-dictionary consult-migemo-dictionary)
+    ;; Add other migemo settings if needed, like migemo-options
+    ;; Enable migemo for various consult commands
+    (setq consult-regexp-hist-migemo t) ;; for history
+    (setq consult-grep-migemo t)        ;; for consult-grep, consult-ripgrep
+    (setq consult-line-migemo t)        ;; for consult-line and consult-recent-file
+    (setq consult-imenu-migemo t)
+    (setq consult-outline-migemo t)
+    (setq consult-mark-migemo t)
+    (setq consult-buffer-migemo t)
+    ;; Activate consult-migemo integration globally
+    (consult-migemo-mode 1)
+    (message "Consult-Migemo enabled with dictionary: %s" consult-migemo-dictionary))
+  (unless (and (executable-find "cmigemo") (file-exists-p consult-migemo-dictionary))
+    (message "Consult-Migemo: cmigemo executable not found or dictionary path invalid: %s. Migemo support not enabled." consult-migemo-dictionary)))
+
 ;; Optional: Consider adding `consult` and `embark` later if the user wants them.
 ;; (use-package embark
 ;;   :straight t
