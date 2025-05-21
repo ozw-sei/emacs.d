@@ -42,16 +42,21 @@
   :ensure t
   ;; Optionally, add some common bindings or further configurations if desired.
   ;; For example, to make consult-buffer available:
-  ;; :bind (("C-x b" . consult-buffer)
+  :bind (
+         ("C-s" . consult-line)
+         ("M-y" . 'consult-yank-from-kill-ring)
+         )
   ;;        ("C-x C-b" . consult-buffer))
   ;; However, let's stick to just adding the package for now,
   ;; specific bindings will be handled in later steps or by user preference.
-)
+  )
+
+
 
 ;; (use-package consult-migemo
 ;;   :straight t
 ;;   :ensure t
-;;   :after consult
+;;   :after consultn
 ;;   :config
 ;;   ;; Path to Migemo dictionary - USER NEEDS TO VERIFY/ADJUST THIS PATH
 ;;   (setq consult-migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")

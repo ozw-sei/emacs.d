@@ -38,26 +38,24 @@
 
 (defhydra hydra-projectile nil
   "Projectile"
-  ("f"   projectile-find-file         "Find File" :exit t)
-  ("h"   projectile-switch-project    "Switch Project (was helm)" :exit t)
+  ("f"   consult-projectile-find-file         "Find File" :exit t)
+  ("h"   consult-projectile-switch-project    "Switch Project (was helm)" :exit t)
   ("a"   consult-ripgrep              "Ripgrep (ag)" :exit t)
   ("r"   consult-recent-file          "Recent Files" :exit t)
-  ("d"   projectile-find-dir          "Find Directory" :exit t)
+  ("d"   consult-projectile-find-dir          "Find Directory" :exit t)
   ("b"   nsult-buffer               "Switch to Buffer" :exit t) ;; Added :exit t for consistency
-  ("k"   projectile-kill-buffers      "Kill Buffers" :exit t)
-  ("R"   projectile-replace           "Replace" :exit t)
-  ("s"   projectile-switch-project    "Switch Project" :exit t)
+  ("k"   consult-projectile-kill-buffers      "Kill Buffers" :exit t)
+  ("R"   consult-projectile-replace           "Replace" :exit t)
+  ("s"   consult-projectile-switch-project    "Switch Project" :exit t)
   ("c"   projectile-invalidate-cache  "Invalidate Cache" :exit t)
   ("l"   persp-switch                 "Switch Perspective" :exit t) ;; Clarified label
-  ("m"   consult-make                 "Make" :exit t)
   ("i"   persp-state-restore          "Import Perspective" :exit t) ;; Clarified label
   ("x"   persp-kill                   "Kill Perspective" :exit t) ;; Clarified label
   ("n"   persp-next                   "Next Perspective") ;; Clarified label
   ("p"   persp-prev                   "Prev Perspective") ;; Clarified label
-  ;; ("k"   projectile-kill-buffers             "Kill Buffers" :exit t) ;; Duplicate k, removed
   )
 
 (bind-key* "C-c p" 'hydra-projectile/body)
-(bind-key* "C-c C-p" 'hydra-projectile/body)
+(bind-key* "C-c C-p" 'consult-projectile)
 
 (projectile-relevant-known-projects)
