@@ -84,5 +84,4 @@ _q_ close
 (add-to-list 'auto-mode-alist
              (cons "/.gcloudignore\\'" 'gitignore-mode))
 
-(use-package git-commit
-  :straight t)
+(use-package git-commit)

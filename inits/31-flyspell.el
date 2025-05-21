@@ -30,7 +30,3 @@
   :after flyspell
   :config
   (global-set-key (kbd "<f7>") 'flyspell-correct-wrapper))
-
-(use-package flyspell-correct-helm
-  :straight t
-  :after flyspell-correct)

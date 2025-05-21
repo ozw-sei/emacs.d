@@ -15,7 +15,10 @@
 (use-package yasnippet-snippets
   :straight t)
 
-(use-package helm-c-yasnippet
+(use-package consult-yasnippet
   :straight t
+  :ensure t
+  :after (yasnippet consult) ;; Ensure yasnippet and consult are loaded first
   :config
-  (global-set-key (kbd "C-t") 'helm-yas-complete))
+  ;; Bind C-t to consult-yasnippet or its main interactive command
+  (global-set-key (kbd "C-t") 'consult-yasnippet))
