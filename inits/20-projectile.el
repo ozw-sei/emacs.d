@@ -31,47 +31,59 @@
   :config
   (projectile-mode +1))
 
-
-
-(use-package helm-projectile
+(use-package consult-projectile
   :straight t
+  :ensure t)
+
+(use-package consult-ripgrep
+  :straight t
+  :ensure t)
+
+(use-package consult-make
+  :straight t
+  :ensure t)
+
+(use-package projectile-consult-bindings ;; Renamed from helm-projectile
+  :straight t ;; This might be redundant if it's just for config, but keep for structure
+  :after (projectile consult) ;; Ensure projectile and consult are loaded
   :config
-  (define-key projectile-mode-map [remap projectile-find-other-file] #'helm-projectile-find-other-file)
-  (define-key projectile-mode-map [remap projectile-find-file] #'helm-projectile-find-file)
-  (define-key projectile-mode-map [remap projectile-find-file-in-known-projects] #'helm-projectile-find-file-in-known-projects)
-  (define-key projectile-mode-map [remap projectile-find-file-dwim] #'helm-projectile-find-file-dwim)
-  (define-key projectile-mode-map [remap projectile-find-dir] #'helm-projectile-find-dir)
-  (define-key projectile-mode-map [remap projectile-recentf] #'helm-projectile-recentf)
-  (define-key projectile-mode-map [remap projectile-switch-to-buffer] #'helm-projectile-switch-to-buffer)
-  (define-key projectile-mode-map [remap projectile-grep] #'helm-projectile-grep)
-  (define-key projectile-mode-map [remap projectile-ack] #'helm-projectile-ack)
-  (define-key projectile-mode-map [remap projectile-ag] #'helm-projectile-ag)
-  (define-key projectile-mode-map [remap projectile-ripgrep] #'helm-projectile-rg)
-  (define-key projectile-mode-map [remap projectile-browse-dirty-projects] #'helm-projectile-browse-dirty-projects)
+  (define-key projectile-mode-map [remap projectile-find-other-file] #'projectile-find-other-file)
+  (define-key projectile-mode-map [remap projectile-find-file] #'projectile-find-file)
+  (define-key projectile-mode-map [remap projectile-find-file-in-known-projects] #'projectile-find-file-in-known-projects)
+  (define-key projectile-mode-map [remap projectile-find-file-dwim] #'projectile-find-file-dwim)
+  (define-key projectile-mode-map [remap projectile-find-dir] #'projectile-find-dir)
+  (define-key projectile-mode-map [remap projectile-recentf] #'consult-recent-file)
+  (define-key projectile-mode-map [remap projectile-switch-to-buffer] #'consult-buffer)
+  (define-key projectile-mode-map [remap projectile-grep] #'consult-ripgrep) ;; Changed from consult-grep to consult-ripgrep
+  (define-key projectile-mode-map [remap projectile-ack] #'consult-ripgrep)
+  (define-key projectile-mode-map [remap projectile-ag] #'consult-ripgrep)
+  (define-key projectile-mode-map [remap projectile-ripgrep] #'consult-ripgrep)
+  ;; (define-key projectile-mode-map [remap projectile-browse-dirty-projects] #'helm-projectile-browse-dirty-projects) ;; Commented out
   )
 
 (defhydra hydra-projectile nil
   "Projectile"
-  ("f"   helm-projectile-find-file         "Find File" :exit t)
-  ("h"   helm-projectile         "helm" :exit t)
-  ("a"   helm-projectile-ag                "ag" :exit t)
-  ("r"   helm-projectile-recentf                  "Recent Files" :exit t)
-  ("d"   helm-projectile-find-dir                 "Find Directory" :exit t)
-  ("b"   helm-projectile-switch-to-buffer         "Switch to Buffer")
-  ("k"   projectile-kill-buffers             "Kill Buffers" :exit t)
-  ("R"   projectile-replace             "Replace" :exit t)
-  ("s"   helm-projectile-switch-project           "Switch Project" :exit t)
-  ("c"   projectile-invalidate-cache           "invalidate" :exit t)
-  ("l"   persp-switch           "Switch Project" :exit t)
-  ("m" helm-make "make" :exit t)
-  ("i"   persp-state-restore           "import" :exit t)
-  ("x"   persp-kill           "kill" :exit t)
-  ("n"   persp-next           "next")
-  ("p"   persp-prev           "prev")
-  ("k"   projectile-kill-buffers             "Kill Buffers" :exit t))
+  ("f"   projectile-find-file         "Find File" :exit t)
+  ("h"   projectile-switch-project    "Switch Project (was helm)" :exit t)
+  ("a"   consult-ripgrep              "Ripgrep (ag)" :exit t)
+  ("r"   consult-recent-file          "Recent Files" :exit t)
+  ("d"   projectile-find-dir          "Find Directory" :exit t)
+  ("b"   consult-buffer               "Switch to Buffer" :exit t) ;; Added :exit t for consistency
+  ("k"   projectile-kill-buffers      "Kill Buffers" :exit t)
+  ("R"   projectile-replace           "Replace" :exit t)
+  ("s"   projectile-switch-project    "Switch Project" :exit t)
+  ("c"   projectile-invalidate-cache  "Invalidate Cache" :exit t)
+  ("l"   persp-switch                 "Switch Perspective" :exit t) ;; Clarified label
+  ("m"   consult-make                 "Make" :exit t)
+  ("i"   persp-state-restore          "Import Perspective" :exit t) ;; Clarified label
+  ("x"   persp-kill                   "Kill Perspective" :exit t) ;; Clarified label
+  ("n"   persp-next                   "Next Perspective") ;; Clarified label
+  ("p"   persp-prev                   "Prev Perspective") ;; Clarified label
+  ;; ("k"   projectile-kill-buffers             "Kill Buffers" :exit t) ;; Duplicate k, removed
+  )
 
-(use-package helm-ag
-  :straight t)
+;; (use-package helm-ag
+;;   :straight t)
 
 (bind-key* "C-c p" 'hydra-projectile/body)
 (bind-key* "C-c C-p" 'hydra-projectile/body)
