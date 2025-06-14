@@ -28,7 +28,6 @@
 
 (use-package direx
   :straight t
-  :ensure t
   :config
   ;; Ensure direx is fully loaded before go-direx uses it
   (require 'direx))
