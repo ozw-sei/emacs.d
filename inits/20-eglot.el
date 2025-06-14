@@ -19,9 +19,10 @@
   (add-to-list 'eglot-server-programs '(scala-mode . ("sbt" "--client" "runMain" "org.jetbrains.sbt.ogliamo.Main"))) ; Example for Scala with Metals, adjust if needed
   (add-to-list 'eglot-server-programs '(dart-mode . ("dart" "language-server" "--protocol=lsp"))) ; Example for Dart, adjust if needed
   
-  :bind*
-  ("C-c l" . 'hydra-eglot/body)
-  ("M-<return>" . 'eglot-code-actions))
+  :bind (:map eglot-mode-map
+         ("C-c l" . 'hydra-eglot/body)
+         ("C-c C-l" . 'hydra-eglot/body)  ;; Alternative binding
+         ("M-<return>" . 'eglot-code-actions)))
 
 ;; For symbol search with vertico/consult
 (use-package consult-eglot
@@ -37,7 +38,7 @@
  [_m_] imenu            [_S_]   shutdown           [_d_] definition   [_t_] type            [_r_] rename
  [_x_] execute action   [_M-s_] show config        [_u_] references   [_s_] symbols"
   ("l" eglot)
-  ("D" xref-find-declarations)
+  ("D" eglot-find-declaration)
   ("d" xref-find-definitions)
   ("u" xref-find-references)
   ("i" eglot-find-implementation)
