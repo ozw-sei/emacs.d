@@ -20,6 +20,8 @@ Personal Emacs
 - DICTIONARY
     - windows only
 - PATH %HOME%.emacs.d\hunspell\bin
+- CLAUDE_API_KEY
+    - Required for claude-code integration
 
 
 *** font
