@@ -1,2 +1,5 @@
-(global-set-key (kbd "C-a") 'mwim-beginning)
-(global-set-key (kbd "C-e") 'mwim-end)
+(use-package mwim
+  :straight t
+  :bind
+  ("C-a" . 'mwim-beginning-of-code-or-line)
+  ("C-e" . 'mwim-end-of-code-or-line))
