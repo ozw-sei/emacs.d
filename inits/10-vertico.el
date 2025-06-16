@@ -4,19 +4,24 @@
   :ensure t
   :init
   (vertico-mode)
-  ;; You can add custom vertico settings here if needed, for example:
-  ;; (setq vertico-scroll-margin 0)
-  ;; (setq vertico-count 20)
-  ;; (setq vertico-resize t)
-  ;; (setq vertico-cycle t)
-  )
+  :custom
+  (vertico-count 10)                    ;; Number of candidates to display
+  (vertico-resize t)                    ;; Resize minibuffer
+  (vertico-cycle t)                     ;; Enable cycling for `vertico-next/previous'
+  :config
+  ;; Make M-x use Vertico with enhanced completion
+  (define-key global-map [remap execute-extended-command] #'execute-extended-command))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
   :straight t
   :ensure t
   :init
-  (savehist-mode))
+  (savehist-mode)
+  :custom
+  (history-length 25)
+  (savehist-additional-variables '(search-ring regexp-search-ring))
+  (savehist-file "~/.emacs.d/savehist"))
 
 ;; Configure Orderless completion style.
 (use-package orderless
@@ -40,16 +45,19 @@
 (use-package consult
   :straight t
   :ensure t
-  ;; Optionally, add some common bindings or further configurations if desired.
-  ;; For example, to make consult-buffer available:
   :bind (
          ("C-s" . consult-line)
          ("M-y" . 'consult-yank-from-kill-ring)
+         ;; Make M-x smarter with consult
+         ("C-x C-c" . consult-mode-command)
+         ("C-x M-:" . consult-complex-command)
          )
-  ;;        ("C-x C-b" . consult-buffer))
-  ;; However, let's stick to just adding the package for now,
-  ;; specific bindings will be handled in later steps or by user preference.
-  )
+  :custom
+  (consult-narrow-key "<")  ;; Use < for narrowing
+  :config
+  ;; Configure preview for M-x
+  (consult-customize
+   consult-mode-command :preview-key '(:debounce 0.2 any)))
 
 
 
