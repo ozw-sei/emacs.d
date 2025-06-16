@@ -16,7 +16,8 @@
   (setq eglot-sync-connect 5) ; Timeout for initial connection
   
   ;; Server configurations
-  (add-to-list 'eglot-server-programs '(scala-mode . ("sbt" "--client" "runMain" "org.jetbrains.sbt.ogliamo.Main"))) ; Example for Scala with Metals, adjust if needed
+  ;; Metals for Scala - using the recommended metals-emacs command
+  (add-to-list 'eglot-server-programs '(scala-mode . ("metals")))
   (add-to-list 'eglot-server-programs '(dart-mode . ("dart" "language-server" "--protocol=lsp"))) ; Example for Dart, adjust if needed
   
   :bind (:map eglot-mode-map

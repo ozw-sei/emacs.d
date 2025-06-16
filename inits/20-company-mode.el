@@ -13,12 +13,18 @@
   :bind
   (
    ("M-/" . company-complete)
-   ("C-<tab>" . comany-capf)
+   ("C-<tab>" . company-capf)
   )
 
   :config
   (global-company-mode) ; 全バッファで有効にする
   (company-mode 1)
+  
+  ;; Ensure company-capf is in the backends for LSP support
+  (setq company-backends
+        '((company-capf company-dabbrev-code company-keywords)
+          company-files
+          company-dabbrev))
 
   (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
   (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)

@@ -1,7 +1,13 @@
 ;; Enable scala-mode and sbt-mode
 (use-package scala-mode
   :straight t
-  :mode "\\.s\\(cala\\|bt\\)$")
+  :mode "\\.s\\(cala\\|bt\\)$"
+  :hook (scala-mode . eglot-ensure)
+  :config
+  ;; Scala import indentation settings
+  (setq scala-indent:align-parameters nil
+        scala-indent:align-forms t
+        scala-indent:use-javadoc-style t))
 
 (use-package sbt-mode
   :straight t
@@ -16,3 +22,17 @@
   ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
   (setq sbt:program-options '("-Dsbt.supershell=false"))
   )
+
+;; Optional: Add Metals-specific keybindings
+(with-eval-after-load 'scala-mode
+  (with-eval-after-load 'eglot
+    (define-key scala-mode-map (kbd "C-c m b") 'sbt-command)
+    (define-key scala-mode-map (kbd "C-c m s") 'sbt-start)
+    (define-key scala-mode-map (kbd "C-c m i") 'eglot-find-implementation)
+    (define-key scala-mode-map (kbd "C-c m t") 'eglot-find-typeDefinition)))
+
+;; Metals installation note:
+;; To install Metals, run:
+;; coursier install metals
+;; or
+;; cs install metals
