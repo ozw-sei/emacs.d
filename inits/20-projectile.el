@@ -53,6 +53,7 @@
   ("x"   persp-kill                   "Kill Perspective" :exit t) ;; Clarified label
   ("n"   persp-next                   "Next Perspective") ;; Clarified label
   ("p"   persp-prev                   "Prev Perspective") ;; Clarified label
+  ("t" my/vterm-project-toggle-bottom "open terminal")
   )
 
 (bind-key* "C-c p" 'hydra-projectile/body)

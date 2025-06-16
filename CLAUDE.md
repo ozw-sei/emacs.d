@@ -20,6 +20,8 @@ This is a modular Emacs configuration repository using straight.el for package m
   - 80-89: Major modes (Org, vterm)
   - 99: Global keybindings
 
+
+
 ### Package Management
 - **straight.el**: Git-based package manager (packages cloned to `straight/`)
 - **use-package**: Declarative package configuration
