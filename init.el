@@ -31,7 +31,7 @@
 ;; https://qiita.com/kai2nenobu/items/5dfae3767514584f5220
 
 ;; ------- load path ------------------
-;; elisp read config
+;; elisp read config (only needed for persp-mode-projectile-bridge)
 (add-to-list 'load-path "~/.emacs.d/elisp")
 
 (use-package init-loader

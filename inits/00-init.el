@@ -9,7 +9,7 @@
 ;;; ログはエラーが出た時のみ
 (defvar display-warning-minimum-level :error)
 
-;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;(setq gnutls-algorithm-priority "NORMAL:-VERS-TL1.3")
 
 ;;; symlinkは必ず追いかける
 (setq vc-follow-symlinks t)

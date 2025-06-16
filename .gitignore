@@ -1,38 +1,77 @@
+# Emacs runtime files
 *~
-cache/*
-.cache/*
-straight/
-auto-save-list/
-persp-state-file
-undohist/
-session.*
-elpa/
-.logs/
-history
-ido.last
-recentf
-.log/
-places
-network-security.data
-smex-items
-transient/
-server/
-persp-confs/
-# Emacs temporary files
-#*#
-*~
+\#*\#
 *.elc
+.#*
+
+# straight.el package manager
+straight/
+
+# Package archives and caches
+elpa/
+.cache/
+cache/
+var/
+*.cache
+.lsp-session-v1
+
+# Emacs session and history files
+auto-save-list/
+session.*
+history
+savehist
+recentf
+places
+ido.last
+smex-items
+bookmarks
+*.sqlite
+
+# Projectile
 projectile.cache
 projectile-bookmarks.eld
+
+# Network and security
+network-security.data
+
+# Language servers and tools
+.logs/
+.log/
 migemo-pattern
-*.sqlite
-bookmarks
-*.cache
+
+# Perspective mode
+persp-state-file
+persp-confs/
+
+# Transient
+transient/
+
+# Server
+server/
+
+# Undo history
+undohist/
+undo-fu-session/
+
+# Tree-sitter
+tree-sitter/
+
+# Completion framework
+prescient-save.el
+
+# YASnippet
 .yas-compiled-snippets.el
-var/
-.lsp-session-v1
+
+# Shell
+eshell/
+
+# Woman
+woman-cache
+
+# Tramp
+tramp
+
+# Keep specific files
 !.gitignore
 !.gitkeep
-eshell/
-woman-cache
-prescient-save.el
+!CLAUDE.md

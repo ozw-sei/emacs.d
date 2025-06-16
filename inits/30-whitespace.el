@@ -24,12 +24,19 @@
   )
 
 
+;; Dependencies for unicode-whitespace
+(use-package list-utils
+  :straight t)
+
+(use-package ucs-utils
+  :straight t)
+
+(use-package persistent-soft
+  :straight t)
+
 (use-package unicode-whitespace
-  :requires (list-utils
-      ucs-utils
-      unicode-whitespace
-      persistent-soft)
+  :straight t
+  :after (list-utils ucs-utils persistent-soft)
   :config
-  (whitespace-mode 1)
   (unicode-whitespace-setup)
   )
