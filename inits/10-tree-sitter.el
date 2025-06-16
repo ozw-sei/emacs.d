@@ -1,9 +1,7 @@
 ;; use-package を使用している場合
-(use-package tree-sitter
+(use-package treesit
   :config
-
-
-  (require 'tree-sitter-hl)) ; ハイライトのために必要
+  (setq treesit-font-lock-level 4))
 
 
 

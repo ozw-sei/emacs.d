@@ -1,5 +1,3 @@
-
-
 (use-package go-mode
   :straight t
   :init
@@ -15,22 +13,4 @@
 
   :bind
   ("M-." . 'godef-jump)
-  ("M-," . 'pop-tag-mark)
-  )
-
-;; Removed company-go as we're no longer using company-mode
-;; Eglot provides completion via its built-in LSP support
-
-(use-package direx
-  :straight t
-  :config
-  ;; Ensure direx is fully loaded before go-direx uses it
-  (require 'direx))
-
-(use-package go-direx
-  :straight t
-  :after (go-mode direx)
-  :config
-  ;; Ensure direx symbols are available
-  (require 'direx)
-  (require 'go-direx))
+  ("M-," . 'pop-tag-mark))
