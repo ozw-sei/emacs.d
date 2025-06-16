@@ -18,13 +18,8 @@
   ("M-," . 'pop-tag-mark)
   )
 
-(use-package company-go
-  :straight t
-  :config
-  (custom-set-variables
-  '(company-go-insert-arguments nil))
-  :after (go-mode company)
-  )
+;; Removed company-go as we're no longer using company-mode
+;; Eglot provides completion via its built-in LSP support
 
 (use-package direx
   :straight t

@@ -2,7 +2,4 @@
   :straight t)
 
 
-(use-package company-restclient
-  :straight t
-  :after restclient
-  :config (add-to-list 'company-backends 'company-restclient))
+;; Removed company-restclient as we're no longer using company-mode

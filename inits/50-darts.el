@@ -4,11 +4,11 @@
   (dart-format-on-save t)
   (dart-sdk-path "~/dev-tools/flutter/bin/cache/dart-sdk/"))
 
-(use-package lsp-dart
-  :straight t
-  :custom
-  (lsp-dart-flutter-sdk-dir "~/dev-tools/flutter")
-  :hook (dart-mode . lsp))
+;; Use Eglot for Dart instead of lsp-dart
+(add-hook 'dart-mode-hook 'eglot-ensure)
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(dart-mode . ("dart" "language-server" "--protocol=lsp"))))
 
 (use-package hover
   :straight t)

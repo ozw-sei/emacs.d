@@ -8,8 +8,8 @@
   :hook ((prog-mode). yas-minor-mode)
   :config (yas-reload-all)
   :diminish yas-minor-mode
-  :bind
-  ("C-j" . company-yasnippet)
+  ;; Removed company-yasnippet binding as we're no longer using company-mode
+  ;; Use C-t for consult-yasnippet instead
   )
 
 (use-package yasnippet-snippets

@@ -1,17 +1,12 @@
-(use-package lsp-pyright
-  :straight t
-  :init
-  (defun lsp-pyright-setup-when-pipenv ()
-    (setq-local lsp-pyright-venv-path python-shell-virtualenv-root)
-    (lsp-restart-workspace))
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
+;; Use Eglot with pyright for Python
+(add-hook 'python-mode-hook 'eglot-ensure)
 
+;; Configure pyright with pipenv support
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("pyright-langserver" "--stdio"))))
+
+;; Unset conflicting keybinding
 (add-hook 'python-mode-hook
-  :init
-  (add-hook 'python-mode-hook
           (lambda()
             (local-unset-key (kbd "C-c C-p"))))
-
-  )
