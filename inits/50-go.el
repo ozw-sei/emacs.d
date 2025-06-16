@@ -1,6 +1,7 @@
 ;; Modern Go development with gopls LSP
 (use-package go-mode
   :straight t
+  :after eglot
   :hook ((go-mode . eglot-ensure)
          (go-ts-mode . eglot-ensure))
   :config
