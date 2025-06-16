@@ -5,11 +5,24 @@
       '("/tmp/" "COMMIT_EDITMSG"))
   (undohist-initialize)
   )
-;; undo-treeモードの設定
-
-(use-package undo-tree
+;; vundo - Visual undo tree
+(use-package vundo
+  :straight t
+  :commands (vundo)
+  :bind (("C-c u" . vundo)
+         ("C-x u" . undo))
+  :custom
+  (vundo-glyph-alist vundo-unicode-symbols)
+  (vundo-compact-display t)
+  ;; Use horizontal layout (like undo-tree's vertical display)
+  (vundo-window-side 'bottom)
+  (vundo-window-max-height 10)
   :config
-  (global-undo-tree-mode t)
-  :diminish undo-tree-mode
-  :bind
-  ("C-c u" . 'undo-tree-visualize))
+  ;; Optional: Customize the display to be more vertical-like
+  (setq vundo-glyph-alist
+        '((selected-node   . ?●)
+          (node            . ?○)
+          (horizontal-stem . ?─)
+          (vertical-stem   . ?│)
+          (branch          . ?├)
+          (last-branch     . ?└))))

@@ -1,18 +1,11 @@
-;; Prescient - Smart sorting and filtering
-(use-package prescient
-  :straight t
-  :custom
-  (prescient-history-length 200)
-  (prescient-save-file "~/.emacs.d/prescient-save.el")
-  (prescient-filter-method '(literal regexp initialism fuzzy))
-  :config
-  (prescient-persist-mode +1))
+;; Prescient configuration disabled due to loading issues
+;; If prescient causes problems, this file disables it completely
 
-;; Vertico integration with prescient
-(use-package vertico-prescient
-  :straight t
-  :after (vertico prescient)
-  :custom
-  (vertico-prescient-enable-filtering nil) ;; We use orderless for filtering
-  :config
-  (vertico-prescient-mode +1))
+;; Vertico + Orderless provide excellent completion without prescient
+
+;; To use this instead of the main prescient config:
+;; 1. mv 11-prescient.el 11-prescient.el.original
+;; 2. mv 11-prescient.el.disabled 11-prescient.el
+
+;; No prescient configuration - rely on Vertico's built-in history
+;; and Orderless for filtering, which work excellently together
