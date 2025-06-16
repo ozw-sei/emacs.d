@@ -9,7 +9,7 @@
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-        "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+        "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
         'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
@@ -17,6 +17,11 @@
 
 ;; use-package
 (straight-use-package 'use-package)
+
+;; Native compilation settings (Emacs 28+)
+(when (fboundp 'native-compile-async)
+  (setq native-comp-async-report-warnings-errors nil
+        native-comp-deferred-compilation t))
 
 
 ;; use-packageをstraight.elにフォールバックする
@@ -35,42 +40,6 @@
 (init-loader-load "~/.emacs.d/inits"))
 
 
-;; (use-package aggressive-indent
-;;   :straight t
-;;   :config (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
-
-
-;; Or if you use use-package
-;; (use-package dashboard
-;;   :straight t
-;;   :config
-;;   (dashboard-setup-startup-hook)
-;;   (setq dashboard-items '((projects . 5)
-;;                           (recents  . 20)))
-;;   (defun open-dashboard ()
-;;     "Open the *dashboard* buffer and jump to the first widget."
-;;     (interactive)
-;;     (delete-other-windows)
-;;     ;; Refresh dashboard buffer
-;;     (if (get-buffer dashboard-buffer-name)
-;;         (kill-buffer dashboard-buffer-name))
-;;     (dashboard-insert-startupify-lists)
-;;     (switch-to-buffer dashboard-buffer-name)
-;;     ;; Jump to the first section
-;;     (goto-char (point-min))
-;;     (dashboard-goto-recent-files))
-
-;;   :bind
-;;   ("<f9>" . 'open-dashboard)
-;;   )
-
-;(setq initail-buffer-choice (lambda () (get-buffer "*dashboard*")))
-
-;; ido-uniquitous
-;; https://www.emacswiki.org/emacs/InteractivelyDoThings
-;; (defvar ido-cur-item nil)
-;; (defvar ido-default-item nil)
-;; (defvar ido-cur-list nil)
 
 
 

@@ -18,7 +18,10 @@ smex-items
 transient/
 server/
 persp-confs/
-^\#*
+# Emacs temporary files
+#*#
+*~
+*.elc
 projectile.cache
 projectile-bookmarks.eld
 migemo-pattern

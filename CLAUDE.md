@@ -27,10 +27,12 @@ This is a modular Emacs configuration repository using straight.el for package m
 - **use-package**: Declarative package configuration
 - Local elisp files stored in `elisp/` directory
 
-### Current Migration
-The repository is undergoing a Helm to Vertico/Consult migration:
-- `10-counsel.el.bak` contains the old Ivy/Counsel configuration
-- `10-vertico.el` implements the new completion system with Consult, Orderless, Marginalia, and Embark
+### Current Migration Status
+The repository has completed its migration from Helm to Vertico/Consult:
+- **Completion Framework**: Vertico + Consult + Orderless + Marginalia + Embark (in `10-vertico.el`)
+- **Completion UI**: Migrated from Company-mode to Corfu + Cape (in `20-corfu.el`)
+- **Prescient Integration**: Smart sorting with `11-prescient.el` for history-based completion
+- **Undo System**: Transitioning from built-in undo to undo-fu (see `10-undo-fu.el.example`)
 
 ## Development Commands
 
@@ -52,12 +54,12 @@ M-x toggle-debug-on-error
 ## Dependencies
 
 External tools required (from README.org):
-- Emacs 27+
+- Emacs 26+ (minimum version enforced in init.el)
 - hunspell (spell checking)
 - ag/rg/ack (search tools)
-- ghq (repository management)
+- ghq (repository management)  
 - git
-- cmigemo (Japanese search)
+- cmigemo (Japanese search - optional, migemo integration commented out)
 - direnv
 - cmake
 
@@ -65,7 +67,7 @@ External tools required (from README.org):
 
 - **Projectile + Perspective**: Project and workspace management
 - **Eglot**: LSP client for programming languages
-- **Company-mode**: Auto-completion
+- **Corfu + Cape**: Modern completion-at-point UI with extensions
 - **Magit**: Git interface
 - **YASnippet**: Template system with custom snippets in `snippets/`
 - **Treemacs**: File tree sidebar
@@ -74,6 +76,19 @@ External tools required (from README.org):
 ## Important Configuration Details
 
 - Font configuration expects Microsoft Consolas for ASCII and Google Noto for Japanese
-- Spell checking requires DICPATH and DICTIONARY environment variables on Windows
+- Spell checking requires DICPATH and DICTIONARY environment variables on Windows  
 - The configuration supports Windows, Linux, and macOS
-- Japanese input and search capabilities through migemo
+- Japanese input and search capabilities through migemo (currently commented out)
+- Terminal support: Corfu includes terminal-mode compatibility for non-GUI usage
+- Configuration persists history in `savehist` and prescient files for intelligent completion ordering
+
+## File Organization Patterns
+
+When making changes:
+- Core functionality files (00-09): Basic Emacs behavior, paths, fonts
+- Navigation/completion (10-19): Vertico, Corfu, undo systems, prescient
+- Project tools (20-29): Projectile, LSP (eglot), version control integration  
+- Editing enhancements (30-39): Text manipulation, navigation aids, visual improvements
+- Language support (50-59): Major modes and language-specific configurations
+- Utilities (60-69): Helper tools like quickrun, REST client
+- Major applications (80-89): Org-mode, terminal emulation

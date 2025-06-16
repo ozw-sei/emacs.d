@@ -1,4 +1,4 @@
-(if window-system  (progn
+(when (display-graphic-p)
     (setq default-frame-alist
           (append (list
                    '(font . "Consolas"))
@@ -11,6 +11,4 @@
                                         ; japanese-jisx0208 fonts
   (set-fontset-font nil
                     'japanese-jisx0208
-                    (font-spec :family "Noto Sans Mono CJK JP"))
-  )
-)
+                    (font-spec :family "Noto Sans Mono CJK JP")))

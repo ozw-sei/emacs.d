@@ -10,5 +10,3 @@
   :config
   (global-treesit-auto-mode))
 
-;; tree-sitter が有効になるように設定
-(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)

@@ -33,17 +33,16 @@
   (projectile-mode +1))
 
 (use-package consult-projectile
-  :straight t
-  :ensure t)
+  :straight t)
 
 (defhydra hydra-projectile nil
   "Projectile"
   ("f"   consult-projectile-find-file         "Find File" :exit t)
-  ("h"   consult-projectile-switch-project    "Switch Project (was helm)" :exit t)
+  ("h"   consult-projectile-switch-project    "Switch Project" :exit t)
   ("a"   consult-ripgrep              "Ripgrep (ag)" :exit t)
   ("r"   consult-recent-file          "Recent Files" :exit t)
   ("d"   consult-projectile-find-dir          "Find Directory" :exit t)
-  ("b"   nsult-buffer               "Switch to Buffer" :exit t) ;; Added :exit t for consistency
+  ("b"   consult-buffer               "Switch to Buffer" :exit t) ;; Added :exit t for consistency
   ("k"   consult-projectile-kill-buffers      "Kill Buffers" :exit t)
   ("R"   consult-projectile-replace           "Replace" :exit t)
   ("s"   consult-projectile-switch-project    "Switch Project" :exit t)

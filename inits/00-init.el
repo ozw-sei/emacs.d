@@ -10,7 +10,6 @@
 (defvar display-warning-minimum-level :error)
 
 ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(package-refresh-contents)
 
 ;;; symlinkは必ず追いかける
 (setq vc-follow-symlinks t)
@@ -47,9 +46,15 @@
 ;;; モードラインに時刻を表示する
 (display-time)
 
-;;; GCを減らして軽くする
-(setq gc-cons-threshold-original gc-cons-threshold)
-(setq gc-cons-threshold (* 1024 1024 10))
+;;; GCを減らして軽くする - 起動時のみ最大化し、後で元に戻す
+(let ((gc-cons-threshold-original gc-cons-threshold)
+      (gc-cons-percentage-original gc-cons-percentage))
+  (setq gc-cons-threshold most-positive-fixnum
+        gc-cons-percentage 0.6)
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq gc-cons-threshold gc-cons-threshold-original
+                    gc-cons-percentage gc-cons-percentage-original))))
 
 ;;; ログの記録行数を増やす
 (setq message-log-max 10000)

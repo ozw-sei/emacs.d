@@ -1,7 +1,6 @@
 ;; Vertico configuration
 (use-package vertico
   :straight t
-  :ensure t
   :init
   (vertico-mode)
   :custom
@@ -15,7 +14,6 @@
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
   :straight t
-  :ensure t
   :init
   (savehist-mode)
   :custom
@@ -26,7 +24,6 @@
 ;; Configure Orderless completion style.
 (use-package orderless
   :straight t
-  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
@@ -35,7 +32,6 @@
 ;; Enable rich annotations using Marginalia
 (use-package marginalia
   :straight t
-  :ensure t
   ;; Bind marginalia-cycle to M-A
   :bind (:map minibuffer-local-map
          ("M-A" . marginalia-cycle))
@@ -44,7 +40,6 @@
 
 (use-package consult
   :straight t
-  :ensure t
   :bind (
          ("C-s" . consult-line)
          ("M-y" . 'consult-yank-from-kill-ring)
@@ -93,7 +88,6 @@
 
 (use-package embark
   :straight t
-  :ensure t
   ;; Add bindings or configurations as needed
   :bind (("C-." . embark-act)         ;; Act on current completion
          ("M-." . embark-dwim)))      ;; Act on thing at point/region

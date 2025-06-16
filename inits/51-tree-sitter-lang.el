@@ -9,11 +9,15 @@
 ;;(add-hook 'typescript-mode-hook #'tree-sitter-mode)
 ;;(add-hook 'tsx-mode-hook #'tree-sitter-mode)
 
+;; TypeScript and TSX files
 (use-package tsx-ts-mode
-  :mode (("\\.ts[x]?\\'" . tsx-ts-mode)
-         ("\\.[m]ts\\'" . tsx-ts-mode)
-         ("\\.js[x]?\\'" . tsx-ts-mode)
-         ("\\.[mc]js\\'" . tsx-ts-mode)))
+  :mode (("\\.tsx?\\'" . tsx-ts-mode)
+         ("\\.[m]ts\\'" . tsx-ts-mode)))
+
+;; JavaScript files
+(use-package js-ts-mode
+  :mode (("\\.js[x]?\\'" . js-ts-mode)
+         ("\\.[mc]js\\'" . js-ts-mode)))
 
 
 ;; Pythonの設定
