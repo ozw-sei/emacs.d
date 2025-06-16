@@ -19,7 +19,37 @@
   :mode (("\\.js[x]?\\'" . js-ts-mode)
          ("\\.[mc]js\\'" . js-ts-mode)))
 
-
-;; Pythonの設定
+;; Python files
 (use-package python-ts-mode
   :mode ("\\.py$" . python-ts-mode))
+
+;; C files
+(use-package c-ts-mode
+  :mode (("\\.c\\'" . c-ts-mode)
+         ("\\.h\\'" . c-ts-mode)))
+
+;; C++ files
+(use-package c++-ts-mode
+  :mode (("\\.cpp\\'" . c++-ts-mode)
+         ("\\.cxx\\'" . c++-ts-mode)
+         ("\\.cc\\'" . c++-ts-mode)
+         ("\\.hpp\\'" . c++-ts-mode)
+         ("\\.hxx\\'" . c++-ts-mode)
+         ("\\.hh\\'" . c++-ts-mode)))
+
+;; Java files
+(use-package java-ts-mode
+  :mode ("\\.java\\'" . java-ts-mode))
+
+;; Ruby files
+(use-package ruby-ts-mode
+  :mode (("\\.rb\\'" . ruby-ts-mode)
+         ("\\.rake\\'" . ruby-ts-mode)
+         ("\\.gemspec\\'" . ruby-ts-mode)
+         ("Rakefile\\'" . ruby-ts-mode)
+         ("Gemfile\\'" . ruby-ts-mode)))
+
+;; Scala files (if tree-sitter grammar is available)
+(use-package scala-ts-mode
+  :mode (("\\.scala\\'" . scala-ts-mode)
+         ("\\.sc\\'" . scala-ts-mode)))

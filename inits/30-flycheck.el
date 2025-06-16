@@ -1,13 +1,17 @@
-;; flycheck
+;; Disable flycheck globally (using Flymake with LSP instead)
+;; Keep flycheck for non-LSP modes if needed
 (use-package flycheck
   :straight t
   :config
-
-  (global-flycheck-mode 1)
+  ;; Don't enable globally - let Flymake handle LSP diagnostics
+  ;; (global-flycheck-mode 1)
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
   (with-eval-after-load 'flycheck
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
-  )
+  
+  ;; Only enable flycheck for specific modes where Flymake isn't sufficient
+  (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
+  (add-hook 'shell-script-mode-hook #'flycheck-mode))
 
 (use-package flycheck-color-mode-line
   :straight t

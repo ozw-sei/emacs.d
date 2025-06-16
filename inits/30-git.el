@@ -35,6 +35,7 @@ _q_ close
     ("b" git-timemachine-blame :exit t)
     ("c" git-timemachine-show-commit :exit t)
     ("t" git-timemachine-show-revision-fuzzy :exit t)
+    ("g" git-timemachine-show-nth-revision :exit t)
     ("w" git-timemachine-kill-abbreviated-revision :exit t)
     ("W" git-timemachine-kill-revision :exit t)
     ("?" git-timemachine-help :exit t)

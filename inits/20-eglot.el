@@ -5,7 +5,13 @@
   :hook ((js-mode . eglot-ensure)
          (tsx-ts-mode . eglot-ensure)
          (python-ts-mode . eglot-ensure)
-         (scala-ts-mode . eglot-ensure))
+         (scala-ts-mode . eglot-ensure)
+         (c-ts-mode . eglot-ensure)
+         (c++-ts-mode . eglot-ensure)
+         (java-ts-mode . eglot-ensure)
+         (ruby-ts-mode . eglot-ensure)
+         (perl-mode . eglot-ensure)
+         (cperl-mode . eglot-ensure))
   :bind (:map eglot-mode-map
          ("C-c l" . 'hydra-eglot/body)
          ("C-c C-l" . 'hydra-eglot/body)  ;; Alternative binding
@@ -105,4 +111,5 @@
 
   ("M-s" eglot-show-workspace-configuration)
   ("M-r" eglot-reconnect)
-  ("S" eglot-shutdown))
+  ("S" eglot-shutdown)
+  ("q" nil "quit"))

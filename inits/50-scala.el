@@ -1,4 +1,14 @@
-;; Enable scala-mode and sbt-mode
+;; Enhanced Scala development with Tree-sitter and Metals LSP
+(use-package scala-ts-mode
+  :straight t
+  :mode (("\\.scala\\'" . scala-ts-mode)
+         ("\\.sc\\'" . scala-ts-mode))
+  :hook (scala-ts-mode . eglot-ensure)
+  :config
+  ;; Scala formatting and indentation
+  (setq scala-ts-mode-indent-offset 2))
+
+;; Fallback to regular scala-mode if tree-sitter not available
 (use-package scala-mode
   :straight t
   :mode "\\.s\\(cala\\|bt\\)$"
