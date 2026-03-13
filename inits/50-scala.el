@@ -3,7 +3,7 @@
   :straight t
   :mode (("\\.scala\\'" . scala-ts-mode)
          ("\\.sc\\'" . scala-ts-mode))
-  :hook (scala-ts-mode . eglot-ensure)
+  :hook (scala-ts-mode . lsp-deferred)
   :config
   ;; Scala formatting and indentation
   (setq scala-ts-mode-indent-offset 2))
@@ -12,12 +12,19 @@
 (use-package scala-mode
   :straight t
   :mode "\\.s\\(cala\\|bt\\)$"
-  :hook (scala-mode . eglot-ensure)
+  :hook (scala-mode . lsp-deferred)
   :config
   ;; Scala import indentation settings
   (setq scala-indent:align-parameters nil
         scala-indent:align-forms t
         scala-indent:use-javadoc-style t))
+
+;; lsp-metals for Scala
+(use-package lsp-metals
+  :straight t
+  :after lsp-mode
+  :custom
+  (lsp-metals-server-command "metals"))
 
 (use-package sbt-mode
   :straight t
@@ -35,11 +42,11 @@
 
 ;; Optional: Add Metals-specific keybindings
 (with-eval-after-load 'scala-mode
-  (with-eval-after-load 'eglot
+  (with-eval-after-load 'lsp-mode
     (define-key scala-mode-map (kbd "C-c m b") 'sbt-command)
     (define-key scala-mode-map (kbd "C-c m s") 'sbt-start)
-    (define-key scala-mode-map (kbd "C-c m i") 'eglot-find-implementation)
-    (define-key scala-mode-map (kbd "C-c m t") 'eglot-find-typeDefinition)))
+    (define-key scala-mode-map (kbd "C-c m i") 'lsp-find-implementation)
+    (define-key scala-mode-map (kbd "C-c m t") 'lsp-find-type-definition)))
 
 ;; Metals installation note:
 ;; To install Metals, run:

@@ -93,6 +93,5 @@
   
   (add-hook 'corfu-mode-hook #'orderless-corfu-setup))
 
-;;; Eglot integration
-(with-eval-after-load 'eglot
-  (setq completion-category-overrides '((eglot (styles orderless flex)))))
+;;; lsp-mode integration (lsp-completion-provider is set to :none in 20-lsp.el
+;;; so corfu handles completion via capf)

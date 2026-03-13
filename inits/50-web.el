@@ -1,18 +1,15 @@
+;; Web-mode for HTML template files only
+;; TypeScript/JSX/TSX are handled by tree-sitter modes + lsp-mode
 (use-package web-mode
   :straight t
+  :mode (("\\.html\\'" . web-mode)
+         ("\\.ejs\\'" . web-mode)
+         ("\\.jsp\\'" . web-mode))
   :config
-  (add-to-list 'auto-mode-alist '("\\.html$" . web-mode)))
-
-(add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-(setq web-mode-enable-current-element-highlight t)
-(setq web-mode-enable-auto-indentation nil)
- (let ((case-fold-search nil))
-    (highlight-regexp "\\_<number\\|string\\|boolean\\|enum\\|unknown\\|any\\|void\\|null\\|undefined\\|never\\|object\\|symbol\\_>" 'font-lock-type-face))
-
-
-                                        ;(add-to-list 'auto-mode-alist '("\\.ts$" . web-mode))
-                                        ;(add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
-                                        ;(setq web-mode-content-types-alist
-                                        ;'(("jsx" . "\\.js[x]?\\'")))
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-enable-auto-indentation nil)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-auto-closing t))

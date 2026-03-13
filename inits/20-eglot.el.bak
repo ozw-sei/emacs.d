@@ -2,14 +2,24 @@
 (use-package eglot
   :straight t
   :ensure t
-  :hook ((js-mode . eglot-ensure)
+  :hook ((js-ts-mode . eglot-ensure)
          (tsx-ts-mode . eglot-ensure)
+         (typescript-ts-mode . eglot-ensure)
          (python-ts-mode . eglot-ensure)
+         (go-ts-mode . eglot-ensure)
          (scala-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
          (c++-ts-mode . eglot-ensure)
          (java-ts-mode . eglot-ensure)
          (ruby-ts-mode . eglot-ensure)
+         (csharp-ts-mode . eglot-ensure)
+         (dockerfile-ts-mode . eglot-ensure)
+         (yaml-ts-mode . eglot-ensure)
+         (bash-ts-mode . eglot-ensure)
+         (json-ts-mode . eglot-ensure)
+         (css-ts-mode . eglot-ensure)
+         (html-ts-mode . eglot-ensure)
+         (toml-ts-mode . eglot-ensure)
          (perl-mode . eglot-ensure)
          (cperl-mode . eglot-ensure))
   :bind (:map eglot-mode-map

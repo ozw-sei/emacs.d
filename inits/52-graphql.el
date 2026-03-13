@@ -3,12 +3,8 @@
   :straight t
   :mode (("\\.graphql\\'" . graphql-mode)
          ("\\.gql\\'" . graphql-mode))
-  :hook ((graphql-mode . eglot-ensure))
+  :hook ((graphql-mode . lsp-deferred))
   :config
-  ;; Configure GraphQL Language Service
-  (add-to-list 'eglot-server-programs
-               '(graphql-mode . ("graphql-lsp" "server" "-m" "stream")))
-
   ;; GraphQL indentation and formatting
   (setq graphql-indent-level 2)
 
@@ -168,8 +164,8 @@
   (define-key graphql-mode-map (kbd "C-c C-q a") 'graphql-analyze-query-complexity))
 
 ;; File associations for GraphQL-related files
-(add-to-list 'auto-mode-alist '("\\.*gql\\.d\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("graphql-env\\.d\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("graphql-cache\\.d\\.ts\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.*gql\\.d\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("graphql-env\\.d\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("graphql-cache\\.d\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("codegen\\.yml\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("apollo\\.config\\.js\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("apollo\\.config\\.js\\'" . js-ts-mode))

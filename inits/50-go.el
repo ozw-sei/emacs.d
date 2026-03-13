@@ -1,27 +1,23 @@
 ;; Modern Go development with gopls LSP
 (use-package go-mode
   :straight t
-  :after eglot
-  :hook ((go-mode . eglot-ensure)
-         (go-ts-mode . eglot-ensure))
+  :after lsp-mode
+  :hook ((go-mode . lsp-deferred)
+         (go-ts-mode . lsp-deferred))
   :config
   ;; Go environment setup
   (when (getenv "GOROOT")
     (add-to-list 'exec-path (concat (getenv "GOROOT") "/bin")))
   (when (getenv "GOPATH")
     (add-to-list 'exec-path (concat (getenv "GOPATH") "/bin")))
-  
-  ;; Eglot gopls configuration
-  (add-to-list 'eglot-server-programs 
-               '((go-mode go-ts-mode) . ("gopls")))
-  
-  ;; Gopls settings for optimal development
-  (setq-default eglot-workspace-configuration
-                '((:gopls . 
-                   (:usePlaceholders t
-                    :completeUnimported t
-                    :staticcheck t
-                    :gofumpt t))))
+
+  ;; gopls settings via lsp-mode
+  (with-eval-after-load 'lsp-mode
+    (setq lsp-go-use-placeholders t)
+    (setq lsp-go-analyses '((unusedparams . t)
+                            (shadow . t)))
+    (setq lsp-go-import-shortcut "Both")
+    (setq lsp-go-use-gofumpt t))
 
   ;; Format on save with goimports-reviser + gofumpt chain
   (defun go-format-buffer-chain ()
@@ -45,7 +41,7 @@
   ;; Replace gofmt with modern formatting chain
   (remove-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'before-save-hook 'go-format-buffer-chain)
-  
+
   ;; Optional: go-eldoc for documentation
   (use-package go-eldoc
     :straight t

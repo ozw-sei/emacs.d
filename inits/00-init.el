@@ -40,8 +40,9 @@
 
 ;;; シェルに合わせるため、C-hはに割り当てる
 (keyboard-translate ?\C-h ?\C-?)
-(global-set-key "\C-h" nil)
-;;(global-set-key "\C-h" 'delete-backward-char)
+;(global-set-key "\C-h" nil)
+(global-set-key "\C-h" 'delete-backward-char)
+
 
 ;;; モードラインに時刻を表示する
 (display-time)

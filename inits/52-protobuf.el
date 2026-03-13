@@ -2,15 +2,11 @@
 (use-package protobuf-mode
   :straight t
   :mode ("\\.proto\\'" . protobuf-mode)
-  :hook ((protobuf-mode . eglot-ensure))
+  :hook ((protobuf-mode . lsp-deferred))
   :config
-  ;; Configure buf-language-server for protobuf
-  (add-to-list 'eglot-server-programs
-               '(protobuf-mode . ("buf" "beta" "lsp")))
-  
   ;; Protobuf indentation and style
   (setq protobuf-indent-level 2)
-  
+
   ;; Buf integration functions
   (defun protobuf-buf-format ()
     "Format protobuf files using buf"
@@ -20,33 +16,33 @@
        (point-min) (point-max)
        "buf format --write -"
        t t)))
-  
+
   (defun protobuf-buf-lint ()
     "Lint protobuf files using buf"
     (interactive)
     (when (executable-find "buf")
       (let ((default-directory (projectile-project-root)))
         (compile "buf lint"))))
-  
+
   (defun protobuf-buf-generate ()
     "Generate code from protobuf files using buf"
     (interactive)
     (when (executable-find "buf")
       (let ((default-directory (projectile-project-root)))
         (compile "buf generate"))))
-  
+
   (defun protobuf-buf-breaking ()
     "Check for breaking changes in protobuf"
     (interactive)
     (when (executable-find "buf")
       (let ((default-directory (projectile-project-root)))
         (compile "buf breaking --against '.git#branch=main'"))))
-  
+
   ;; Auto-format on save
   (add-hook 'protobuf-mode-hook
             (lambda ()
               (add-hook 'before-save-hook 'protobuf-buf-format nil t)))
-  
+
   ;; Key bindings for buf operations
   (define-key protobuf-mode-map (kbd "C-c C-p f") 'protobuf-buf-format)
   (define-key protobuf-mode-map (kbd "C-c C-p l") 'protobuf-buf-lint)
@@ -65,7 +61,7 @@
     (when (string-match-p "buf\\.yaml" (buffer-file-name))
       (setq-local yaml-indent-offset 2)
       (flycheck-mode 1)))
-  
+
   (add-hook 'yaml-mode-hook #'buf-yaml-setup))
 
 ;; Enhanced protobuf development utilities
