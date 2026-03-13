@@ -4,7 +4,7 @@ A comprehensive, modular Emacs configuration optimized for modern software devel
 
 ## 🎯 Target Environment
 
-- **Emacs**: 29+ (with native compilation support)
+- **Emacs**: 30+ (with native compilation and Tree-sitter support)
 - **Platforms**: macOS, Linux, Windows
 - **Package Manager**: straight.el + use-package
 - **Configuration Loader**: init-loader (modular file organization)
@@ -19,16 +19,16 @@ A comprehensive, modular Emacs configuration optimized for modern software devel
 - **GraphQL**: graphql-lsp + codegen integration
 
 ### Modern Development Tools
-- **Tree-sitter**: Fast, accurate syntax highlighting for all languages
-- **Eglot**: Built-in LSP client with comprehensive language support
+- **Tree-sitter**: Fast, accurate syntax highlighting for all languages (treesit-auto)
+- **lsp-mode**: LSP client with lsp-ui for rich UI (sideline, peek, doc)
 - **Vertico/Consult**: Modern completion framework (migrated from Helm)
 - **Projectile**: Advanced project management
 - **Magit**: Git interface
 - **Treemacs**: File tree sidebar
-- **vterm**: Fast terminal emulator
+- **vterm**: Fast terminal emulator (requires cmake + libvterm)
 
 ### Enhanced Editing
-- **Company**: Intelligent completion
+- **Corfu**: Modern completion-at-point UI (migrated from Company)
 - **YASnippet**: Template system with custom snippets
 - **Hydra**: Modal command interfaces
 - **Multiple cursors**: Multi-cursor editing
@@ -64,14 +64,22 @@ brew install ripgrep the_silver_searcher ack
 
 # Spell checking
 brew install hunspell
+# Download dictionary files to ~/Library/Spelling/
+curl -sL -o ~/Library/Spelling/en_US.aff "https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.aff"
+curl -sL -o ~/Library/Spelling/en_US.dic "https://cgit.freedesktop.org/libreoffice/dictionaries/plain/en/en_US.dic"
 
-# Japanese input support
+# vterm native module
+brew install libvterm
+
+# Japanese input support (optional)
 brew install cmigemo
 ```
 
-### Language-Specific Tools
+### Language-Specific LSP Servers
 
-#### Go Development
+lsp-mode auto-detects most servers. Install the ones you need:
+
+#### Go
 ```bash
 go install golang.org/x/tools/gopls@latest
 go install github.com/incu6us/goimports-reviser/v3@latest
@@ -85,7 +93,66 @@ npm install -g typescript-language-server prettier pnpm
 
 #### Python
 ```bash
-pip install python-lsp-server[all] uv
+pip install 'python-lsp-server[all]'
+# Optional plugins
+pip install python-lsp-black pylsp-mypy python-lsp-isort pylsp-rope
+# Or use uv
+uv tool install 'python-lsp-server[all]'
+```
+
+#### Scala (Metals)
+```bash
+# Via coursier
+cs install metals
+```
+
+#### C/C++
+```bash
+brew install llvm  # clangd included
+# Or standalone
+brew install clangd
+```
+
+#### Java
+```bash
+# jdtls - Eclipse JDT Language Server
+# lsp-mode auto-downloads on first use
+```
+
+#### Ruby
+```bash
+gem install solargraph
+```
+
+#### C#
+```bash
+dotnet tool install --global csharp-ls
+# Or OmniSharp: download from https://github.com/OmniSharp/omnisharp-roslyn
+```
+
+#### YAML
+```bash
+npm install -g yaml-language-server
+```
+
+#### JSON / HTML / CSS
+```bash
+npm install -g vscode-langservers-extracted
+```
+
+#### Dockerfile
+```bash
+npm install -g dockerfile-language-server-nodejs
+```
+
+#### TOML
+```bash
+npm install -g @taplo/cli
+```
+
+#### Bash
+```bash
+npm install -g bash-language-server
 ```
 
 #### Protobuf
@@ -95,7 +162,20 @@ brew install buf
 
 #### GraphQL
 ```bash
-npm install -g @graphql-lsp/cli graphql-language-service-cli
+npm install -g graphql-language-service-cli
+```
+
+### All npm LSP servers at once
+```bash
+npm install -g \
+  typescript-language-server \
+  prettier \
+  yaml-language-server \
+  vscode-langservers-extracted \
+  dockerfile-language-server-nodejs \
+  bash-language-server \
+  graphql-language-service-cli \
+  @taplo/cli
 ```
 
 ## 🎨 Fonts
@@ -134,9 +214,16 @@ Environment variables are automatically configured through the configuration.
 
 3. **Start Emacs**: The configuration will automatically install packages on first run
 
-4. **Install Tree-sitter grammars**:
+4. **Install Tree-sitter grammars** (first launch will prompt, or run manually):
    ```
    M-x treesit-auto-install-all
+   ```
+
+5. **Build vterm native module** (auto-built on first use, or manually):
+   ```bash
+   cd ~/.emacs.d/straight/repos/emacs-libvterm
+   mkdir -p build && cd build && cmake .. && make
+   cp ../vterm-module.so ../../build/vterm/
    ```
 
 ## 🔧 Key Bindings
@@ -152,11 +239,11 @@ Environment variables are automatically configured through the configuration.
 - `C-x b` - Switch buffer with preview
 - `C-c f` - Find files in project
 
-### LSP Integration
+### LSP Integration (lsp-mode)
+- `C-c l` / `C-c C-l` - LSP hydra (all LSP commands)
+- `M-<return>` - Code actions
 - `M-.` - Go to definition
 - `M-?` - Find references
-- `C-c C-r` - Rename symbol
-- `C-c C-a` - Code actions
 
 ## 🏗 Architecture Highlights
 

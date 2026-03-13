@@ -1,13 +1,13 @@
-;; (use-package solarized-theme
-;;   :straight t
-;;   :config
-;;   (load-theme 'solarized-dark t))
-
-(use-package monokai-theme
+(use-package solarized-theme
   :straight t
-  ;; :if (window-system)
   :config
-  (load-theme 'monokai t))
+  (load-theme 'solarized-light t))
+
+;; (use-package monokai-theme
+;;   :straight t
+;;   ;; :if (window-system)
+;;   :config
+;;   (load-theme 'monokai t))
 
 
 ;; (use-package srcery-theme

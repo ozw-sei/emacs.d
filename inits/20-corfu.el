@@ -19,10 +19,6 @@
   :init
   (global-corfu-mode)
   :config
-  ;; Ensure corfu works in terminal
-  (unless (display-graphic-p)
-    (corfu-terminal-mode +1))
-  
   ;; Enable Corfu in minibuffer
   (defun corfu-enable-in-minibuffer ()
     "Enable Corfu in the minibuffer if Vertico is not active."

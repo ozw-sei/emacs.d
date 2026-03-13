@@ -20,14 +20,10 @@
 (setq ns-pop-up-frames nil)
 
 ;;; メニューバーとツールバーとスクロールバーを消す
-;; (if window-system (progn
-                    ;; ←GUI用設定を、ここに記述
-                    (menu-bar-mode -1)
-                    (tool-bar-mode -1)
-                    (scroll-bar-mode -1)
-                    (bind-key "C-x C-c" 'consult-imenu)
-                    ;; )
-  ;; )
+(menu-bar-mode -1)
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(bind-key "C-x C-c" 'consult-imenu)
 
 ;;; インデントにTABを使わないようにする
 (setq-default indent-tabs-mode nil)
@@ -65,8 +61,11 @@
 
 
 ;; I never use C-x C-c
-;; exit で抜けられます
-(defalias 'exit 'save-buffers-kill-emacs)
+;; M-x exit で抜けられます
+(defun exit ()
+  "Exit Emacs."
+  (interactive)
+  (save-buffers-kill-emacs))
 
 ;; スクリーンの最大化
 ;(set-frame-parameter nil 'fullscreen 'maximized)
