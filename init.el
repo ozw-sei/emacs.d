@@ -1,11 +1,16 @@
-;; Emacs 26 以上のみをサポート
+;;; init.el --- Main Emacs configuration -*- lexical-binding: t; -*-
+
+;; Emacs 30 以上のみをサポート
 (eval-when-compile
-  (let ((minver "26.0"))
+  (let ((minver "30.0"))
     (when (version< emacs-version minver)
       (error "Your Emacs don't support this config, use Emacs %s or above" minver))))
-;; straight.el setting by myself
-(let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el"))
-      (bootstrap-version 3))
+
+;; straight.el setting
+(defvar straight-use-package-by-default t)
+
+(defvar bootstrap-version)
+(let ((bootstrap-file (concat user-emacs-directory "straight/repos/straight.el/bootstrap.el")))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
@@ -16,16 +21,12 @@
   (load bootstrap-file nil 'nomessage))
 
 ;; use-package
+(declare-function straight-use-package "straight")
 (straight-use-package 'use-package)
 
-;; Native compilation settings (Emacs 28+)
-(when (fboundp 'native-compile-async)
-  (setq native-comp-async-report-warnings-errors nil
-        native-comp-deferred-compilation t))
-
-
-;; use-packageをstraight.elにフォールバックする
-(defvar straight-use-package-by-default t)
+;; Native compilation settings
+(defvar native-comp-async-report-warnings-errors nil)
+(defvar native-comp-jit-compilation t)
 
 ;; use-packageで可読性の高いinit.elを書く
 ;; https://qiita.com/kai2nenobu/items/5dfae3767514584f5220
