@@ -142,7 +142,10 @@
  ; Mac OS X のときはMetaを
 (when (eq system-type 'darwin)
   (setq mac-option-modifier 'meta)
+  (setq mac-command-modifier 'control)
   (setq mac-right-command-modifier 'meta)  ;; 右CommandキーをMetaに
+  (setq ns-command-modifier 'control)
+  (setq ns-right-command-modifier 'meta)  ;; 右CommandキーをMetaに
   (define-key global-map [?¥] [?\\])  ;; ¥の代わりにバックスラッシュを入力する
 )
 
